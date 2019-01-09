@@ -1,4 +1,4 @@
-package com.project.mobile_university
+package com.project.mobile_university.presentation
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
