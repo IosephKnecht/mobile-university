@@ -17,6 +17,7 @@ class BusinessModule {
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://10.0.2.2:8000")
             .build()
     }
 

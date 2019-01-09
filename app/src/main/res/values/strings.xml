@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">mobile_university</string>
+    <string name="service_url_hint">Enter service url</string>
+    <string name="login_hint">Enter your login</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="login_button">Enter</string>
 </resources>

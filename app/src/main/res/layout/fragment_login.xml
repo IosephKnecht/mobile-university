@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.project.mobile_university.presentation.login.contract.LoginContract.ObservableStorage" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_padding">
+
+        <EditText
+            android:id="@+id/service_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/service_url_hint"
+            android:inputType="text"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/header2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <EditText
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:hint="@string/login_hint"
+            android:inputType="text"
+            android:textSize="@dimen/header3"
+            app:layout_constraintTop_toBottomOf="@+id/service_url" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:textSize="@dimen/header3"
+            app:layout_constraintTop_toBottomOf="@+id/login" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:enabled="@{viewModel.enterEnabled}"
+            android:text="@string/login_button"
+            android:textSize="@dimen/header3"
+            app:layout_constraintEnd_toEndOf="@id/password"
+            app:layout_constraintStart_toStartOf="@id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password"
+            tools:enabled="false" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

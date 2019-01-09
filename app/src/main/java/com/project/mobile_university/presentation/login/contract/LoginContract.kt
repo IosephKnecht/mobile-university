@@ -1,12 +1,27 @@
 package com.project.mobile_university.presentation.login.contract
 
+import android.arch.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 
 interface LoginContract {
-    interface Presenter : MvpPresenter
+    interface ObservableStorage {
+        val enterEnabled: LiveData<Boolean>
+    }
 
-    interface Listener : MvpInteractor.Listener
+    interface Presenter : MvpPresenter {
+        fun tryLogin(login: String, password: String)
+        fun saveServiceUrl(serviceUrl: String)
+        fun saveLogin(login: String)
+        fun savePassword(password: String)
+    }
 
-    interface Interactor : MvpInteractor<Listener>
+    interface Listener : MvpInteractor.Listener {
+        fun onLogin(isAuth: Boolean?, throwable: Throwable?)
+    }
+
+    interface Interactor : MvpInteractor<Listener> {
+        fun login(login: String, password: String)
+        fun setServiceUrl(serviceUrl: String)
+    }
 }
