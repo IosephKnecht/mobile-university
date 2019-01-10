@@ -22,20 +22,31 @@
             android:background="#FFFFFF"
             android:padding="@dimen/large_margin">
 
-            <EditText
-                android:id="@+id/service_url"
-                style="@style/InputForm"
+            <RelativeLayout
+                android:id="@+id/server_url"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:background="@drawable/bg_edit_text"
-                android:gravity="center"
-                android:hint="@string/service_url_hint"
-                android:inputType="text"
-                android:textIsSelectable="true"
-                android:textStyle=""
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/large_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.3" />
+                app:layout_constraintVertical_bias="0.3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    tools:text="http://10.0.2.2:8000"/>
+
+                <Button
+                    android:id="@+id/btn_choose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/login"
@@ -47,7 +58,7 @@
                 android:gravity="center"
                 android:hint="@string/login_hint"
                 android:inputType="text"
-                app:layout_constraintTop_toBottomOf="@+id/service_url" />
+                app:layout_constraintTop_toBottomOf="@+id/server_url" />
 
             <EditText
                 android:id="@+id/password"
@@ -74,10 +85,10 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="@dimen/small_margin"
                     android:background="@drawable/bg_login_button_selector"
-                    android:visibility="@{!viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
                     android:enabled="@{viewModel.enterEnabled}"
                     android:text="@string/login_button"
                     android:textSize="@dimen/header3"
+                    android:visibility="@{!viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
                     tools:enabled="false" />
 
                 <ProgressBar

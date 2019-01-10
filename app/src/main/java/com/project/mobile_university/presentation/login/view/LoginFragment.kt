@@ -2,6 +2,7 @@ package com.project.mobile_university.presentation.login.view
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,9 @@ import java.util.concurrent.TimeUnit
 class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
     private lateinit var diComponent: LoginComponent
     private lateinit var binding: FragmentLoginBinding
+
+    private lateinit var chooseServerDialog: DialogFragment
+
     private val compositeSubscription = CompositeSubscription()
 
     companion object {
@@ -41,6 +45,9 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         binding.setLifecycleOwner(this)
         binding.viewModel = presenter as LoginContract.ObservableStorage
+
+        chooseServerDialog = ChooseServerDialog.newInstance()
+
         return binding.root
     }
 
@@ -52,13 +59,9 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
     override fun onStart() {
         super.onStart()
 
-        observeViewModel(presenter as LoginContract.ObservableStorage)
+        btn_choose.setOnClickListener { chooseServerDialog.show(childFragmentManager, ChooseServerDialog.TAG) }
 
-        compositeSubscription.add(RxTextView.textChanges(service_url)
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                presenter.setParam(LoginPresenter.URL_PARAM, it.toString())
-            })
+        observeViewModel(presenter as LoginContract.ObservableStorage)
 
         compositeSubscription.add(RxTextView.textChanges(login)
             .debounce(500, TimeUnit.MILLISECONDS)
