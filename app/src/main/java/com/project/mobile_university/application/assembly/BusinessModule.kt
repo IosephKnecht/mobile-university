@@ -13,23 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BusinessModule {
     @Provides
     @PerBusinessLayerScope
-    fun provideRetorofit(): Retrofit {
-        return Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://10.0.2.2:8000")
-            .build()
-    }
-
-    @Provides
-    @PerBusinessLayerScope
-    fun provideUniversityApi(retrofit: Retrofit): UniversityApi {
-        return retrofit.create(UniversityApi::class.java)
-    }
-
-    @Provides
-    @PerBusinessLayerScope
-    fun provideApiService(universityApi: UniversityApi): ApiService {
-        return ApiService(universityApi)
+    fun provideApiService(): ApiService {
+        return ApiService()
     }
 }

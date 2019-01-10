@@ -8,7 +8,6 @@ import retrofit2.http.Header
 import retrofit2.http.Url
 
 interface UniversityApi {
-    @GET
-    fun login(@Url serviceUrl: String,
-              @Header("Authorization") loginPassString: String): Observable<BaseServerResponse<User>>
+    @GET("api/v1/auth/user/")
+    fun login(@Header("Authorization") loginPassString: String): Observable<BaseServerResponse<User>>
 }

@@ -2,7 +2,7 @@ package com.project.mobile_university.presentation
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.project.mobile_university.mobile_university.R
+import com.project.mobile_university.R
 import com.project.mobile_university.presentation.login.view.LoginFragment
 
 class MainActivity : AppCompatActivity() {

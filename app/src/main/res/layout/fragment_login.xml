@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.project.mobile_university.presentation.login.contract.LoginContract.State" />
+
         <variable
             name="viewModel"
             type="com.project.mobile_university.presentation.login.contract.LoginContract.ObservableStorage" />
@@ -67,10 +69,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/password">
 
                 <Button
+                    android:id="@+id/btn_enter"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="@dimen/small_margin"
                     android:background="@drawable/bg_login_button_selector"
+                    android:visibility="@{!viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
                     android:enabled="@{viewModel.enterEnabled}"
                     android:text="@string/login_button"
                     android:textSize="@dimen/header3"
@@ -80,8 +84,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    tools:visibility="visible"/>
+                    android:visibility="@{viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
+                    tools:visibility="gone" />
             </FrameLayout>
 
         </android.support.constraint.ConstraintLayout>

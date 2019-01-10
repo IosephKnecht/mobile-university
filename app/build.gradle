@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.project.mobile_university.mobile_university"
+        applicationId "com.project.mobile_university"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -38,6 +38,7 @@ dependencies {
     implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
     implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    implementation "com.android.support:design:$rootProject.ext.supportVersion"
 
     implementation project(path: ':viper')
 

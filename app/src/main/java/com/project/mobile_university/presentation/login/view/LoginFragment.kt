@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jakewharton.rxbinding.widget.RxTextView
 import com.project.iosephknecht.viper.view.AbstractFragment
+import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
-import com.project.mobile_university.mobile_university.R
-import com.project.mobile_university.mobile_university.databinding.FragmentLoginBinding
+import com.project.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
@@ -43,8 +44,15 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        btn_enter.setOnClickListener { presenter.tryLogin() }
+    }
+
     override fun onStart() {
         super.onStart()
+
+        observeViewModel(presenter as LoginContract.ObservableStorage)
 
         compositeSubscription.add(RxTextView.textChanges(service_url)
             .debounce(500, TimeUnit.MILLISECONDS)
@@ -68,5 +76,20 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
     override fun onStop() {
         compositeSubscription.clear()
         super.onStop()
+    }
+
+    private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {
+        viewModel.state.observe({ lifecycle }) {
+            when (it) {
+                LoginContract.State.ERROR_AUTHORIZE -> {
+                    Toast.makeText(context, "Authorization error", Toast.LENGTH_LONG).show()
+                }
+                LoginContract.State.FAILED_AUTHORIZE -> {
+                    Toast.makeText(context, "Wrong data", Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                }
+            }
+        }
     }
 }
