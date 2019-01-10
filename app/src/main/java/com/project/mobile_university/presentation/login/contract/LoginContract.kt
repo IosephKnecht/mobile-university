@@ -11,9 +11,7 @@ interface LoginContract {
 
     interface Presenter : MvpPresenter {
         fun tryLogin(login: String, password: String)
-        fun saveServiceUrl(serviceUrl: String)
-        fun saveLogin(login: String)
-        fun savePassword(password: String)
+        fun setParam(key: String, value: String)
     }
 
     interface Listener : MvpInteractor.Listener {

@@ -8,9 +8,13 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
     LoginContract.Listener, LoginContract.ObservableStorage {
 
-    private var serviceUrl = ""
-    private var login: String = ""
-    private var password: String = ""
+    private val paramsMap = mutableMapOf<String, String>()
+
+    companion object {
+        const val URL_PARAM = "service url"
+        const val LOGIN_PARAM = "login"
+        const val PASS_PARAM = "password"
+    }
 
     override val enterEnabled = MutableLiveData<Boolean>()
 
@@ -32,19 +36,8 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         interactor.login(login, password)
     }
 
-    override fun saveLogin(login: String) {
-        this.login = login
-        checkEnabled()
-    }
-
-    override fun savePassword(password: String) {
-        this.password = password
-        checkEnabled()
-    }
-
-    override fun saveServiceUrl(serviceUrl: String) {
-        this.serviceUrl = serviceUrl
-        interactor.setServiceUrl(serviceUrl)
+    override fun setParam(key: String, value: String) {
+        paramsMap[key] = value
         checkEnabled()
     }
 
@@ -53,6 +46,10 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
     }
 
     private fun checkEnabled() {
+        val serviceUrl = paramsMap[URL_PARAM] ?: ""
+        val login = paramsMap[LOGIN_PARAM] ?: ""
+        val password = paramsMap[PASS_PARAM] ?: ""
+
         enterEnabled.postValue(serviceUrl.isNotEmpty() &&
             login.isNotEmpty() && login.length >= 4 &&
             password.isNotEmpty() && password.length >= 4)

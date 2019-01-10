@@ -12,6 +12,7 @@ import com.project.mobile_university.mobile_university.R
 import com.project.mobile_university.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
+import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
 import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
@@ -48,19 +49,19 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
         compositeSubscription.add(RxTextView.textChanges(service_url)
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.saveServiceUrl(it.toString())
+                presenter.setParam(LoginPresenter.URL_PARAM, it.toString())
             })
 
         compositeSubscription.add(RxTextView.textChanges(login)
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.saveLogin(it.toString())
+                presenter.setParam(LoginPresenter.LOGIN_PARAM, it.toString())
             })
 
         compositeSubscription.add(RxTextView.textChanges(password)
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.savePassword(it.toString())
+                presenter.setParam(LoginPresenter.PASS_PARAM, it.toString())
             })
     }
 
