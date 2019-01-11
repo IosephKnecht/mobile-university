@@ -1,8 +1,9 @@
-package com.project.mobile_university.presentation.login.view
+package com.project.mobile_university.presentation.login.view.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,13 @@ import com.project.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
+import com.project.mobile_university.presentation.login.view.dialog.ChangeServerDialog
+import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
 import kotlinx.android.synthetic.main.fragment_login.*
 import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
 
-class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
+class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog {
     private lateinit var diComponent: LoginComponent
     private lateinit var binding: FragmentLoginBinding
 
@@ -29,7 +32,8 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
 
     companion object {
         const val TAG = "login_fragment"
-        fun createInstance() = LoginFragment()
+        fun createInstance() =
+            LoginFragment()
     }
 
     override fun inject() {
@@ -46,7 +50,7 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
         binding.setLifecycleOwner(this)
         binding.viewModel = presenter as LoginContract.ObservableStorage
 
-        chooseServerDialog = ChooseServerDialog.newInstance()
+        chooseServerDialog = ChangeServerDialog.newInstance(OnChangeServerDelegate())
 
         return binding.root
     }
@@ -59,7 +63,9 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
     override fun onStart() {
         super.onStart()
 
-        btn_choose.setOnClickListener { chooseServerDialog.show(childFragmentManager, ChooseServerDialog.TAG) }
+        btn_choose.setOnClickListener {
+            chooseServerDialog.show(childFragmentManager, ChangeServerDialog.TAG)
+        }
 
         observeViewModel(presenter as LoginContract.ObservableStorage)
 
@@ -81,6 +87,10 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
         super.onStop()
     }
 
+    override fun onChangeServerDialog() {
+        Toast.makeText(context, "test", Toast.LENGTH_LONG).show()
+    }
+
     private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {
         viewModel.state.observe({ lifecycle }) {
             when (it) {
@@ -94,5 +104,11 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>() {
                 }
             }
         }
+    }
+
+    inner class OnChangeServerDelegate : OnChangeServerDialog.ChangeServerDialogProvider {
+        private val serialVersionUID = 1984641761180270359L
+
+        override fun getListener(fragment: Fragment) = this@LoginFragment as OnChangeServerDialog
     }
 }

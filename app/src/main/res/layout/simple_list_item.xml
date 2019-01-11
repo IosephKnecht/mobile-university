@@ -5,4 +5,5 @@
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:checkMark="?android:attr/listChoiceIndicatorSingle"
     android:gravity="center_vertical"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:background="@drawable/bg_server_item_selector"/>
