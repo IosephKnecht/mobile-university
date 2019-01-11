@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
@@ -20,6 +21,7 @@ import com.project.mobile_university.presentation.login.view.dialog.ChangeServer
 import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
 import kotlinx.android.synthetic.main.fragment_login.*
 import rx.subscriptions.CompositeSubscription
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog {
@@ -87,7 +89,7 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
         super.onStop()
     }
 
-    override fun onChangeServerDialog() {
+    override fun onChangeServerDialog(serverConfig: ServerConfig) {
         Toast.makeText(context, "test", Toast.LENGTH_LONG).show()
     }
 
@@ -106,9 +108,11 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
         }
     }
 
-    inner class OnChangeServerDelegate : OnChangeServerDialog.ChangeServerDialogProvider {
-        private val serialVersionUID = 1984641761180270359L
+    class OnChangeServerDelegate : OnChangeServerDialog.ChangeServerDialogProvider {
+        companion object {
+            private val serialVersionUid = 1984641761180270359L
+        }
 
-        override fun getListener(fragment: Fragment) = this@LoginFragment as OnChangeServerDialog
+        override fun getListener(fragment: Fragment) = fragment as OnChangeServerDialog
     }
 }
