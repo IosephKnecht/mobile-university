@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.application.annotations.Refactor
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
@@ -21,7 +22,6 @@ import com.project.mobile_university.presentation.login.view.dialog.ChangeServer
 import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
 import kotlinx.android.synthetic.main.fragment_login.*
 import rx.subscriptions.CompositeSubscription
-import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog {
@@ -90,9 +90,10 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
     }
 
     override fun onChangeServerDialog(serverConfig: ServerConfig) {
-        Toast.makeText(context, "test", Toast.LENGTH_LONG).show()
+        presenter.onChangeServerConfig(serverConfig)
     }
 
+    @Refactor("handle error")
     private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {
         viewModel.state.observe({ lifecycle }) {
             when (it) {

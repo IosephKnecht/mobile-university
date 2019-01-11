@@ -3,6 +3,7 @@ package com.project.mobile_university.presentation.login.presenter
 import android.arch.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
 class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
@@ -11,13 +12,13 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
     private val paramsMap = mutableMapOf<String, String>()
 
     companion object {
-        const val URL_PARAM = "service url"
         const val LOGIN_PARAM = "login"
         const val PASS_PARAM = "password"
     }
 
     override val enterEnabled = MutableLiveData<Boolean>()
     override val state = MutableLiveData<LoginContract.State>()
+    override val serviceUrl = MutableLiveData<String>()
 
     init {
         // FIXME: default value init exist in androidx.extensions
@@ -45,11 +46,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         interactor.login(paramsMap[LOGIN_PARAM]!!, paramsMap[PASS_PARAM]!!)
     }
 
+    override fun onChangeServerConfig(serverConfig: ServerConfig) {
+        interactor.saveServerConfig(serverConfig)
+    }
+
     override fun setParam(key: String, value: String) {
-        if (key == URL_PARAM) {
-            if (value.isNotEmpty())
-                interactor.setServiceUrl("http://$value")
-        }
         paramsMap[key] = value
         checkEnabled()
     }
@@ -68,12 +69,19 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         }
     }
 
+    override fun onSaveServerConfig(serviceUrl: String, throwable: Throwable?) {
+        if (throwable == null && serviceUrl.isNotEmpty()) {
+            this.serviceUrl.postValue(serviceUrl)
+            interactor.setServiceUrl(serviceUrl)
+        }
+        checkEnabled()
+    }
+
     private fun checkEnabled() {
-        val serviceUrl = paramsMap[URL_PARAM] ?: ""
         val login = paramsMap[LOGIN_PARAM] ?: ""
         val password = paramsMap[PASS_PARAM] ?: ""
 
-        enterEnabled.postValue(serviceUrl.isNotEmpty() &&
+        enterEnabled.postValue(serviceUrl.value?.isNotEmpty() ?: false &&
             login.isNotEmpty() && login.length >= 4 &&
             password.isNotEmpty() && password.length >= 4)
     }
