@@ -17,7 +17,6 @@ import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.databinding.FragmentLoginBinding
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
-import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import com.project.mobile_university.presentation.login.view.dialog.ChangeServerDialog
 import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -34,8 +33,7 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
 
     companion object {
         const val TAG = "login_fragment"
-        fun createInstance() =
-            LoginFragment()
+        fun createInstance() = LoginFragment()
     }
 
     override fun inject() {
@@ -69,18 +67,18 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
             chooseServerDialog.show(childFragmentManager, ChangeServerDialog.TAG)
         }
 
-        observeViewModel(presenter as LoginContract.ObservableStorage)
+        observeViewModel(presenter)
 
         compositeSubscription.add(RxTextView.textChanges(login)
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.setParam(LoginPresenter.LOGIN_PARAM, it.toString())
+                presenter.login.postValue(it.toString())
             })
 
         compositeSubscription.add(RxTextView.textChanges(password)
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.setParam(LoginPresenter.PASS_PARAM, it.toString())
+                presenter.password.postValue(it.toString())
             })
     }
 

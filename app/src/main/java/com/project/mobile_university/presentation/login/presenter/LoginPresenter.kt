@@ -1,34 +1,65 @@
 package com.project.mobile_university.presentation.login.presenter
 
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
+import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
 class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
-    LoginContract.Listener, LoginContract.ObservableStorage {
-
-    private val paramsMap = mutableMapOf<String, String>()
-
-    companion object {
-        const val LOGIN_PARAM = "login"
-        const val PASS_PARAM = "password"
-    }
+    LoginContract.Listener {
 
     override val enterEnabled = MutableLiveData<Boolean>()
     override val state = MutableLiveData<LoginContract.State>()
+
     override val serviceUrl = MutableLiveData<String>()
+    override val login = MutableLiveData<String>()
+    override val password = MutableLiveData<String>()
+
+    private val params = MediatorLiveData<String>()
+
 
     init {
         // FIXME: default value init exist in androidx.extensions
         state.value = LoginContract.State.NOT_AUTHORIZE
+
+        params.addSource(serviceUrl) {
+            params.postValue(it)
+        }
+
+        params.addSource(login) {
+            params.postValue(it)
+        }
+
+        params.addSource(password) {
+            params.postValue(it)
+        }
     }
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
         registerObservers(enterEnabled, state)
         interactor.setListener(this)
+
+        params.observe(androidComponent) {
+            val serviceCondition = serviceUrl.value?.run {
+                isNotEmpty()
+            } ?: false
+
+            val loginCondition = login.value?.run {
+                length > 3
+            } ?: false
+
+            val passwordCondition = password.value?.run {
+                length > 3
+            } ?: false
+
+            enterEnabled.postValue(serviceCondition &&
+                    loginCondition &&
+                    passwordCondition)
+        }
     }
 
     override fun detachAndroidComponent() {
@@ -43,16 +74,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
 
     override fun tryLogin() {
         state.postValue(LoginContract.State.PROCESSING_AUTHORIZE)
-        interactor.login(paramsMap[LOGIN_PARAM]!!, paramsMap[PASS_PARAM]!!)
+        interactor.login(login.value!!, password.value!!)
     }
 
     override fun onChangeServerConfig(serverConfig: ServerConfig) {
         interactor.saveServerConfig(serverConfig)
-    }
-
-    override fun setParam(key: String, value: String) {
-        paramsMap[key] = value
-        checkEnabled()
     }
 
     override fun onLogin(isAuth: Boolean?, throwable: Throwable?) {
@@ -74,15 +100,5 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
             this.serviceUrl.postValue(serviceUrl)
             interactor.setServiceUrl(serviceUrl)
         }
-        checkEnabled()
-    }
-
-    private fun checkEnabled() {
-        val login = paramsMap[LOGIN_PARAM] ?: ""
-        val password = paramsMap[PASS_PARAM] ?: ""
-
-        enterEnabled.postValue(serviceUrl.value?.isNotEmpty() ?: false &&
-            login.isNotEmpty() && login.length >= 4 &&
-            password.isNotEmpty() && password.length >= 4)
     }
 }

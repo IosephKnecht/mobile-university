@@ -1,6 +1,7 @@
 package com.project.mobile_university.presentation.login.contract
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
@@ -19,12 +20,13 @@ interface LoginContract {
     interface ObservableStorage {
         val enterEnabled: LiveData<Boolean>
         val state: LiveData<State>
+        val login: MutableLiveData<String>
+        val password: MutableLiveData<String>
         val serviceUrl: LiveData<String>
     }
 
-    interface Presenter : MvpPresenter {
+    interface Presenter : MvpPresenter, ObservableStorage {
         fun tryLogin()
-        fun setParam(key: String, value: String)
         fun onChangeServerConfig(serverConfig: ServerConfig)
     }
 
