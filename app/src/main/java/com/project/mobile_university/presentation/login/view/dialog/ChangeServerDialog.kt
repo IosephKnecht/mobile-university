@@ -100,9 +100,10 @@ class ChangeServerDialog : DialogFragment() {
         val protocol = if (secureCheckBox?.isChecked == true)
             Protocol.HTTPS else Protocol.HTTP
 
-        val selectedItemPosition = serverList?.checkedItemPosition ?: ListView.INVALID_POSITION
+        val selectedItemPosition = serverList?.checkedItemPosition ?: 0
+        val count = serverList!!.count - 1
 
-        val serviceName = if (selectedItemPosition != ListView.INVALID_POSITION) {
+        val serviceName = if (selectedItemPosition < count) {
             Pair(serverList!!.adapter.getItem(selectedItemPosition) as String, null)
         } else {
             val text = serverUrl?.text.toString()
@@ -120,15 +121,14 @@ class ChangeServerDialog : DialogFragment() {
             return null
         }
 
-        val httpsPattern = Pattern.compile("(https?://)*([^:^/]*):(\\\\d*)?(.*)?")
-        val httpPattern = Pattern.compile("(http?://)*([^:^/]*):(\\\\d*)?(.*)?")
+        val httpsPattern = Pattern.compile("(https?://)*([^:^/]*)(:\\\\d*)*?(.*)?")
+        val httpPattern = Pattern.compile("(http?://)*([^:^/]*)(:\\\\d*)*?(.*)?")
 
         val httpMatcher = httpPattern.matcher(text)
         val httpsMatcher = httpsPattern.matcher(text)
 
         if (httpMatcher.find()) {
             return parseServiceNameAndPort(httpMatcher)
-
         }
 
         if (httpsMatcher.find()) {
@@ -145,7 +145,8 @@ class ChangeServerDialog : DialogFragment() {
             null
         }
         val port = try {
-            matcher.group(4)?.toInt()
+            matcher.group(4)?.substring(1)
+                ?.toInt()
         } catch (e: Exception) {
             null
         }
