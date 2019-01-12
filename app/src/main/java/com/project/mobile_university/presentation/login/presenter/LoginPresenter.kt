@@ -11,6 +11,7 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
     LoginContract.Listener {
 
+
     override val enterEnabled = MutableLiveData<Boolean>()
     override val state = MutableLiveData<LoginContract.State>()
 
@@ -23,7 +24,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
 
     init {
         // FIXME: default value init exist in androidx.extensions
-        state.value = LoginContract.State.NOT_AUTHORIZE
+        state.value = LoginContract.State.IDLE
 
         params.addSource(serviceUrl) {
             params.postValue(it)
@@ -40,8 +41,12 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
-        registerObservers(enterEnabled, state)
+        registerObservers(enterEnabled, state, serviceUrl, login, password, params)
         interactor.setListener(this)
+
+        if (state.value == LoginContract.State.IDLE) {
+            obtainServerConfig()
+        }
 
         params.observe(androidComponent) {
             val serviceCondition = serviceUrl.value?.run {
@@ -81,6 +86,10 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         interactor.saveServerConfig(serverConfig)
     }
 
+    override fun obtainServerConfig() {
+        interactor.getServerConfig()
+    }
+
     override fun onLogin(isAuth: Boolean?, throwable: Throwable?) {
         if (throwable != null) {
             state.postValue(LoginContract.State.ERROR_AUTHORIZE)
@@ -100,5 +109,12 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
             this.serviceUrl.postValue(serviceUrl)
             interactor.setServiceUrl(serviceUrl)
         }
+    }
+
+    override fun onObtainServerConfig(serverConfig: ServerConfig?, throwable: Throwable?) {
+        if (throwable == null) {
+            this.serviceUrl.postValue(serverConfig!!.toString())
+        }
+        state.postValue(LoginContract.State.NOT_AUTHORIZE)
     }
 }

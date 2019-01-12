@@ -48,4 +48,14 @@ class LoginInteractor(private val apiService: ApiService,
             }
         }
     }
+
+    override fun getServerConfig() {
+        val observable = Observable.fromCallable {
+            sharedPreferenceService.getServerConfig()
+        }
+
+        discardResult(observable) { listener, result ->
+            listener!!.onObtainServerConfig(result.data, result.throwable)
+        }
+    }
 }
