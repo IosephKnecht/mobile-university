@@ -2,12 +2,12 @@ package com.project.mobile_university.presentation.login.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ListView
+import androidx.fragment.app.DialogFragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.project.mobile_university.R
 import com.project.mobile_university.application.annotations.Refactor

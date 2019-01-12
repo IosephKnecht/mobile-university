@@ -1,7 +1,7 @@
 package com.project.mobile_university.presentation
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.project.mobile_university.R
 import com.project.mobile_university.presentation.login.view.fragment.LoginFragment
 

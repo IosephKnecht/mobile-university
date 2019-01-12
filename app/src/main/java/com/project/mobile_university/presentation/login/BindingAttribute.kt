@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.login
 
-import android.databinding.BindingConversion
+import androidx.databinding.BindingConversion
 import android.view.View
 
 @BindingConversion

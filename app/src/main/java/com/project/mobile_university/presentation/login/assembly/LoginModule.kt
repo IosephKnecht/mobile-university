@@ -1,7 +1,7 @@
 package com.project.mobile_university.presentation.login.assembly
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
 import com.project.mobile_university.domain.ApiService
