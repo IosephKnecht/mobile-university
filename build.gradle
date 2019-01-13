@@ -20,18 +20,19 @@ ext {
     targetSdkVersion = 28
     minSdkVersion = 15
 
-    supportVersion = "28.0.0"
-    aacVersion = "1.1.1"
+    appCompatVersionX = "1.0.2"
     rxJavaVersion = "2.2.5"
     rxAndroidVersion = "2.1.0"
     daggerVersion = "2.16"
     retrofitVersion = "2.5.0"
-    constraintLayoutVersion = "1.1.3"
+    constraintLayoutVersionX = "1.1.3"
     gsonVersion = "2.8.5"
+    androidLegacySupportVersionX = "1.0.0"
+    lifecycleVersionX = "2.1.0-alpha01"
 
     jUnitVersion = "4.12"
-    testRunnerVersion = "1.0.2"
-    espressoVersion = "3.0.2"
+    testRunnerVersionX = "1.1.1"
+    espressoVersionX = "3.1.1"
 }
 
 allprojects {
