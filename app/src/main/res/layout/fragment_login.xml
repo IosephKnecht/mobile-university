@@ -44,7 +44,7 @@
                     android:id="@+id/btn_choose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose"
+                    android:text="@string/login_other_button"
                     android:background="@drawable/bg_other_selector"
                     android:layout_alignParentEnd="true"/>
 

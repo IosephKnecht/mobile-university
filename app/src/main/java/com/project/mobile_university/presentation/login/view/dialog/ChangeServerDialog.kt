@@ -49,7 +49,7 @@ class ChangeServerDialog : DialogFragment() {
             .title("Select server")
             .positiveText(android.R.string.ok)
             .negativeText(android.R.string.cancel)
-            .customView(R.layout.fragment_choose_server_dialog, false)
+            .customView(R.layout.fragment_choose_server_dialog, true)
             .onPositive { _, _ ->
                 delegate.getListener(parentFragment!!).onChangeServerDialog(buildServerConfig())
             }
