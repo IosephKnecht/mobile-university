@@ -34,7 +34,6 @@ interface LoginContract {
 
     interface Listener : MvpInteractor.Listener {
         fun onLogin(isAuth: Boolean?, throwable: Throwable?)
-        fun onSaveServerConfig(serviceUrl: String, throwable: Throwable?)
         fun onObtainServerConfig(serverConfig: ServerConfig?, throwable: Throwable?)
     }
 

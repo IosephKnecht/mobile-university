@@ -39,6 +39,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
     implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.androidLegacySupportVersionX"
     implementation "androidx.lifecycle:lifecycle-common:$rootProject.ext.lifecycleVersionX"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.lifecycleVersionX"
 
     implementation('com.afollestad.material-dialogs:core:0.9.5.0') {
         exclude group: 'com.android.support'

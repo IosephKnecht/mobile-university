@@ -6,14 +6,14 @@ import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ServerConfig
+import com.project.mobile_university.presentation.addSource
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
 class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
     LoginContract.Listener {
 
-
     override val enterEnabled = MutableLiveData<Boolean>()
-    override val state = MutableLiveData<LoginContract.State>()
+    override val state = MutableLiveData<LoginContract.State>(LoginContract.State.IDLE)
 
     override val serviceUrl = MutableLiveData<String>()
     override val login = MutableLiveData<String>()
@@ -23,19 +23,10 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
 
 
     init {
-        // FIXME: default value init exist in androidx.extensions
-        state.value = LoginContract.State.IDLE
-
-        params.addSource(serviceUrl) {
-            params.postValue(it)
-        }
-
-        params.addSource(login) {
-            params.postValue(it)
-        }
-
-        params.addSource(password) {
-            params.postValue(it)
+        params.apply {
+            addSource(serviceUrl)
+            addSource(login)
+            addSource(password)
         }
     }
 
@@ -61,9 +52,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
                 length > 3
             } ?: false
 
-            enterEnabled.postValue(serviceCondition &&
-                    loginCondition &&
-                    passwordCondition)
+            enterEnabled.postValue(
+                serviceCondition &&
+                        loginCondition &&
+                        passwordCondition
+            )
         }
     }
 
@@ -104,16 +97,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         }
     }
 
-    override fun onSaveServerConfig(serviceUrl: String, throwable: Throwable?) {
-        if (throwable == null && serviceUrl.isNotEmpty()) {
-            this.serviceUrl.postValue(serviceUrl)
-            interactor.setServiceUrl(serviceUrl)
-        }
-    }
-
     override fun onObtainServerConfig(serverConfig: ServerConfig?, throwable: Throwable?) {
-        if (throwable == null) {
-            this.serviceUrl.postValue(serverConfig!!.toString())
+        if (throwable == null && serverConfig != null) {
+            val serverConfigString = serverConfig.toString()
+            this.serviceUrl.postValue(serverConfigString)
+            interactor.setServiceUrl(serverConfigString)
         }
         state.postValue(LoginContract.State.NOT_AUTHORIZE)
     }

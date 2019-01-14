@@ -103,16 +103,21 @@ class ChangeServerDialog : DialogFragment() {
         val selectedItemPosition = serverList?.checkedItemPosition ?: 0
         val count = serverList!!.count - 1
 
-        val serviceName = if (selectedItemPosition < count) {
+        val lastElementCondition = selectedItemPosition == count
+
+        val serviceName = if (!lastElementCondition) {
             Pair(serverList!!.adapter.getItem(selectedItemPosition) as String, null)
         } else {
             val text = serverUrl?.text.toString()
             checkStringOnUrl(text)
         }
 
-        return ServerConfig(protocol,
+        return ServerConfig(
+            protocol,
             serviceName?.first ?: "",
-            serviceName?.second ?: DEFAULT_PORT_VALUE)
+            if (lastElementCondition) serviceName?.second else
+                serviceName?.second ?: DEFAULT_PORT_VALUE
+        )
     }
 
     @Refactor("boilerplate code, think about another regex")
