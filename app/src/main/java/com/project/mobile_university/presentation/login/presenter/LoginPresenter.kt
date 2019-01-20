@@ -9,7 +9,8 @@ import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.addSource
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
-class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
+class LoginPresenter(private val interactor: LoginContract.Interactor,
+                     private val router: LoginContract.Router) : AbstractPresenter(), LoginContract.Presenter,
     LoginContract.Listener {
 
     override val enterEnabled = MutableLiveData<Boolean>()
@@ -90,6 +91,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
             if (isAuth) {
                 state.postValue(LoginContract.State.SUCCESS_AUTHORIZE)
                 interactor.saveLoginPassString(login.value!!, password.value!!)
+                router.showNextScreen(androidComponent!!)
             } else {
                 state.postValue(LoginContract.State.FAILED_AUTHORIZE)
             }

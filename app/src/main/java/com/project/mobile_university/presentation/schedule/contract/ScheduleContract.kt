@@ -1,5 +1,6 @@
 package com.project.mobile_university.presentation.schedule.contract
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
@@ -31,4 +32,8 @@ interface ScheduleContract {
     interface RouterListener : MvpRouter.Listener
 
     interface Router : MvpRouter<RouterListener>
+
+    interface ScheduleInputModuleContract {
+        fun createFragment(groupId: Long): Fragment
+    }
 }

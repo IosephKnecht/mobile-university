@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
     companion object {
+        const val TAG = "schedule_fragment"
         private val ARG_GROUP_ID = "group_id"
 
         @JvmStatic
