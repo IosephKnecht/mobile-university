@@ -41,6 +41,7 @@ interface LoginContract {
         fun login(login: String, password: String)
         fun setServiceUrl(serviceUrl: String)
         fun saveServerConfig(serverConfig: ServerConfig)
+        fun saveLoginPassString(login: String, pass: String)
         fun getServerConfig()
     }
 

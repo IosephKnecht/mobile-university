@@ -89,6 +89,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         } else if (isAuth != null) {
             if (isAuth) {
                 state.postValue(LoginContract.State.SUCCESS_AUTHORIZE)
+                interactor.saveLoginPassString(login.value!!, password.value!!)
             } else {
                 state.postValue(LoginContract.State.FAILED_AUTHORIZE)
             }

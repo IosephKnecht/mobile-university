@@ -4,6 +4,7 @@ import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import io.reactivex.Observable
 
@@ -51,6 +52,12 @@ class LoginInteractor(
 
         discardResult(observable) { listener, result ->
             listener!!.onObtainServerConfig(result.data, result.throwable)
+        }
+    }
+
+    override fun saveLoginPassString(login: String, pass: String) {
+        AuthUtil.convertToBase64(login, pass).let {
+            sharedPreferenceService.saveLoginPassString(it)
         }
     }
 }
