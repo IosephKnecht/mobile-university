@@ -40,6 +40,9 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.androidLegacySupportVersionX"
     implementation "androidx.lifecycle:lifecycle-common:$rootProject.ext.lifecycleVersionX"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.lifecycleVersionX"
+    implementation "devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
 
     implementation('com.afollestad.material-dialogs:core:0.9.5.0') {
         exclude group: 'com.android.support'
