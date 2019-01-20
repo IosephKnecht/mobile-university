@@ -13,7 +13,10 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.schedule.assembly.ScheduleComponent
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import com.project.mobile_university.presentation.schedule.view.adapter.ScheduleAdapter
+import devs.mulham.horizontalcalendar.HorizontalCalendar
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.util.*
 
 class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
@@ -32,6 +35,7 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
     private lateinit var diComponent: ScheduleComponent
     private lateinit var adapter: ScheduleAdapter
+    private lateinit var calendar: HorizontalCalendar
 
     override fun inject() {
         val groupId = arguments!!.getLong(ARG_GROUP_ID, -1L)
@@ -54,10 +58,28 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
         adapter = ScheduleAdapter()
 
         lesson_list.apply {
-            this.adapter = adapter
+            this.adapter = this@ScheduleFragment.adapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        }
+
+        val startDate = Calendar.getInstance()
+        startDate.add(Calendar.MONTH, -3)
+
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.MONTH, 3)
+
+        calendar = HorizontalCalendar.Builder(activity, R.id.calendar_view)
+            .range(startDate, endDate)
+            .datesNumberOnScreen(7)
+            .build()
+
+        calendar.calendarListener = object : HorizontalCalendarListener() {
+            override fun onDateSelected(date: Calendar, position: Int) {
+                val groupId = arguments!!.getLong(ARG_GROUP_ID, -1L)
+                presenter.obtainLessonList(Date(date.timeInMillis), groupId)
+            }
         }
     }
 
