@@ -1,4 +1,4 @@
-package com.project.mobile_university.data
+package com.project.mobile_university.data.gson
 
 import com.google.gson.annotations.SerializedName
 

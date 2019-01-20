@@ -9,6 +9,7 @@ class SharedPreferenceService(private val context: Context,
                               private val gson: Gson) {
     private val PREF_FILE_KEY = "mobile_university_shared_pref"
     private val SERVER_CONFIG_PREF_KEY = "server_config_key"
+    private val LOGIN_PASS_STRING = "login_pass_string"
 
     private val sharedPrefFile by lazy {
         context.getSharedPreferences(PREF_FILE_KEY, Context.MODE_PRIVATE)
@@ -33,5 +34,21 @@ class SharedPreferenceService(private val context: Context,
         } else {
             gson.fromJson<ServerConfig>(serverConfigString, typeToken)
         }
+    }
+
+    fun saveLoginPassString(loginPassString: String) {
+        sharedPrefFile.edit()
+            .putString(LOGIN_PASS_STRING, loginPassString)
+            .apply()
+    }
+
+    fun removeLoginPassString() {
+        sharedPrefFile.edit()
+            .remove(LOGIN_PASS_STRING)
+            .apply()
+    }
+
+    fun getLoginPassString(): String {
+        return sharedPrefFile.getString(LOGIN_PASS_STRING, "")
     }
 }

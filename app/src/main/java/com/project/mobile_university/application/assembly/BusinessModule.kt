@@ -16,8 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BusinessModule {
     @Provides
     @PerBusinessLayerScope
-    fun provideApiService(): ApiService {
-        return ApiService()
+    fun provideApiService(sharePrefService: SharedPreferenceService): ApiService {
+        return ApiService(sharePrefService)
     }
 
     @Provides
