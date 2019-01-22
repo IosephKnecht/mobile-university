@@ -1,5 +1,6 @@
 package com.project.mobile_university.domain
 
+import com.google.gson.Gson
 import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
@@ -12,7 +13,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiService(private val sharedPreferenceService: SharedPreferenceService) {
+class ApiService(private val sharedPreferenceService: SharedPreferenceService,
+                 private val gson: Gson) {
     lateinit var universityApi: UniversityApi
 
     var serviceUrl: String? = null
@@ -22,7 +24,7 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService) {
             if (value != null && value.isNotEmpty()) {
                 universityApi = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .baseUrl(value)
                     .build()
                     .create(UniversityApi::class.java)
