@@ -1,6 +1,7 @@
 package com.project.mobile_university.domain.adapters
 
 import com.google.gson.*
+import com.project.mobile_university.data.exceptions.UnknownUserTypeException
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.User
 import java.lang.reflect.Type
@@ -15,12 +16,13 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
                 userGson.addProperty("first_name", src.lastName)
                 userGson.addProperty("last_name", src.lastName)
                 userGson.addProperty("is_student", src.isStudent)
-                userGson.addProperty("subgroup", src.groupId)
+                userGson.addProperty("group_id", src.groupId)
+                userGson.addProperty("subgroup_id", src.subgroupId)
 
                 userGson
             }
             else -> {
-                throw RuntimeException()
+                throw UnknownUserTypeException()
             }
         }
     }
@@ -36,11 +38,12 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
 
         return when {
             isStudent -> {
-                val subgroup = user.getAsJsonPrimitive("subgroup").asLong
-                Student(email, firstName, lastName, isStudent, subgroup)
+                val groupId = user.getAsJsonPrimitive("group_id").asLong
+                val subgroupId = user.getAsJsonPrimitive("subgroup_id").asLong
+                Student(email, firstName, lastName, isStudent, groupId, subgroupId)
             }
             else -> {
-                throw RuntimeException()
+                throw UnknownUserTypeException()
             }
         }
     }

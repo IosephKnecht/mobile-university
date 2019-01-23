@@ -18,7 +18,12 @@ class ScheduleInteractor(private val apiService: ApiService) : AbstractInteracto
                         listener!!.onObtainLessonList(null, throwable)
                     }
                     else -> {
-                        listener!!.onObtainLessonList(data!!.objectList!![0].lessons, null)
+                        val objectList = data?.objectList
+                        val lessons = if (objectList != null && objectList.isNotEmpty()) {
+                            listener!!.onObtainLessonList(data!!.objectList!![0].lessons, null)
+                        } else {
+                            listener!!.onObtainLessonList(listOf(), null)
+                        }
                     }
                 }
             }

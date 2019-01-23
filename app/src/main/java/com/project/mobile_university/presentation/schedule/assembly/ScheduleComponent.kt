@@ -3,7 +3,6 @@ package com.project.mobile_university.presentation.schedule.assembly
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
-import dagger.Binds
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -16,7 +15,7 @@ interface ScheduleComponent {
         fun with(androidComponent: AndroidComponent): Builder
 
         @BindsInstance
-        fun groupId(groupId: Long): Builder
+        fun group(groupId: Long): Builder
 
         fun build(): ScheduleComponent
     }

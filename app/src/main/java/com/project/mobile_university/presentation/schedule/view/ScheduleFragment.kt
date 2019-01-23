@@ -38,11 +38,11 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
     private lateinit var calendar: HorizontalCalendar
 
     override fun inject() {
-        val groupId = arguments!!.getLong(ARG_GROUP_ID, -1L)
+        val groupId = arguments!!.getLong(ARG_GROUP_ID)
 
         diComponent = AppDelegate.presentationComponent.scheduleSubComponent()
             .with(this)
-            .groupId(groupId)
+            .group(groupId)
             .build()
     }
 
@@ -77,7 +77,7 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
         calendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar, position: Int) {
-                val groupId = arguments!!.getLong(ARG_GROUP_ID, -1L)
+                val groupId = arguments!!.getLong(ARG_GROUP_ID)
                 presenter.obtainLessonList(Date(date.timeInMillis), groupId)
             }
         }

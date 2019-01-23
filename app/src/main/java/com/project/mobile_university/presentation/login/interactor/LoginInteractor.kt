@@ -15,13 +15,22 @@ class LoginInteractor(
 
     override fun login(login: String, password: String) {
         val observable = apiService.login(login, password)
+            .map { serverResponse ->
+                serverResponse.objectList?.takeIf { it.isNotEmpty() }
+                    ?.let { sharedPreferenceService.saveUserInfo(it[0]) }
+                serverResponse
+            }
 
         discardResult(observable) { listener, result ->
             result.apply {
                 when {
-                    data != null && data!!.objectList!!.isNotEmpty() -> listener!!.onLogin(true, null)
+                    data != null -> {
+                        if (data!!.objectList != null && data!!.objectList!!.isNotEmpty()) {
+                            val user = data!!.objectList!![0]
+                            listener!!.onLogin(user, null)
+                        }
+                    }
                     throwable != null -> listener!!.onLogin(null, throwable)
-                    else -> listener!!.onLogin(false, null)
                 }
             }
         }

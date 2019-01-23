@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
 
 interface LoginContract {
@@ -33,7 +34,7 @@ interface LoginContract {
     }
 
     interface Listener : MvpInteractor.Listener {
-        fun onLogin(isAuth: Boolean?, throwable: Throwable?)
+        fun onLogin(user: User?, throwable: Throwable?)
         fun onObtainServerConfig(serverConfig: ServerConfig?, throwable: Throwable?)
     }
 
@@ -48,6 +49,6 @@ interface LoginContract {
     interface RouterListener : MvpRouter.Listener
 
     interface Router : MvpRouter<RouterListener> {
-        fun showNextScreen(androidComponent: AndroidComponent)
+        fun showStudentScheduleScreen(androidComponent: AndroidComponent, groupId: Long)
     }
 }
