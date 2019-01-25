@@ -15,7 +15,7 @@ interface ScheduleComponent {
         fun with(androidComponent: AndroidComponent): Builder
 
         @BindsInstance
-        fun group(groupId: Long): Builder
+        fun subgroup(subgroupId: Long): Builder
 
         fun build(): ScheduleComponent
     }

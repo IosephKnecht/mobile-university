@@ -5,7 +5,7 @@ import com.project.mobile_university.presentation.schedule.contract.ScheduleCont
 import com.project.mobile_university.presentation.schedule.view.ScheduleFragment
 
 class ScheduleInputModule : ScheduleContract.ScheduleInputModuleContract {
-    override fun createFragment(groupId: Long): Fragment {
-        return ScheduleFragment.createInstance(groupId)
+    override fun createFragment(subgroupId: Long): Fragment {
+        return ScheduleFragment.createInstance(subgroupId)
     }
 }

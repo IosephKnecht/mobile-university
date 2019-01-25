@@ -39,11 +39,11 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
     }
 
     fun getScheduleByDate(currentDate: Date,
-                          groupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+                          subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
 
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val currentDateString = DateUtil.convertToSimpleFormat(currentDate)
 
-        return universityApi.scheduleDay(loginPassString, currentDateString, groupId)
+        return universityApi.scheduleDay(loginPassString, currentDateString, subgroupId)
     }
 }

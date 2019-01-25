@@ -8,8 +8,8 @@ import java.util.*
 class ScheduleInteractor(private val apiService: ApiService) : AbstractInteractor<ScheduleContract.Listener>(),
     ScheduleContract.Interactor {
 
-    override fun getLessonList(currentDate: Date, groupId: Long) {
-        val observable = apiService.getScheduleByDate(currentDate, groupId)
+    override fun getLessonList(currentDate: Date, subgroupId: Long) {
+        val observable = apiService.getScheduleByDate(currentDate, subgroupId)
 
         discardResult(observable) { listener, result ->
             result.apply {
@@ -19,7 +19,8 @@ class ScheduleInteractor(private val apiService: ApiService) : AbstractInteracto
                     }
                     else -> {
                         val objectList = data?.objectList
-                        val lessons = if (objectList != null && objectList.isNotEmpty()) {
+
+                        if (objectList != null && objectList.isNotEmpty()) {
                             listener!!.onObtainLessonList(data!!.objectList!![0].lessons, null)
                         } else {
                             listener!!.onObtainLessonList(listOf(), null)

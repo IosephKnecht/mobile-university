@@ -49,6 +49,6 @@ interface LoginContract {
     interface RouterListener : MvpRouter.Listener
 
     interface Router : MvpRouter<RouterListener> {
-        fun showStudentScheduleScreen(androidComponent: AndroidComponent, groupId: Long)
+        fun showStudentScheduleScreen(androidComponent: AndroidComponent, subgroupId: Long)
     }
 }

@@ -22,13 +22,13 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
     companion object {
         const val TAG = "schedule_fragment"
-        private val ARG_GROUP_ID = "group_id"
+        private val ARG_SUBGROUP_ID = "subgroup_id"
 
         @JvmStatic
         fun createInstance(groupId: Long) = ScheduleFragment()
             .apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_GROUP_ID, groupId)
+                    putLong(ARG_SUBGROUP_ID, groupId)
                 }
             }
     }
@@ -38,11 +38,11 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
     private lateinit var calendar: HorizontalCalendar
 
     override fun inject() {
-        val groupId = arguments!!.getLong(ARG_GROUP_ID)
+        val subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
 
         diComponent = AppDelegate.presentationComponent.scheduleSubComponent()
             .with(this)
-            .group(groupId)
+            .subgroup(subgroupId)
             .build()
     }
 
@@ -77,8 +77,8 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
         calendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar, position: Int) {
-                val groupId = arguments!!.getLong(ARG_GROUP_ID)
-                presenter.obtainLessonList(Date(date.timeInMillis), groupId)
+                val subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
+                presenter.obtainLessonList(Date(date.timeInMillis), subgroupId)
             }
         }
     }

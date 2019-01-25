@@ -8,7 +8,7 @@ import com.project.mobile_university.presentation.schedule.contract.ScheduleCont
 import java.util.*
 
 class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
-                        private val groupId: Long)
+                        private val subgroupId: Long)
     : AbstractPresenter(), ScheduleContract.Presenter, ScheduleContract.Listener {
 
     override val lessonList = MutableLiveData<List<Lesson>>(arrayListOf())
@@ -22,7 +22,7 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
         interactor.setListener(this)
 
         if (state == ScheduleContract.State.IDLE) {
-            obtainLessonList(Date(), groupId)
+            obtainLessonList(Date(), subgroupId)
         }
     }
 
@@ -35,8 +35,8 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
         interactor.onDestroy()
     }
 
-    override fun obtainLessonList(currentDate: Date, groupId: Long) {
-        interactor.getLessonList(currentDate, groupId)
+    override fun obtainLessonList(currentDate: Date, subgroupId: Long) {
+        interactor.getLessonList(currentDate, subgroupId)
     }
 
     override fun onObtainLessonList(lessonList: List<Lesson>?, throwable: Throwable?) {

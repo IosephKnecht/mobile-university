@@ -95,7 +95,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
 
                 when (user) {
                     is Student -> {
-                        router.showStudentScheduleScreen(androidComponent!!, user.groupId)
+                        router.showStudentScheduleScreen(androidComponent!!, user.subgroupId)
                     }
                 }
             }

@@ -15,5 +15,5 @@ interface UniversityApi {
     @GET("api/v1/schedule_day/")
     fun scheduleDay(@Header("Authorization") loginPassString: String,
                     @Query("current_date") currentDate: String,
-                    @Query("group_id") group_id: Long): Observable<BaseServerResponse<ScheduleDay>>
+                    @Query("subgroup_id") subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
 }

@@ -10,7 +10,7 @@ import com.project.mobile_university.presentation.schedule.view.ScheduleFragment
 class LoginRouter(private val scheduleInputModule: ScheduleContract.ScheduleInputModuleContract)
     : AbstractRouter<LoginContract.RouterListener>(), LoginContract.Router {
 
-    override fun showStudentScheduleScreen(androidComponent: AndroidComponent, groupId: Long) {
+    override fun showStudentScheduleScreen(androidComponent: AndroidComponent, subgroupId: Long) {
         if (androidComponent.fragmentManagerComponent != null) {
             androidComponent.apply {
                 val oldFragment = fragmentManagerComponent!!
@@ -19,7 +19,7 @@ class LoginRouter(private val scheduleInputModule: ScheduleContract.ScheduleInpu
                 if (oldFragment == null) {
                     fragmentManagerComponent!!.beginTransaction()
                         .replace(R.id.fragment_container,
-                            scheduleInputModule.createFragment(groupId),
+                            scheduleInputModule.createFragment(subgroupId),
                             ScheduleFragment.TAG)
                         .commit()
                 }

@@ -18,7 +18,7 @@ interface ScheduleContract {
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
-        fun obtainLessonList(currentDate: Date, groupId: Long)
+        fun obtainLessonList(currentDate: Date, subgroupId: Long)
     }
 
     interface Listener : MvpInteractor.Listener {
@@ -26,7 +26,7 @@ interface ScheduleContract {
     }
 
     interface Interactor : MvpInteractor<Listener> {
-        fun getLessonList(currentDate: Date, groupId: Long)
+        fun getLessonList(currentDate: Date, subgroupId: Long)
     }
 
     interface RouterListener : MvpRouter.Listener
@@ -34,6 +34,6 @@ interface ScheduleContract {
     interface Router : MvpRouter<RouterListener>
 
     interface ScheduleInputModuleContract {
-        fun createFragment(groupId: Long): Fragment
+        fun createFragment(subgroupId: Long): Fragment
     }
 }

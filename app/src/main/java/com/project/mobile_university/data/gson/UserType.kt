@@ -12,3 +12,9 @@ class Student(override val email: String?,
               @SerializedName("is_student") val isStudent: Boolean,
               @SerializedName("group_id") val groupId: Long,
               @SerializedName("subgroup_id") val subgroupId: Long) : User(email, firstName, lastName)
+
+class Teacher(override val email: String?,
+              override val firstName: String?,
+              override val lastName: String?,
+              @SerializedName("is_teacher") val isTeacher: Boolean,
+              @SerializedName("cathedra_id") val cathedraId: Long) : User(email, firstName, lastName)
