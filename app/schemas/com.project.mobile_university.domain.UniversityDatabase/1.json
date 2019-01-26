@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "99bae37585a4b322c7d484091bd73686",
+    "identityHash": "9cc878de426a4dffe6776b8dcb4e6995",
     "entities": [
       {
         "tableName": "Subgroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `humanValue` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `humanValue` INTEGER NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,14 +31,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "Lesson",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `current_date` TEXT NOT NULL, `lectureHallName` TEXT NOT NULL, `lectureTypeName` TEXT NOT NULL, `lessonStart` TEXT NOT NULL, `lessonEnd` TEXT NOT NULL, `subjectName` TEXT NOT NULL, `teacherName` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `current_date` TEXT NOT NULL, `lectureHallName` TEXT NOT NULL, `lectureTypeName` TEXT NOT NULL, `lessonStart` TEXT NOT NULL, `lessonEnd` TEXT NOT NULL, `subjectName` TEXT NOT NULL, `teacherName` TEXT NOT NULL, FOREIGN KEY(`current_date`) REFERENCES `ScheduleDay`(`current_date`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -96,7 +96,19 @@
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "ScheduleDay",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "current_date"
+            ],
+            "referencedColumns": [
+              "current_date"
+            ]
+          }
+        ]
       },
       {
         "tableName": "LessonSubgroup",
@@ -147,11 +159,31 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "ScheduleDay",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`current_date` TEXT NOT NULL, PRIMARY KEY(`current_date`))",
+        "fields": [
+          {
+            "fieldPath": "currentDate",
+            "columnName": "current_date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "current_date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"99bae37585a4b322c7d484091bd73686\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9cc878de426a4dffe6776b8dcb4e6995\")"
     ]
   }
 }
