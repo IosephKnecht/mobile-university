@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ef4e89121045e2c1589b9032c84cb1cb",
+    "identityHash": "c8b4284cd332d51cc8e8349a94210a4a",
     "entities": [
       {
         "tableName": "Subgroup",
@@ -146,7 +146,17 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_LessonSubgroup_lesson_id_subgroup_id",
+            "unique": false,
+            "columnNames": [
+              "lesson_id",
+              "subgroup_id"
+            ],
+            "createSql": "CREATE  INDEX `index_LessonSubgroup_lesson_id_subgroup_id` ON `${TABLE_NAME}` (`lesson_id`, `subgroup_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "Lesson",
@@ -211,7 +221,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ef4e89121045e2c1589b9032c84cb1cb\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c8b4284cd332d51cc8e8349a94210a4a\")"
     ]
   }
 }

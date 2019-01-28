@@ -10,67 +10,51 @@ import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.mappers.SubgroupMapper
 
 object ScheduleUtils {
-    fun insertOrUpdateScheduleDayList(database: UniversityDatabase,
-                                      dayGsonList: List<ScheduleDayGson>) {
+    fun insertOrReplaceScheduleDayList(database: UniversityDatabase,
+                                       requestedDayIds: List<String>,
+                                       dayGsonList: List<ScheduleDayGson>) {
         val scheduleDayDao = database.sheduleDayDao()
 
         val serverListIds = dayGsonList.map { it.currentDate }
         val storedDays = scheduleDayDao.getScheduleDayList(serverListIds)
 
         when {
-            storedDays.isEmpty() -> {
+            storedDays.isEmpty() || dayGsonList.isNotEmpty() -> {
                 val dayIds = scheduleDayDao
-                        .insert(*ScheduleDayMapper.toDatabase(dayGsonList).toTypedArray())
+                    .insert(*ScheduleDayMapper.toDatabase(dayGsonList).toTypedArray())
 
                 val scheduleDayWithLessonsMap = createScheduleDayLessonsMap(dayIds, dayGsonList)
-                insertOrUpdateLessons(database, scheduleDayWithLessonsMap)
+                insertOrReplaceLessons(database, scheduleDayWithLessonsMap)
             }
-            dayGsonList.isNotEmpty() -> {
-                scheduleDayDao.deleteScheduleDayList(serverListIds)
-                val dayIds = scheduleDayDao
-                        .insert(*ScheduleDayMapper.toDatabase(dayGsonList).toTypedArray())
-
-                val scheduleDayWithLessonsMap = createScheduleDayLessonsMap(dayIds, dayGsonList)
-                insertOrUpdateLessons(database, scheduleDayWithLessonsMap)
+            requestedDayIds.isNotEmpty() && dayGsonList.isEmpty() -> {
+                scheduleDayDao.deleteScheduleDayList(requestedDayIds)
             }
         }
     }
 
-    private fun insertOrUpdateLessons(database: UniversityDatabase,
-                                      scheduleDayWithLesson: Map<Long, List<LessonGson>>) {
+    private fun insertOrReplaceLessons(database: UniversityDatabase,
+                                       scheduleDayWithLesson: Map<Long, List<LessonGson>>) {
         val lessonDao = database.lessonDao()
         scheduleDayWithLesson.entries.forEach { (scheduleDayId, lessonListGson) ->
             val storedLessonSql = lessonDao.getLessonByScheduleDayId(scheduleDayId)
             when {
-                storedLessonSql.isEmpty() -> {
+                storedLessonSql.isEmpty() || lessonListGson.isNotEmpty() -> {
                     val newLessons = LessonMapper.toDatabase(lessonListGson)
-                            .map {
-                                it.dayId = scheduleDayId
-                                return@map it
-                            }
+                        .map {
+                            it.dayId = scheduleDayId
+                            return@map it
+                        }
 
                     val lessonIds = lessonDao.insert(*newLessons.toTypedArray())
                     val lessonWithSubgroups = createLessonSubgroupsMap(lessonIds, lessonListGson)
-                    insertOrUpdateSubgroups(database, lessonWithSubgroups)
-                }
-                lessonListGson.isNotEmpty() -> {
-                    lessonDao.delete(*storedLessonSql.toTypedArray())
-
-                    val newLessons = LessonMapper.toDatabase(lessonListGson)
-                            .map {
-                                it.dayId = scheduleDayId
-                                return@map it
-                            }
-                    val lessonIds = lessonDao.insert(*newLessons.toTypedArray())
-                    val lessonWithSubgroups = createLessonSubgroupsMap(lessonIds, lessonListGson)
-                    insertOrUpdateSubgroups(database, lessonWithSubgroups)
+                    insertOrReplaceSubgroups(database, lessonWithSubgroups)
                 }
             }
         }
     }
 
-    private fun insertOrUpdateSubgroups(database: UniversityDatabase,
-                                        lessonWithSubgroups: Map<Long, List<SubgroupGson>>) {
+    private fun insertOrReplaceSubgroups(database: UniversityDatabase,
+                                         lessonWithSubgroups: Map<Long, List<SubgroupGson>>) {
         val subgroupDao = database.subgroupDao()
         val lessonSubgroupDao = database.lessonSubgroupDao()
         val lessonSubgroupList = mutableListOf<LessonSubgroup>()
@@ -78,19 +62,9 @@ object ScheduleUtils {
         lessonWithSubgroups.entries.forEach { (lessonId, subgroupsGson) ->
             val storedSubgroups = lessonSubgroupDao.getSubgroupIdsByLessonId(lessonId)
             when {
-                storedSubgroups.isEmpty() -> {
+                storedSubgroups.isEmpty() || subgroupsGson.isNotEmpty() -> {
                     val subgroupIds = subgroupDao
-                            .insert(*SubgroupMapper.toDatabase(subgroupsGson).toTypedArray())
-
-                    subgroupIds.forEach { subgroupId ->
-                        lessonSubgroupList.add(LessonSubgroup(lessonId, subgroupId))
-                    }
-                }
-                subgroupsGson.isNotEmpty() -> {
-                    subgroupDao.delete(*storedSubgroups.toTypedArray())
-
-                    val subgroupIds = subgroupDao
-                            .insert(*SubgroupMapper.toDatabase(subgroupsGson).toTypedArray())
+                        .insert(*SubgroupMapper.toDatabase(subgroupsGson).toTypedArray())
 
                     subgroupIds.forEach { subgroupId ->
                         lessonSubgroupList.add(LessonSubgroup(lessonId, subgroupId))

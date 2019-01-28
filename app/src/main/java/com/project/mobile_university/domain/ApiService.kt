@@ -8,13 +8,15 @@ import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.domain.utils.DateUtil
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class ApiService(private val sharedPreferenceService: SharedPreferenceService,
-                 private val gson: Gson) {
+                 private val gson: Gson,
+                 private val okHttpClient: OkHttpClient) {
     lateinit var universityApi: UniversityApi
 
     var serviceUrl: String? = null
@@ -23,6 +25,7 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
 
             if (value != null && value.isNotEmpty()) {
                 universityApi = Retrofit.Builder()
+                    .client(okHttpClient)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .baseUrl(value)

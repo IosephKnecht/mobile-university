@@ -1,14 +1,11 @@
 package com.project.mobile_university.data.room.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
 import com.project.mobile_university.data.room.entity.Subgroup
 
 @Dao
 interface SubgroupDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg subgroups: Subgroup): List<Long>
 
     @Update

@@ -5,7 +5,7 @@ import com.project.mobile_university.data.room.entity.Lesson
 
 @Dao
 interface LessonDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg lessons: Lesson): List<Long>
 
     @Update
