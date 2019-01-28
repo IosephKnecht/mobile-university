@@ -37,9 +37,10 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
     private lateinit var diComponent: ScheduleComponent
     private lateinit var adapter: ScheduleAdapter
     private lateinit var calendar: HorizontalCalendar
+    private var subgroupId: Long = -1
 
     override fun inject() {
-        val subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
+        subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
 
         diComponent = AppDelegate.presentationComponent.scheduleSubComponent()
             .with(this)
@@ -71,6 +72,10 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
         val endDate = Calendar.getInstance()
         endDate.add(Calendar.MONTH, 3)
 
+        schedule_swipe_layout.setOnRefreshListener {
+            presenter.obtainLessonList(subgroupId)
+        }
+
         calendar = HorizontalCalendar.Builder(activity, R.id.calendar_view)
             .range(startDate, endDate)
             .datesNumberOnScreen(7)
@@ -92,6 +97,7 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
             if (it != null) {
                 adapter.scheduleDayList = it
                 adapter.notifyDataSetChanged()
+                schedule_swipe_layout.isRefreshing = false
             }
         }
     }
