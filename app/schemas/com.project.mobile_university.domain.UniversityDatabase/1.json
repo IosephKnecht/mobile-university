@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9cc878de426a4dffe6776b8dcb4e6995",
+    "identityHash": "ef4e89121045e2c1589b9032c84cb1cb",
     "entities": [
       {
         "tableName": "Subgroup",
@@ -38,11 +38,23 @@
       },
       {
         "tableName": "Lesson",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `current_date` TEXT NOT NULL, `lectureHallName` TEXT NOT NULL, `lectureTypeName` TEXT NOT NULL, `lessonStart` TEXT NOT NULL, `lessonEnd` TEXT NOT NULL, `subjectName` TEXT NOT NULL, `teacherName` TEXT NOT NULL, FOREIGN KEY(`current_date`) REFERENCES `ScheduleDay`(`current_date`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `day_id` INTEGER NOT NULL, `ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL, `lectureHallName` TEXT NOT NULL, `lectureTypeName` TEXT NOT NULL, `lessonStart` TEXT NOT NULL, `lessonEnd` TEXT NOT NULL, `subjectName` TEXT NOT NULL, `teacherName` TEXT NOT NULL, FOREIGN KEY(`day_id`) REFERENCES `ScheduleDay`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayId",
+            "columnName": "day_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "extId",
+            "columnName": "ext_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -99,20 +111,20 @@
         "foreignKeys": [
           {
             "table": "ScheduleDay",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "current_date"
+              "day_id"
             ],
             "referencedColumns": [
-              "current_date"
+              "id"
             ]
           }
         ]
       },
       {
         "tableName": "LessonSubgroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER NOT NULL, `subgroup_id` INTEGER NOT NULL, PRIMARY KEY(`lesson_id`, `subgroup_id`), FOREIGN KEY(`lesson_id`) REFERENCES `Lesson`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`subgroup_id`) REFERENCES `Subgroup`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER NOT NULL, `subgroup_id` INTEGER NOT NULL, PRIMARY KEY(`lesson_id`, `subgroup_id`), FOREIGN KEY(`lesson_id`) REFERENCES `Lesson`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`subgroup_id`) REFERENCES `Subgroup`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "lessonId",
@@ -138,7 +150,7 @@
         "foreignKeys": [
           {
             "table": "Lesson",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "lesson_id"
@@ -149,7 +161,7 @@
           },
           {
             "table": "Subgroup",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "subgroup_id"
@@ -162,8 +174,14 @@
       },
       {
         "tableName": "ScheduleDay",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`current_date` TEXT NOT NULL, PRIMARY KEY(`current_date`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `current_date` TEXT NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "currentDate",
             "columnName": "current_date",
@@ -173,17 +191,27 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "current_date"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_ScheduleDay_id_current_date",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "current_date"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_ScheduleDay_id_current_date` ON `${TABLE_NAME}` (`id`, `current_date`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9cc878de426a4dffe6776b8dcb4e6995\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ef4e89121045e2c1589b9032c84cb1cb\")"
     ]
   }
 }

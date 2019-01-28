@@ -9,7 +9,7 @@ import com.project.mobile_university.data.room.entity.Subgroup
 @Dao
 interface SubgroupDao {
     @Insert
-    fun insert(vararg subgroups: Subgroup)
+    fun insert(vararg subgroups: Subgroup): List<Long>
 
     @Update
     fun update(vararg subgroups: Subgroup)
