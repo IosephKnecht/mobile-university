@@ -7,7 +7,7 @@
 
         <variable
             name="lesson"
-            type="com.project.mobile_university.data.gson.Lesson" />
+            type="com.project.mobile_university.data.presentation.Lesson" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

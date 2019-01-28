@@ -10,6 +10,7 @@ import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.assembly.ScheduleComponent
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import com.project.mobile_university.presentation.schedule.view.adapter.ScheduleAdapter
@@ -77,8 +78,9 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
 
         calendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar, position: Int) {
-                val subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
-                presenter.obtainLessonList(Date(date.timeInMillis), subgroupId)
+                presenter.currentDate.postValue(date.time)
+                adapter.currentDate = CalendarUtil.convertToSimpleFormat(date.time)
+                adapter.notifyDataSetChanged()
             }
         }
     }
@@ -86,9 +88,9 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
     override fun onStart() {
         super.onStart()
 
-        presenter.lessonList.observe(this) {
+        presenter.scheduleDayList.observe(this) {
             if (it != null) {
-                adapter.lessonList = it
+                adapter.scheduleDayList = it
                 adapter.notifyDataSetChanged()
             }
         }

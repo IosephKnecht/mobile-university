@@ -5,7 +5,7 @@ import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.utils.AuthUtil
-import com.project.mobile_university.domain.utils.DateUtil
+import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -17,7 +17,7 @@ import java.util.*
 class ApiService(private val sharedPreferenceService: SharedPreferenceService,
                  private val gson: Gson,
                  private val okHttpClient: OkHttpClient) {
-    lateinit var universityApi: UniversityApi
+    private lateinit var universityApi: UniversityApi
 
     var serviceUrl: String? = null
         set(value) {
@@ -45,8 +45,19 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
                           subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
 
         val loginPassString = sharedPreferenceService.getLoginPassString()
-        val currentDateString = DateUtil.convertToSimpleFormat(currentDate)
+        val currentDateString = CalendarUtil.convertToSimpleFormat(currentDate)
 
         return universityApi.scheduleDay(loginPassString, currentDateString, subgroupId)
+    }
+
+    fun getScheduleOfWeek(startWeek: Date,
+                          endWeek: Date,
+                          subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+        val loginPassString = sharedPreferenceService.getLoginPassString()
+        val startWeekString = CalendarUtil.convertToSimpleFormat(startWeek)
+        val endWeekString = CalendarUtil.convertToSimpleFormat(endWeek)
+        val dateRangeString = "$startWeekString,$endWeekString"
+
+        return universityApi.getScheduleOfWeek(loginPassString, dateRangeString, subgroupId)
     }
 }

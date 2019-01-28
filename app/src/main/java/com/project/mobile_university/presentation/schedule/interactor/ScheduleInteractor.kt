@@ -3,7 +3,8 @@ package com.project.mobile_university.presentation.schedule.interactor
 import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
-import com.project.mobile_university.domain.utils.DateUtil
+import com.project.mobile_university.domain.mappers.ScheduleDayMapper
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import java.util.*
 
@@ -11,13 +12,17 @@ class ScheduleInteractor(private val apiService: ApiService,
                          private val databaseService: DatabaseService) : AbstractInteractor<ScheduleContract.Listener>(),
     ScheduleContract.Interactor {
 
-    override fun getLessonList(currentDate: Date, subgroupId: Long) {
-        val observable = apiService.getScheduleByDate(currentDate, subgroupId)
+    override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
+        val datesRange = CalendarUtil.buildRangeBetweenDates(startWeek, endWeek)
+
+        val observable = apiService.getScheduleOfWeek(startWeek, endWeek, subgroupId)
+            .filter { it.objectList != null }
             .flatMap { serverResponse ->
-                databaseService.saveScheduleDay(serverResponse.objectList!![0], listOf(DateUtil.convertToSimpleFormat(currentDate)))
+                databaseService.saveScheduleDay(serverResponse.objectList!!, datesRange)
                     //FIXME: test implementation, please delete me
                     .map { serverResponse }
             }
+            .map { ScheduleDayMapper.toPresentation(it.objectList!!) }
 
         discardResult(observable) { listener, result ->
             result.apply {
@@ -26,10 +31,8 @@ class ScheduleInteractor(private val apiService: ApiService,
                         listener!!.onObtainLessonList(null, throwable)
                     }
                     else -> {
-                        val objectList = data?.objectList
-
-                        if (objectList != null && objectList.isNotEmpty()) {
-                            listener!!.onObtainLessonList(data!!.objectList!![0].lessons, null)
+                        if (data != null) {
+                            listener!!.onObtainLessonList(data, null)
                         } else {
                             listener!!.onObtainLessonList(listOf(), null)
                         }

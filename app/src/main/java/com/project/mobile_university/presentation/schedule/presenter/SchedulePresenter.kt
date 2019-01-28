@@ -1,9 +1,12 @@
 package com.project.mobile_university.presentation.schedule.presenter
 
 import androidx.lifecycle.MutableLiveData
+import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.gson.Lesson
+import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import java.util.*
 
@@ -11,18 +14,32 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
                         private val subgroupId: Long)
     : AbstractPresenter(), ScheduleContract.Presenter, ScheduleContract.Listener {
 
-    override val lessonList = MutableLiveData<List<Lesson>>(arrayListOf())
+    override val scheduleDayList = MutableLiveData<List<ScheduleDay>>(arrayListOf())
+    override val currentDate = MutableLiveData<Date>(Date())
 
     private var state = ScheduleContract.State.IDLE
 
+    private lateinit var weekStart: Date
+    private lateinit var weekEnd: Date
+
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
-        registerObservers(lessonList)
+        registerObservers(scheduleDayList)
 
         interactor.setListener(this)
 
+        recalculateWeek(currentDate.value)
+
         if (state == ScheduleContract.State.IDLE) {
-            obtainLessonList(Date(), subgroupId)
+            obtainLessonList(subgroupId)
+            state = ScheduleContract.State.INIT
+        }
+
+        currentDate.observe(androidComponent) {
+            if (it != null && (it < weekStart || it > weekEnd)) {
+                recalculateWeek(it)
+                obtainLessonList(subgroupId)
+            }
         }
     }
 
@@ -35,19 +52,26 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
         interactor.onDestroy()
     }
 
-    override fun obtainLessonList(currentDate: Date, subgroupId: Long) {
-        interactor.getLessonList(currentDate, subgroupId)
+    override fun obtainLessonList(subgroupId: Long) {
+        interactor.getLessonList(weekStart, weekEnd, subgroupId)
     }
 
-    override fun onObtainLessonList(lessonList: List<Lesson>?, throwable: Throwable?) {
+    override fun onObtainLessonList(lessonList: List<ScheduleDay>?, throwable: Throwable?) {
         when {
             throwable != null -> {
                 //TODO: error handle
             }
             lessonList != null -> {
-                this.lessonList.postValue(lessonList)
+                this.scheduleDayList.postValue(lessonList)
             }
         }
-        state = ScheduleContract.State.INIT
+    }
+
+    private fun recalculateWeek(date: Date?) {
+        if (date == null) return
+
+        val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(date)
+        weekStart = monday
+        weekEnd = sunday
     }
 }
