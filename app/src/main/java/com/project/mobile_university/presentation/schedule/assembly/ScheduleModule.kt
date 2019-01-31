@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
 import com.project.mobile_university.domain.ApiService
+import com.project.mobile_university.domain.DatabaseService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import com.project.mobile_university.presentation.schedule.interactor.ScheduleInteractor
@@ -23,8 +24,9 @@ class ScheduleModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(apiService: ApiService): ScheduleContract.Interactor {
-        return ScheduleInteractor(apiService)
+    fun provideInteractor(apiService: ApiService,
+                          databaseService: DatabaseService): ScheduleContract.Interactor {
+        return ScheduleInteractor(apiService, databaseService)
     }
 }
 
