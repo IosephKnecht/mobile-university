@@ -10,6 +10,8 @@ import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
+import com.project.mobile_university.presentation.login.router.LoginRouter
+import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -27,12 +29,19 @@ class LoginModule {
                           sharedPreferenceService: SharedPreferenceService): LoginContract.Interactor {
         return LoginInteractor(apiService, sharedPreferenceService)
     }
+
+    @Provides
+    @PerFeatureLayerScope
+    fun provideRouter(scheduleInputModule: ScheduleContract.ScheduleInputModuleContract): LoginContract.Router {
+        return LoginRouter(scheduleInputModule)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
 @PerFeatureLayerScope
-class LoginViewModelFactory @Inject constructor(private val interactor: LoginContract.Interactor) : ViewModelProvider.Factory {
+class LoginViewModelFactory @Inject constructor(private val interactor: LoginContract.Interactor,
+                                                private val router: LoginContract.Router) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginPresenter(interactor) as T
+        return LoginPresenter(interactor, router) as T
     }
 }

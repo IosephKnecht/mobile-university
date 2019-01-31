@@ -5,11 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.gson.Student
+import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.addSource
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
-class LoginPresenter(private val interactor: LoginContract.Interactor) : AbstractPresenter(), LoginContract.Presenter,
+class LoginPresenter(private val interactor: LoginContract.Interactor,
+                     private val router: LoginContract.Router) : AbstractPresenter(), LoginContract.Presenter,
     LoginContract.Listener {
 
     override val enterEnabled = MutableLiveData<Boolean>()
@@ -54,8 +57,8 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
 
             enterEnabled.postValue(
                 serviceCondition &&
-                        loginCondition &&
-                        passwordCondition
+                    loginCondition &&
+                    passwordCondition
             )
         }
     }
@@ -83,17 +86,20 @@ class LoginPresenter(private val interactor: LoginContract.Interactor) : Abstrac
         interactor.getServerConfig()
     }
 
-    override fun onLogin(isAuth: Boolean?, throwable: Throwable?) {
-        if (throwable != null) {
-            state.postValue(LoginContract.State.ERROR_AUTHORIZE)
-        } else if (isAuth != null) {
-            if (isAuth) {
+    override fun onLogin(user: User?, throwable: Throwable?) {
+        when {
+            throwable != null -> state.postValue(LoginContract.State.ERROR_AUTHORIZE)
+            user != null -> {
                 state.postValue(LoginContract.State.SUCCESS_AUTHORIZE)
-            } else {
-                state.postValue(LoginContract.State.FAILED_AUTHORIZE)
+                interactor.saveLoginPassString(login.value!!, password.value!!)
+
+                when (user) {
+                    is Student -> {
+                        router.showStudentScheduleScreen(androidComponent!!, user.subgroupId)
+                    }
+                }
             }
-        } else {
-            state.postValue(LoginContract.State.NOT_AUTHORIZE)
+            else -> state.postValue(LoginContract.State.NOT_AUTHORIZE)
         }
     }
 

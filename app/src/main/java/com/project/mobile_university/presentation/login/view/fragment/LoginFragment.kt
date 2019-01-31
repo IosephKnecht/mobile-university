@@ -48,7 +48,7 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         binding.setLifecycleOwner(this)
-        binding.viewModel = presenter as LoginContract.ObservableStorage
+        binding.viewModel = presenter
 
         chooseServerDialog = ChangeServerDialog.newInstance(OnChangeServerDelegate())
 
