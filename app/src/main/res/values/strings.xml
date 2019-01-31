@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">mobile_university</string>
+    <string name="service_url_hint">Enter service url</string>
+    <string name="login_hint">Enter your login</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="login_button">Enter</string>
+    <string name="login_other_button">Other</string>
+    
+    <string name="server_dialog_url_title">Server url</string>
+    <string name="server_dialog_hint">name:port</string>
+    <string name="server_dialog_secure_title">Use https connection</string>
+
+    <string-array name="server_url_array">
+        <item>127.0.0.1</item>
+        <item>10.0.2.2</item>
+        <item>Other</item>
+    </string-array>
 </resources>

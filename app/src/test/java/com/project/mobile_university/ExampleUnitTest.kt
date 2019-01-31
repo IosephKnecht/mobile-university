@@ -1,4 +1,4 @@
-package com.project.mobile_university.mobile_university
+package com.project.mobile_university
 
 import org.junit.Test
 

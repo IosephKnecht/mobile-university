@@ -1,7 +1,10 @@
 package com.project.mobile_university.application.assembly
 
+import android.content.Context
+import com.google.gson.Gson
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.domain.ApiService
+import com.project.mobile_university.domain.SharedPreferenceService
 import com.project.mobile_university.domain.UniversityApi
 import dagger.Module
 import dagger.Provides
@@ -13,22 +16,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BusinessModule {
     @Provides
     @PerBusinessLayerScope
-    fun provideRetorofit(): Retrofit {
-        return Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    fun provideApiService(): ApiService {
+        return ApiService()
     }
 
     @Provides
     @PerBusinessLayerScope
-    fun provideUniversityApi(retrofit: Retrofit): UniversityApi {
-        return retrofit.create(UniversityApi::class.java)
+    fun provideSharedPrefService(context: Context,
+                                 gson: Gson): SharedPreferenceService {
+        return SharedPreferenceService(context, gson)
     }
 
     @Provides
     @PerBusinessLayerScope
-    fun provideApiService(universityApi: UniversityApi): ApiService {
-        return ApiService(universityApi)
+    fun provideGson(): Gson {
+        return Gson()
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/large_margin">
+    
+    <com.project.mobile_university.presentation.common.WrapContentListView
+        android:id="@+id/url_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:visibility="gone"/>
+    
+    <LinearLayout
+        android:id="@+id/custom_server_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+        
+        <TextView
+            style="?android:attr/subtitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/server_dialog_url_title"
+            android:textColor="@android:color/black"/>
+        
+        <EditText
+            android:id="@+id/server_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/server_dialog_hint"
+            android:inputType="text|textUri"/>
+    
+    </LinearLayout>
+    
+    <CheckBox
+        android:id="@+id/chk_secure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/server_dialog_secure_title"/>
+
+</LinearLayout>
