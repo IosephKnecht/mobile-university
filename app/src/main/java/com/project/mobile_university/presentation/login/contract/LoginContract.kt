@@ -25,6 +25,7 @@ interface LoginContract {
         val login: MutableLiveData<String>
         val password: MutableLiveData<String>
         val serviceUrl: LiveData<String>
+        val errorObserver: LiveData<String>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {

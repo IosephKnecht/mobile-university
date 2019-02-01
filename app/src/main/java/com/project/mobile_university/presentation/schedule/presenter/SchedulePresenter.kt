@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.mobile_university.data.gson.Lesson
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import java.util.*
 
@@ -16,6 +16,7 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
 
     override val scheduleDayList = MutableLiveData<List<ScheduleDay>>(arrayListOf())
     override val currentDate = MutableLiveData<Date>(Date())
+    override val errorObserver = SingleLiveData<String>()
 
     private var state = ScheduleContract.State.IDLE
 
@@ -59,7 +60,7 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
     override fun onObtainLessonList(lessonList: List<ScheduleDay>?, throwable: Throwable?) {
         when {
             throwable != null -> {
-                //TODO: error handle
+                errorObserver.postValue(throwable.localizedMessage)
             }
             lessonList != null -> {
                 this.scheduleDayList.postValue(lessonList)

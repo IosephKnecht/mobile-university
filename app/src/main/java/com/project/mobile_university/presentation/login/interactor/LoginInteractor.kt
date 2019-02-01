@@ -12,7 +12,7 @@ import io.reactivex.Observable
 class LoginInteractor(
     private val apiService: ApiService,
     private val sharedPreferenceService: SharedPreferenceService,
-    private val errorHandler: ExceptionConverter
+    errorHandler: ExceptionConverter
 ) : InteractorWithErrorHandler<LoginContract.Listener>(errorHandler), LoginContract.Interactor {
 
     override fun login(login: String, password: String) {

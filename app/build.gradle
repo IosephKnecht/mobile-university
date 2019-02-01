@@ -51,6 +51,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.room:room-runtime:2.0.0-rc01"
     implementation "androidx.room:room-rxjava2:2.0.0-rc01"
+    implementation 'com.github.GrenderG:Toasty:1.4.0'
 
 
     implementation('com.afollestad.material-dialogs:core:0.9.5.0') {
