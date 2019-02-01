@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.jakewharton.rxbinding.widget.RxTextView
+import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -19,8 +19,8 @@ import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.view.dialog.ChangeServerDialog
 import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_login.*
-import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
 
 class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog {
@@ -29,7 +29,7 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
 
     private lateinit var chooseServerDialog: DialogFragment
 
-    private val compositeSubscription = CompositeSubscription()
+    private val compositeSubscription = CompositeDisposable()
 
     companion object {
         const val TAG = "login_fragment"
@@ -69,16 +69,16 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
 
         observeViewModel(presenter)
 
-        compositeSubscription.add(RxTextView.textChanges(login)
+        compositeSubscription.add(login.afterTextChangeEvents()
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.login.postValue(it.toString())
+                presenter.login.postValue(it.editable?.toString())
             })
 
-        compositeSubscription.add(RxTextView.textChanges(password)
+        compositeSubscription.add(password.afterTextChangeEvents()
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                presenter.password.postValue(it.toString())
+                presenter.password.postValue(it.editable?.toString())
             })
     }
 
