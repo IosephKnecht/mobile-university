@@ -1,17 +1,19 @@
 package com.project.mobile_university.presentation.login.interactor
 
-import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.utils.AuthUtil
+import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import io.reactivex.Observable
 
 class LoginInteractor(
     private val apiService: ApiService,
-    private val sharedPreferenceService: SharedPreferenceService
-) : AbstractInteractor<LoginContract.Listener>(), LoginContract.Interactor {
+    private val sharedPreferenceService: SharedPreferenceService,
+    errorHandler: ExceptionConverter
+) : InteractorWithErrorHandler<LoginContract.Listener>(errorHandler), LoginContract.Interactor {
 
     override fun login(login: String, password: String) {
         val observable = apiService.login(login, password)
@@ -21,7 +23,7 @@ class LoginInteractor(
                 serverResponse
             }
 
-        discardResult(observable) { listener, result ->
+        simpleDiscardResult(observable) { listener, result ->
             result.apply {
                 when {
                     data != null -> {
@@ -47,7 +49,7 @@ class LoginInteractor(
             sharedPreferenceService.getServerConfig()
         }
 
-        discardResult(observable) { listener, result ->
+        simpleDiscardResult(observable) { listener, result ->
             result.apply {
                 listener!!.onObtainServerConfig(data, throwable)
             }
@@ -59,7 +61,7 @@ class LoginInteractor(
             sharedPreferenceService.getServerConfig()
         }
 
-        discardResult(observable) { listener, result ->
+        simpleDiscardResult(observable) { listener, result ->
             listener!!.onObtainServerConfig(result.data, result.throwable)
         }
     }

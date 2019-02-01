@@ -16,6 +16,12 @@
     <string name="lesson_teacher_desc">Teacher:</string>
     <string name="lesson_lecture_hall_desc">Lecture hall:</string>
 
+    <!--Error message scope-->
+        <string name="no_authorize_message">Sorry, your login or password was be wrong</string>
+        <string name="connection_message">Having trouble connecting, please check the connection.</string>
+        <string name="unknown_http_message">Something went wrong when connected.</string>
+    <!--Error message scope-->
+
     <string-array name="server_url_array">
         <item>127.0.0.1</item>
         <item>10.0.2.2</item>

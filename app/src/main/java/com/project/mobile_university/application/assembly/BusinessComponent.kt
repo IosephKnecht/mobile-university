@@ -4,6 +4,7 @@ import com.project.mobile_university.application.annotations.PerBusinessLayerSco
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
 import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import dagger.Component
 
 @Component(modules = [BusinessModule::class], dependencies = [AppComponent::class])
@@ -12,4 +13,5 @@ interface BusinessComponent {
     fun apiService(): ApiService
     fun sharedPrefService(): SharedPreferenceService
     fun databaseService(): DatabaseService
+    fun errorHandler(): ExceptionConverter
 }

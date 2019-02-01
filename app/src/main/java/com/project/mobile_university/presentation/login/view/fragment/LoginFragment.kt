@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
+import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -20,6 +21,7 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.view.dialog.ChangeServerDialog
 import com.project.mobile_university.presentation.login.view.dialog.OnChangeServerDialog
 import io.reactivex.disposables.CompositeDisposable
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.concurrent.TimeUnit
 
@@ -93,16 +95,9 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
 
     @Refactor("handle error")
     private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {
-        viewModel.state.observe({ lifecycle }) {
-            when (it) {
-                LoginContract.State.ERROR_AUTHORIZE -> {
-                    Toast.makeText(context, "Authorization error", Toast.LENGTH_LONG).show()
-                }
-                LoginContract.State.FAILED_AUTHORIZE -> {
-                    Toast.makeText(context, "Wrong data", Toast.LENGTH_LONG).show()
-                }
-                else -> {
-                }
+        viewModel.errorObserver.observe(this) {
+            if (it != null) {
+                Toasty.error(this@LoginFragment.context!!, it, Toast.LENGTH_LONG).show()
             }
         }
     }

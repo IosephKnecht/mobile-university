@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.observe
@@ -16,6 +17,7 @@ import com.project.mobile_university.presentation.schedule.contract.ScheduleCont
 import com.project.mobile_university.presentation.schedule.view.adapter.ScheduleAdapter
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
@@ -98,6 +100,12 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
                 adapter.scheduleDayList = it
                 adapter.notifyDataSetChanged()
                 schedule_swipe_layout.isRefreshing = false
+            }
+        }
+
+        presenter.errorObserver.observe(this) {
+            if (it != null) {
+                Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
             }
         }
     }
