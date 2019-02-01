@@ -1,15 +1,17 @@
 package com.project.mobile_university.presentation.schedule.interactor
 
-import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
 import java.util.*
 
 class ScheduleInteractor(private val apiService: ApiService,
-                         private val databaseService: DatabaseService) : AbstractInteractor<ScheduleContract.Listener>(),
+                         private val databaseService: DatabaseService,
+                         errorHandler: ExceptionConverter) : InteractorWithErrorHandler<ScheduleContract.Listener>(errorHandler),
     ScheduleContract.Interactor {
 
     override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
@@ -24,7 +26,7 @@ class ScheduleInteractor(private val apiService: ApiService,
             }
             .map { ScheduleDayMapper.toPresentation(it.objectList!!) }
 
-        discardResult(observable) { listener, result ->
+        simpleDiscardResult(observable) { listener, result ->
             result.apply {
                 when {
                     throwable != null -> {

@@ -9,6 +9,7 @@ import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.addSource
+import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.login.contract.LoginContract
 
 class LoginPresenter(private val interactor: LoginContract.Interactor,
@@ -21,6 +22,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
     override val serviceUrl = MutableLiveData<String>()
     override val login = MutableLiveData<String>()
     override val password = MutableLiveData<String>()
+    override val errorObserver = SingleLiveData<String>()
 
     private val params = MediatorLiveData<String>()
 
@@ -88,7 +90,10 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
 
     override fun onLogin(user: User?, throwable: Throwable?) {
         when {
-            throwable != null -> state.postValue(LoginContract.State.ERROR_AUTHORIZE)
+            throwable != null -> {
+                errorObserver.postValue(throwable.localizedMessage)
+                state.postValue(LoginContract.State.ERROR_AUTHORIZE)
+            }
             user != null -> {
                 state.postValue(LoginContract.State.SUCCESS_AUTHORIZE)
                 interactor.saveLoginPassString(login.value!!, password.value!!)

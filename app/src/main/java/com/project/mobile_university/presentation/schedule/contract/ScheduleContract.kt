@@ -17,6 +17,7 @@ interface ScheduleContract {
     interface ObservableStorage {
         val scheduleDayList: LiveData<List<ScheduleDayPresentation>>
         val currentDate: MutableLiveData<Date>
+        val errorObserver: LiveData<String>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {

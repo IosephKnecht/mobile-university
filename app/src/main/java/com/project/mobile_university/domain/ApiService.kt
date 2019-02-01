@@ -4,19 +4,22 @@ import com.google.gson.Gson
 import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
+import com.project.mobile_university.domain.adapters.retrofit.RxErrorCallFactory
 import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class ApiService(private val sharedPreferenceService: SharedPreferenceService,
                  private val gson: Gson,
-                 private val okHttpClient: OkHttpClient) {
+                 private val okHttpClient: OkHttpClient,
+                 private val retrofitExceptionAdapter: ExceptionAdapter) {
+
     private lateinit var universityApi: UniversityApi
 
     var serviceUrl: String? = null
@@ -26,8 +29,8 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
             if (value != null && value.isNotEmpty()) {
                 universityApi = Retrofit.Builder()
                     .client(okHttpClient)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxErrorCallFactory.create(retrofitExceptionAdapter))
                     .baseUrl(value)
                     .build()
                     .create(UniversityApi::class.java)

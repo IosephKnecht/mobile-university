@@ -10,7 +10,10 @@ import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
 import com.project.mobile_university.domain.SharedPreferenceService
 import com.project.mobile_university.domain.UniversityDatabase
-import com.project.mobile_university.domain.adapters.UserAdapter
+import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
+import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
+import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
 import dagger.Module
 import dagger.Provides
@@ -22,8 +25,9 @@ class BusinessModule {
     @PerBusinessLayerScope
     fun provideApiService(sharePrefService: SharedPreferenceService,
                           gson: Gson,
-                          okHttpClient: OkHttpClient): ApiService {
-        return ApiService(sharePrefService, gson, okHttpClient)
+                          okHttpClient: OkHttpClient,
+                          retrofitExceptionMatcher: ExceptionAdapter): ApiService {
+        return ApiService(sharePrefService, gson, okHttpClient, retrofitExceptionMatcher)
     }
 
     @Provides
@@ -63,5 +67,16 @@ class BusinessModule {
         return OkHttpClient.Builder()
             .addInterceptor(LogJsonInterceptor())
             .build()
+    }
+
+    @Provides
+    @PerBusinessLayerScope
+    fun provideRetrofitExceptionAdapter(): ExceptionAdapter {
+        return RetrofitExceptionMatcher()
+    }
+
+    @Provides
+    fun provideExceptionConverter(context: Context): ExceptionConverter {
+        return ExceptionConverter(context)
     }
 }

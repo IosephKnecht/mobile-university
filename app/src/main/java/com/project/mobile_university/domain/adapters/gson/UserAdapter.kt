@@ -1,4 +1,4 @@
-package com.project.mobile_university.domain.adapters
+package com.project.mobile_university.domain.adapters.gson
 
 import com.google.gson.*
 import com.project.mobile_university.data.exceptions.UnknownUserTypeException
