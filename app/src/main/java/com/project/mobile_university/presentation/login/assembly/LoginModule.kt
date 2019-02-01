@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
@@ -26,8 +27,9 @@ class LoginModule {
     @Provides
     @PerFeatureLayerScope
     fun provideInteractor(apiService: ApiService,
-                          sharedPreferenceService: SharedPreferenceService): LoginContract.Interactor {
-        return LoginInteractor(apiService, sharedPreferenceService)
+                          sharedPreferenceService: SharedPreferenceService,
+                          errorHandler: ExceptionConverter): LoginContract.Interactor {
+        return LoginInteractor(apiService, sharedPreferenceService, errorHandler)
     }
 
     @Provides
