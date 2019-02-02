@@ -1,8 +1,8 @@
-package com.project.mobile_university.presentation.schedule.assembly
+package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
 import dagger.BindsInstance
 import dagger.Subcomponent
 

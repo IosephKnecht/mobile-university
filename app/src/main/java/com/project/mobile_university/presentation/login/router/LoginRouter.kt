@@ -4,8 +4,8 @@ import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
 import com.project.mobile_university.presentation.login.contract.LoginContract
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
-import com.project.mobile_university.presentation.schedule.view.ScheduleFragment
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleFragment
 
 class LoginRouter(private val scheduleInputModule: ScheduleContract.ScheduleInputModuleContract)
     : AbstractRouter<LoginContract.RouterListener>(), LoginContract.Router {

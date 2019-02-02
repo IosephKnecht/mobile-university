@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.assembly
+package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,9 +8,9 @@ import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
-import com.project.mobile_university.presentation.schedule.interactor.ScheduleInteractor
-import com.project.mobile_university.presentation.schedule.presenter.SchedulePresenter
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.interactor.ScheduleInteractor
+import com.project.mobile_university.presentation.schedule.subgroup.presenter.SchedulePresenter
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -19,7 +19,8 @@ import javax.inject.Inject
 class ScheduleModule {
     @Provides
     fun providePresenter(androidComponent: AndroidComponent,
-                         factory: ScheduleViewModelFactory): ScheduleContract.Presenter {
+                         factory: ScheduleViewModelFactory
+    ): ScheduleContract.Presenter {
         return viewModelProvider(androidComponent, factory).get(SchedulePresenter::class.java)
     }
 
@@ -28,7 +29,11 @@ class ScheduleModule {
     fun provideInteractor(apiService: ApiService,
                           databaseService: DatabaseService,
                           errorHandler: ExceptionConverter): ScheduleContract.Interactor {
-        return ScheduleInteractor(apiService, databaseService, errorHandler)
+        return ScheduleInteractor(
+            apiService,
+            databaseService,
+            errorHandler
+        )
     }
 }
 
@@ -38,7 +43,10 @@ class ScheduleViewModelFactory @Inject constructor(private val interactor: Sched
                                                    private val groupId: Long)
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return SchedulePresenter(interactor, groupId) as T
+        return SchedulePresenter(
+            interactor,
+            groupId
+        ) as T
     }
 
 }

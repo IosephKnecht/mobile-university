@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.view
+package com.project.mobile_university.presentation.schedule.subgroup.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +12,9 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
-import com.project.mobile_university.presentation.schedule.assembly.ScheduleComponent
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
-import com.project.mobile_university.presentation.schedule.view.adapter.ScheduleAdapter
+import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleComponent
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.view.adapter.ScheduleAdapter
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import es.dmoral.toasty.Toasty

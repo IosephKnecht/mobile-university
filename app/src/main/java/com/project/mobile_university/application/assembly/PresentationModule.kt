@@ -1,8 +1,8 @@
 package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerPresentationLayerScope
-import com.project.mobile_university.presentation.schedule.ScheduleInputModule
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInputModule
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
 import dagger.Module
 import dagger.Provides
 

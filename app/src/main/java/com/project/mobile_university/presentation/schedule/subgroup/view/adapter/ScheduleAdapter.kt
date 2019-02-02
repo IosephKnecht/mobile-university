@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.view.adapter
+package com.project.mobile_university.presentation.schedule.subgroup.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +15,9 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate<ItemLessonBinding>(LayoutInflater.from(parent.context),
             R.layout.item_lesson, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(
+            binding
+        )
     }
 
     override fun getItemCount(): Int {

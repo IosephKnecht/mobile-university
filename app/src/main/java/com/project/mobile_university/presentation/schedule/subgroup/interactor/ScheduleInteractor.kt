@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.interactor
+package com.project.mobile_university.presentation.schedule.subgroup.interactor
 
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
@@ -6,7 +6,7 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
 import java.util.*
 
 class ScheduleInteractor(private val apiService: ApiService,

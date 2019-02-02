@@ -12,7 +12,7 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import com.project.mobile_university.presentation.login.router.LoginRouter
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject

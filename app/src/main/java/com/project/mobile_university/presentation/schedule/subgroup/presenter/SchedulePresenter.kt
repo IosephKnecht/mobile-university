@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.presenter
+package com.project.mobile_university.presentation.schedule.subgroup.presenter
 
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.observe
@@ -7,7 +7,7 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
 import java.util.*
 
 class SchedulePresenter(private val interactor: ScheduleContract.Interactor,

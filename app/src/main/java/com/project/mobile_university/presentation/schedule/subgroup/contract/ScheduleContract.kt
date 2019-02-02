@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.contract
+package com.project.mobile_university.presentation.schedule.subgroup.contract
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -20,7 +20,8 @@ interface ScheduleContract {
         val errorObserver: LiveData<String>
     }
 
-    interface Presenter : MvpPresenter, ObservableStorage {
+    interface Presenter : MvpPresenter,
+        ObservableStorage {
         fun obtainLessonList(subgroupId: Long)
     }
 
