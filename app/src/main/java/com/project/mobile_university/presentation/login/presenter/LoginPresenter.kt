@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.gson.Student
+import com.project.mobile_university.data.gson.Teacher
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.presentation.addSource
@@ -101,6 +102,10 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
                 when (user) {
                     is Student -> {
                         router.showStudentScheduleScreen(androidComponent!!, user.subgroupId)
+                    }
+                    is Teacher -> {
+                        // TODO: will be discard teacherId
+                        router.showTeacherScheduleScreen(androidComponent!!, -1L)
                     }
                 }
             }

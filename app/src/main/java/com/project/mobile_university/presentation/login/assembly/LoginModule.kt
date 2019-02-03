@@ -34,8 +34,8 @@ class LoginModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideRouter(scheduleSubgroupInputModule: ScheduleSubgroupContract.InputModule): LoginContract.Router {
-        return LoginRouter(scheduleSubgroupInputModule)
+    fun provideRouter(): LoginContract.Router {
+        return LoginRouter()
     }
 }
 

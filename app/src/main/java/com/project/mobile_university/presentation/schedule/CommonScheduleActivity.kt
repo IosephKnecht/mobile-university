@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
+import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import org.greenrobot.eventbus.EventBus
@@ -34,6 +35,7 @@ class CommonScheduleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_common_schedule)
 
         val (scheduleType, identifier) = obtainParams()
         val tag = matchScheduleFragmentTag(scheduleType)
@@ -44,7 +46,7 @@ class CommonScheduleActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.schedule_fragment_container,
-                        matchScheduleFragment(identifier, scheduleType)!!,
+                        matchScheduleFragment(identifier, scheduleType),
                         tag
                     )
                     .commit()
@@ -65,14 +67,14 @@ class CommonScheduleActivity : AppCompatActivity() {
     private fun matchScheduleFragmentTag(type: ScheduleEnum): String {
         return when (type) {
             ScheduleEnum.SUBGROUP -> ScheduleSubgroupFragment.TAG
-            else -> ""
+            ScheduleEnum.TEACHER -> TeacherScheduleFragment.TAG
         }
     }
 
-    private fun matchScheduleFragment(identifier: Long, type: ScheduleEnum): Fragment? {
+    private fun matchScheduleFragment(identifier: Long, type: ScheduleEnum): Fragment {
         return when (type) {
             ScheduleEnum.SUBGROUP -> ScheduleSubgroupFragment.createInstance(identifier)
-            else -> null
+            ScheduleEnum.TEACHER -> TeacherScheduleFragment.createInstance(identifier)
         }
     }
 

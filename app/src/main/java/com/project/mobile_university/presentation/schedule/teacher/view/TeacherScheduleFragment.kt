@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_teacher_schedule.*
 class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Presenter>() {
 
     companion object {
+        const val TAG = "teacher_schedule_fragment"
         private const val TEACHER_ID_KEY = "teacher_id"
 
         fun createInstance(teacherId: Long) = TeacherScheduleFragment().apply {
@@ -52,6 +53,8 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = TeacherScheduleAdapter()
 
         lesson_list.apply {
             layoutManager = LinearLayoutManager(context)
