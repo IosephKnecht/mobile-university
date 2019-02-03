@@ -94,5 +94,6 @@ class CommonScheduleActivity : AppCompatActivity() {
         }
     }
 
+    // TODO: will be transit on presentation data layer
     class DateChangeEvent(val date: Date?)
 }
