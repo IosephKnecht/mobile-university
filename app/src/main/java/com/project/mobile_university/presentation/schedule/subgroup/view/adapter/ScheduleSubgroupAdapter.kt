@@ -8,7 +8,7 @@ import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.databinding.ItemLessonBinding
 
-class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
+class ScheduleSubgroupAdapter : RecyclerView.Adapter<ScheduleSubgroupAdapter.ViewHolder>() {
     var scheduleDayList: List<ScheduleDay> = listOf()
     var currentDate: String? = null
 

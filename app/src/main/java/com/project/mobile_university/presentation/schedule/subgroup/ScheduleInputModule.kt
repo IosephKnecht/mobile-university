@@ -1,11 +1,11 @@
 package com.project.mobile_university.presentation.schedule.subgroup
 
 import androidx.fragment.app.Fragment
-import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
-import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleFragment
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
+import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 
-class ScheduleInputModule : ScheduleContract.ScheduleInputModuleContract {
+class ScheduleInputModule : ScheduleSubgroupContract.InputModule {
     override fun createFragment(subgroupId: Long): Fragment {
-        return ScheduleFragment.createInstance(subgroupId)
+        return ScheduleSubgroupFragment.createInstance(subgroupId)
     }
 }

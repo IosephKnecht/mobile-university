@@ -9,19 +9,18 @@ import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.mobile_university.data.presentation.ScheduleDay as ScheduleDayPresentation
 import java.util.*
 
-interface ScheduleContract {
+interface ScheduleSubgroupContract {
     enum class State {
         IDLE, INIT
     }
 
     interface ObservableStorage {
         val scheduleDayList: LiveData<List<ScheduleDayPresentation>>
-        val currentDate: MutableLiveData<Date>
         val errorObserver: LiveData<String>
+        val dateObserver: LiveData<Date>
     }
 
-    interface Presenter : MvpPresenter,
-        ObservableStorage {
+    interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainLessonList(subgroupId: Long)
     }
 
@@ -39,7 +38,7 @@ interface ScheduleContract {
 
     interface Router : MvpRouter<RouterListener>
 
-    interface ScheduleInputModuleContract {
+    interface InputModule {
         fun createFragment(subgroupId: Long): Fragment
     }
 }

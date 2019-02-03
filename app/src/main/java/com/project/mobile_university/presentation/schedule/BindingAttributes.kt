@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.subgroup
+package com.project.mobile_university.presentation.schedule
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

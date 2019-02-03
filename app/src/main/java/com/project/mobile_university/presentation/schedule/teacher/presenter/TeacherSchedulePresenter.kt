@@ -1,13 +1,15 @@
 package com.project.mobile_university.presentation.schedule.teacher.presenter
 
 import androidx.lifecycle.MutableLiveData
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract.State
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
 class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.Interactor,
@@ -15,8 +17,8 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
     TeacherScheduleContract.Listener {
 
     override val errorObserver = MutableLiveData<String>()
-    override val currentDate = MutableLiveData<Date>(Date())
     override val scheduleDayList = MutableLiveData<List<ScheduleDay>>()
+    override val dateObserver = MutableLiveData<Date>(Date())
     override val state = MutableLiveData(State.IDLE)
 
     private lateinit var weekStart: Date
@@ -25,30 +27,27 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
 
-        registerObservers(errorObserver, currentDate, scheduleDayList)
+        registerObservers(errorObserver, scheduleDayList)
 
-        recalculateWeek(currentDate.value)
+        recalculateWeek(dateObserver.value)
 
         if (state.value == State.IDLE) {
-            obtainScheduleDayList(weekStart, weekEnd, teacherId)
+            obtainScheduleDayList(teacherId)
             state.value = State.INIT
         }
 
-        currentDate.observe(androidComponent) {
-            if (it != null && (it < weekStart || it > weekEnd)) {
-                recalculateWeek(it)
-                obtainScheduleDayList(weekStart, weekEnd, teacherId)
-            }
-        }
+        EventBus.getDefault().register(this)
     }
 
     override fun detachAndroidComponent() {
         unregisterObservers()
+        EventBus.getDefault().unregister(this)
+
         super.detachAndroidComponent()
     }
 
-    override fun obtainScheduleDayList(startWeekDay: Date, endWeekDay: Date, teacherId: Long) {
-        interactor.getScheduleDayList(startWeekDay, endWeekDay, teacherId)
+    override fun obtainScheduleDayList(teacherId: Long) {
+        interactor.getScheduleDayList(weekStart, weekEnd, teacherId)
     }
 
     override fun onObtainScheduleDayList(scheduleDayList: List<ScheduleDay>?, throwable: Throwable?) {
@@ -72,5 +71,16 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
         val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(date)
         weekStart = monday
         weekEnd = sunday
+    }
+
+    @Subscribe
+    fun onDateChangeEvent(event: Events.DateChangeEvent) {
+        event.date
+            ?.apply { dateObserver.postValue(this) }
+            ?.takeIf { it < weekStart || it > weekEnd }
+            ?.let {
+                recalculateWeek(it)
+                obtainScheduleDayList(teacherId)
+            }
     }
 }

@@ -6,7 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.project.mobile_university.R
-import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleFragment
+import com.project.mobile_university.data.presentation.Events
+import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import org.greenrobot.eventbus.EventBus
@@ -63,14 +64,14 @@ class CommonScheduleActivity : AppCompatActivity() {
 
     private fun matchScheduleFragmentTag(type: ScheduleEnum): String {
         return when (type) {
-            ScheduleEnum.SUBGROUP -> ScheduleFragment.TAG
+            ScheduleEnum.SUBGROUP -> ScheduleSubgroupFragment.TAG
             else -> ""
         }
     }
 
     private fun matchScheduleFragment(identifier: Long, type: ScheduleEnum): Fragment? {
         return when (type) {
-            ScheduleEnum.SUBGROUP -> ScheduleFragment.createInstance(identifier)
+            ScheduleEnum.SUBGROUP -> ScheduleSubgroupFragment.createInstance(identifier)
             else -> null
         }
     }
@@ -89,11 +90,8 @@ class CommonScheduleActivity : AppCompatActivity() {
 
         calendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
-                EventBus.getDefault().post(DateChangeEvent(date?.time))
+                EventBus.getDefault().post(Events.DateChangeEvent(date?.time))
             }
         }
     }
-
-    // TODO: will be transit on presentation data layer
-    class DateChangeEvent(val date: Date?)
 }

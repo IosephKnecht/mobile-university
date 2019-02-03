@@ -11,6 +11,7 @@ import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.view.adapter.TeacherScheduleAdapter
@@ -31,9 +32,10 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
 
     private lateinit var adapter: TeacherScheduleAdapter
     private lateinit var diComponent: TeacherScheduleComponent
+    private var teacherId: Long = -1L
 
     override fun inject() {
-        val teacherId = arguments!!.getLong(TEACHER_ID_KEY, -1L)
+        teacherId = arguments!!.getLong(TEACHER_ID_KEY, -1L)
 
         diComponent = AppDelegate.presentationComponent
             .teacherScheduleSubComponent()
@@ -57,6 +59,10 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             this.adapter = this@TeacherScheduleFragment.adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
         }
+
+        schedule_swipe_layout.setOnRefreshListener {
+            presenter.obtainScheduleDayList(teacherId)
+        }
     }
 
     override fun onStart() {
@@ -74,6 +80,12 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             if (it != null) {
                 Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
             }
+        }
+
+        presenter.dateObserver.observe(this) {
+            // TODO: util does not inject in view element
+            adapter.currentDate = CalendarUtil.convertToSimpleFormat(it!!)
+            adapter.notifyDataSetChanged()
         }
     }
 }

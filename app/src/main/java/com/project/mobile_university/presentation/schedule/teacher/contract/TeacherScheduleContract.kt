@@ -16,15 +16,13 @@ interface TeacherScheduleContract {
 
     interface ObservableStorage {
         val errorObserver: LiveData<String>
-        val currentDate: MutableLiveData<Date>
         val scheduleDayList: LiveData<List<ScheduleDay>>
+        val dateObserver: LiveData<Date>
         val state: LiveData<State>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
-        fun obtainScheduleDayList(startWeekDay: Date,
-                                  endWeekDay: Date,
-                                  teacherId: Long)
+        fun obtainScheduleDayList(teacherId: Long)
     }
 
     interface Listener : MvpInteractor.Listener {

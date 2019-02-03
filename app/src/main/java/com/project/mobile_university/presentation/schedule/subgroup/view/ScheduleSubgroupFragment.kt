@@ -12,23 +12,20 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
-import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleComponent
-import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
-import com.project.mobile_university.presentation.schedule.subgroup.view.adapter.ScheduleAdapter
-import devs.mulham.horizontalcalendar.HorizontalCalendar
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
+import com.project.mobile_university.presentation.schedule.subgroup.view.adapter.ScheduleSubgroupAdapter
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.util.*
+import kotlinx.android.synthetic.main.fragment_subgroup_schedule.*
 
-class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
+class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Presenter>() {
 
     companion object {
         const val TAG = "schedule_fragment"
         private val ARG_SUBGROUP_ID = "subgroup_id"
 
         @JvmStatic
-        fun createInstance(groupId: Long) = ScheduleFragment()
+        fun createInstance(groupId: Long) = ScheduleSubgroupFragment()
             .apply {
                 arguments = Bundle().apply {
                     putLong(ARG_SUBGROUP_ID, groupId)
@@ -36,15 +33,14 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
             }
     }
 
-    private lateinit var diComponent: ScheduleComponent
-    private lateinit var adapter: ScheduleAdapter
-    private lateinit var calendar: HorizontalCalendar
+    private lateinit var diComponent: ScheduleSubgroupComponent
+    private lateinit var adapter: ScheduleSubgroupAdapter
     private var subgroupId: Long = -1
 
     override fun inject() {
         subgroupId = arguments!!.getLong(ARG_SUBGROUP_ID)
 
-        diComponent = AppDelegate.presentationComponent.scheduleSubComponent()
+        diComponent = AppDelegate.presentationComponent.subgroupScheduleSubComponent()
             .with(this)
             .subgroup(subgroupId)
             .build()
@@ -53,42 +49,23 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
     override fun providePresenter() = diComponent.getPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_schedule, container, false)
+        return inflater.inflate(R.layout.fragment_subgroup_schedule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ScheduleAdapter()
+        adapter = ScheduleSubgroupAdapter()
 
         lesson_list.apply {
-            this.adapter = this@ScheduleFragment.adapter
+            this.adapter = this@ScheduleSubgroupFragment.adapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
         }
 
-        val startDate = Calendar.getInstance()
-        startDate.add(Calendar.MONTH, -3)
-
-        val endDate = Calendar.getInstance()
-        endDate.add(Calendar.MONTH, 3)
-
         schedule_swipe_layout.setOnRefreshListener {
             presenter.obtainLessonList(subgroupId)
-        }
-
-        calendar = HorizontalCalendar.Builder(activity, R.id.calendar_view)
-            .range(startDate, endDate)
-            .datesNumberOnScreen(7)
-            .build()
-
-        calendar.calendarListener = object : HorizontalCalendarListener() {
-            override fun onDateSelected(date: Calendar, position: Int) {
-                presenter.currentDate.postValue(date.time)
-                adapter.currentDate = CalendarUtil.convertToSimpleFormat(date.time)
-                adapter.notifyDataSetChanged()
-            }
         }
     }
 
@@ -107,6 +84,12 @@ class ScheduleFragment : AbstractFragment<ScheduleContract.Presenter>() {
             if (it != null) {
                 Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
             }
+        }
+
+        presenter.dateObserver.observe(this) {
+            // TODO: util does not inject in view element
+            adapter.currentDate = CalendarUtil.convertToSimpleFormat(it!!)
+            adapter.notifyDataSetChanged()
         }
     }
 }

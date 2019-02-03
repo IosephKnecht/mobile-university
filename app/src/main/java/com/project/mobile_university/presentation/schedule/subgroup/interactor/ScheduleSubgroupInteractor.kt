@@ -6,13 +6,13 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
-import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import java.util.*
 
-class ScheduleInteractor(private val apiService: ApiService,
-                         private val databaseService: DatabaseService,
-                         errorHandler: ExceptionConverter) : InteractorWithErrorHandler<ScheduleContract.Listener>(errorHandler),
-    ScheduleContract.Interactor {
+class ScheduleSubgroupInteractor(private val apiService: ApiService,
+                                 private val databaseService: DatabaseService,
+                                 errorHandler: ExceptionConverter) : InteractorWithErrorHandler<ScheduleSubgroupContract.Listener>(errorHandler),
+    ScheduleSubgroupContract.Interactor {
 
     override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
         val datesRange = CalendarUtil.buildRangeBetweenDates(startWeek, endWeek)
