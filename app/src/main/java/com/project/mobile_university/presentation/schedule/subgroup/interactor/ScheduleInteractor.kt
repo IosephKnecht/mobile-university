@@ -17,7 +17,7 @@ class ScheduleInteractor(private val apiService: ApiService,
     override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
         val datesRange = CalendarUtil.buildRangeBetweenDates(startWeek, endWeek)
 
-        val observable = apiService.getScheduleOfWeek(startWeek, endWeek, subgroupId)
+        val observable = apiService.getScheduleOfWeekForSubgroup(startWeek, endWeek, subgroupId)
             .filter { it.objectList != null }
             .flatMap { serverResponse ->
                 databaseService.saveScheduleDay(serverResponse.objectList!!, datesRange)
