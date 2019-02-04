@@ -43,4 +43,23 @@ object LessonMapper {
     fun toPresentation(lessonGsonList: List<LessonGson>): List<LessonPresentation> {
         return lessonGsonList.map { toPresentation(it) }
     }
+
+    fun sqlToPresentation(lessonSql: LessonSql): LessonPresentation {
+        return with(lessonSql) {
+            LessonPresentation(id = this.id,
+                teacherName = this.teacherName,
+                subjectName = this.subjectName,
+                lessonStart = this.lessonStart,
+                lessonEnd = this.lessonEnd,
+                lectureTypeName = this.lectureTypeName,
+                lectureHallName = this.lectureHallName,
+                dayId = this.dayId,
+                currentDate = this.currentDate,
+                subgroupList = SubgroupMapper.sqlToPresentation(this.subgroupList))
+        }
+    }
+
+    fun sqlToPresentation(lessonSqlList: List<LessonSql>): List<LessonPresentation> {
+        return lessonSqlList.map { sqlToPresentation(it) }
+    }
 }

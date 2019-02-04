@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index(value = ["id", "current_date"], unique = true)])
+@Entity(indices = [Index(value = ["ext_id"], unique = true)])
 data class ScheduleDay(@PrimaryKey(autoGenerate = true) val id: Long = 0,
+                       @ColumnInfo(name = "ext_id") val extId: Long,
                        @ColumnInfo(name = "current_date") val currentDate: String)

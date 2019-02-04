@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
+import com.project.mobile_university.domain.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
@@ -26,14 +27,10 @@ class ScheduleModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(apiService: ApiService,
-                          databaseService: DatabaseService,
+    fun provideInteractor(scheduleService: ScheduleService,
                           errorHandler: ExceptionConverter): ScheduleSubgroupContract.Interactor {
-        return ScheduleSubgroupInteractor(
-            apiService,
-            databaseService,
-            errorHandler
-        )
+        return ScheduleSubgroupInteractor(scheduleService,
+            errorHandler)
     }
 }
 

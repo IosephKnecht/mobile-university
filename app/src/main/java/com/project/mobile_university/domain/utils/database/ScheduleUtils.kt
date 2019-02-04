@@ -58,13 +58,18 @@ object ScheduleUtils {
         val subgroupDao = database.subgroupDao()
         val lessonSubgroupDao = database.lessonSubgroupDao()
         val lessonSubgroupList = mutableListOf<LessonSubgroup>()
+        val insertedSubgroup = mutableSetOf<SubgroupGson>()
 
         lessonWithSubgroups.entries.forEach { (lessonId, subgroupsGson) ->
             val storedSubgroups = lessonSubgroupDao.getSubgroupIdsByLessonId(lessonId)
             when {
                 storedSubgroups.isEmpty() || subgroupsGson.isNotEmpty() -> {
+                    val needInsertSubgroupGson = subgroupsGson.minus(insertedSubgroup)
+
                     val subgroupIds = subgroupDao
-                        .insert(*SubgroupMapper.toDatabase(subgroupsGson).toTypedArray())
+                        .insert(*SubgroupMapper.toDatabase(needInsertSubgroupGson).toTypedArray())
+
+                    insertedSubgroup.addAll(subgroupsGson)
 
                     subgroupIds.forEach { subgroupId ->
                         lessonSubgroupList.add(LessonSubgroup(lessonId, subgroupId))

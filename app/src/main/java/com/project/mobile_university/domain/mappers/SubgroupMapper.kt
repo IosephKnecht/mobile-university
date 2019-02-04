@@ -8,7 +8,8 @@ object SubgroupMapper {
     fun toDatabase(subgroupGson: SubgroupGson): SubgroupSql {
         return with(subgroupGson) {
             SubgroupSql(humanValue = humanValue,
-                name = name)
+                name = name,
+                extId = this.id)
         }
     }
 
@@ -25,5 +26,16 @@ object SubgroupMapper {
 
     fun toPresentation(subgroupGsonList: List<SubgroupGson>): List<SubgroupPresentation> {
         return subgroupGsonList.map { toPresentation(it) }
+    }
+
+    fun sqlToPresentation(subgroupSql: SubgroupSql): SubgroupPresentation {
+        return with(subgroupSql) {
+            SubgroupPresentation(humanValue = this.humanValue,
+                name = this.name)
+        }
+    }
+
+    fun sqlToPresentation(subgroupSqlList: List<SubgroupSql>): List<SubgroupPresentation> {
+        return subgroupSqlList.map { sqlToPresentation(it) }
     }
 }

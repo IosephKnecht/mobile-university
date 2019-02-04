@@ -3,6 +3,7 @@ package com.project.mobile_university.application.assembly
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.DatabaseService
+import com.project.mobile_university.domain.ScheduleService
 import com.project.mobile_university.domain.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import dagger.Component
@@ -14,4 +15,5 @@ interface BusinessComponent {
     fun sharedPrefService(): SharedPreferenceService
     fun databaseService(): DatabaseService
     fun errorHandler(): ExceptionConverter
+    fun scheduleService(): ScheduleService
 }

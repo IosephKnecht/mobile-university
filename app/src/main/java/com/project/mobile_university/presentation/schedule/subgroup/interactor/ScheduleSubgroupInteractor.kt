@@ -1,32 +1,26 @@
 package com.project.mobile_university.presentation.schedule.subgroup.interactor
 
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.DatabaseService
+import com.project.mobile_university.domain.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
-import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
+import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
-class ScheduleSubgroupInteractor(private val apiService: ApiService,
-                                 private val databaseService: DatabaseService,
+class ScheduleSubgroupInteractor(private val scheduleService: ScheduleService,
                                  errorHandler: ExceptionConverter) : InteractorWithErrorHandler<ScheduleSubgroupContract.Listener>(errorHandler),
     ScheduleSubgroupContract.Interactor {
 
+    val compositeDisposable = CompositeDisposable()
+
     override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
-        val datesRange = CalendarUtil.buildRangeBetweenDates(startWeek, endWeek)
 
-        val observable = apiService.getScheduleOfWeekForSubgroup(startWeek, endWeek, subgroupId)
-            .filter { it.objectList != null }
-            .flatMap { serverResponse ->
-                databaseService.saveScheduleDay(serverResponse.objectList!!, datesRange)
-                    //FIXME: test implementation, please delete me
-                    .map { serverResponse }
-            }
-            .map { ScheduleDayMapper.toPresentation(it.objectList!!) }
+        val observable = scheduleService
+            .syncScheduleDaysForSubgroup(startWeek, endWeek, subgroupId)
+            .map { ScheduleDayMapper.sqlToPresentation(it) }
 
-        simpleDiscardResult(observable) { listener, result ->
+        compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             result.apply {
                 when {
                     throwable != null -> {
@@ -41,6 +35,11 @@ class ScheduleSubgroupInteractor(private val apiService: ApiService,
                     }
                 }
             }
-        }
+        })
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 }

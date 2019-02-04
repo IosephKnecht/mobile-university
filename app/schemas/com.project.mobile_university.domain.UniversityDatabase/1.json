@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c8b4284cd332d51cc8e8349a94210a4a",
+    "identityHash": "a51da94b7c500b04a284a5595e9f284e",
     "entities": [
       {
         "tableName": "Subgroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `humanValue` INTEGER NOT NULL, `name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ext_id` INTEGER NOT NULL, `humanValue` INTEGER NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "extId",
+            "columnName": "ext_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -33,7 +39,16 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Subgroup_ext_id",
+            "unique": true,
+            "columnNames": [
+              "ext_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Subgroup_ext_id` ON `${TABLE_NAME}` (`ext_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -107,7 +122,16 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Lesson_day_id",
+            "unique": false,
+            "columnNames": [
+              "day_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Lesson_day_id` ON `${TABLE_NAME}` (`day_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "ScheduleDay",
@@ -148,13 +172,29 @@
         },
         "indices": [
           {
-            "name": "index_LessonSubgroup_lesson_id_subgroup_id",
+            "name": "index_LessonSubgroup_lesson_id",
             "unique": false,
+            "columnNames": [
+              "lesson_id"
+            ],
+            "createSql": "CREATE  INDEX `index_LessonSubgroup_lesson_id` ON `${TABLE_NAME}` (`lesson_id`)"
+          },
+          {
+            "name": "index_LessonSubgroup_subgroup_id",
+            "unique": false,
+            "columnNames": [
+              "subgroup_id"
+            ],
+            "createSql": "CREATE  INDEX `index_LessonSubgroup_subgroup_id` ON `${TABLE_NAME}` (`subgroup_id`)"
+          },
+          {
+            "name": "index_LessonSubgroup_lesson_id_subgroup_id",
+            "unique": true,
             "columnNames": [
               "lesson_id",
               "subgroup_id"
             ],
-            "createSql": "CREATE  INDEX `index_LessonSubgroup_lesson_id_subgroup_id` ON `${TABLE_NAME}` (`lesson_id`, `subgroup_id`)"
+            "createSql": "CREATE UNIQUE INDEX `index_LessonSubgroup_lesson_id_subgroup_id` ON `${TABLE_NAME}` (`lesson_id`, `subgroup_id`)"
           }
         ],
         "foreignKeys": [
@@ -184,11 +224,17 @@
       },
       {
         "tableName": "ScheduleDay",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `current_date` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "extId",
+            "columnName": "ext_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -207,13 +253,12 @@
         },
         "indices": [
           {
-            "name": "index_ScheduleDay_id_current_date",
+            "name": "index_ScheduleDay_ext_id",
             "unique": true,
             "columnNames": [
-              "id",
-              "current_date"
+              "ext_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_ScheduleDay_id_current_date` ON `${TABLE_NAME}` (`id`, `current_date`)"
+            "createSql": "CREATE UNIQUE INDEX `index_ScheduleDay_ext_id` ON `${TABLE_NAME}` (`ext_id`)"
           }
         ],
         "foreignKeys": []
@@ -221,7 +266,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c8b4284cd332d51cc8e8349a94210a4a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a51da94b7c500b04a284a5595e9f284e\")"
     ]
   }
 }
