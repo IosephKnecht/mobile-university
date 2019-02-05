@@ -15,7 +15,8 @@ object LessonMapper {
                 subjectName = subjectName,
                 teacherName = teacherName,
                 extId = id,
-                dayId = dayId)
+                dayId = dayId,
+                subgroupList = SubgroupMapper.toDatabase(lessonGson.subgroupList))
         }
     }
 

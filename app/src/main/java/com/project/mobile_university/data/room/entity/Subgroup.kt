@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(indices = [Index(value = ["ext_id"], unique = true)])
-data class Subgroup(@PrimaryKey(autoGenerate = true) val id: Long = 0,
+data class Subgroup(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                     @ColumnInfo(name = "ext_id") val extId: Long,
                     val humanValue: Long,
                     val name: String)

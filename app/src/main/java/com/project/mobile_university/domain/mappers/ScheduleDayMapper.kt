@@ -9,7 +9,8 @@ object ScheduleDayMapper {
     fun toDatabase(scheduleDayGson: ScheduleDayGson): ScheduleDaySql {
         return with(scheduleDayGson) {
             ScheduleDaySql(currentDate = currentDate,
-                extId = this.id)
+                extId = this.id,
+                lessons = LessonMapper.toDatabase(scheduleDayGson.lessons))
         }
     }
 

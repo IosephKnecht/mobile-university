@@ -2,14 +2,14 @@ package com.project.mobile_university.domain
 
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
-import com.project.mobile_university.domain.utils.database.ScheduleUtils
+import com.project.mobile_university.domain.utils.database.NewScheduleService
 import io.reactivex.Observable
 
 class DatabaseService(private val database: UniversityDatabase) {
     fun saveScheduleDay(scheduleDayList: List<ScheduleDay>,
                         requestedDayIds: List<String>): Observable<Unit> {
         return Observable.fromCallable {
-            ScheduleUtils.insertOrReplaceScheduleDayList(database,
+            NewScheduleService.insertOrReplaceScheduleDays(database,
                 requestedDayIds, scheduleDayList)
         }
     }

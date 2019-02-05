@@ -31,4 +31,7 @@ interface ScheduleDayDao {
         where scheduleday.`current_date` in (:dayIds)
     """)
     fun deleteScheduleDayList(dayIds: List<String>)
+
+    @Delete
+    fun delete(vararg scheduleDay: ScheduleDay)
 }
