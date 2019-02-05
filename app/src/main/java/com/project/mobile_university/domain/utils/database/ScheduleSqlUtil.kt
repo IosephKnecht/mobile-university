@@ -8,7 +8,7 @@ import com.project.mobile_university.data.room.entity.Lesson as LessonSql
 import com.project.mobile_university.data.room.entity.ScheduleDay as ScheduleDaySql
 import com.project.mobile_university.data.room.entity.Subgroup as SubgroupSql
 
-object NewScheduleService {
+object ScheduleSqlUtil {
 
     fun insertOrReplaceScheduleDays(database: UniversityDatabase,
                                     requestDayIds: List<String>,
@@ -79,9 +79,16 @@ object NewScheduleService {
                                    lessonSqlList: List<LessonSql>) {
         val subgroupDao = database.subgroupDao()
         val subgroupListSql = mutableListOf<SubgroupSql>()
+        val lessonSubgroupList = mutableListOf<LessonSubgroup>()
 
         lessonSqlList.forEach { lesson ->
             lesson.subgroupList.forEach { subgroup ->
+                val lessonSubgroup = LessonSubgroup(lesson.id, subgroup.extId)
+
+                if (!lessonSubgroupList.contains(lessonSubgroup)) {
+                    lessonSubgroupList.add(lessonSubgroup)
+                }
+
                 if (!subgroupListSql.contains(subgroup)) {
                     subgroupListSql.add(subgroup)
                 }
@@ -95,15 +102,24 @@ object NewScheduleService {
         for (i in 0..size) {
             subgroupListSql[i].id = subgroupsIds[i]
         }
+
+        createManyToManyRelation(database, lessonSubgroupList, subgroupListSql)
     }
 
     private fun createManyToManyRelation(database: UniversityDatabase,
-                                         lessonSqlList: List<LessonSql>,
+                                         lessonSubgroupList: List<LessonSubgroup>,
                                          subgroupSqlList: List<SubgroupSql>) {
-        val lessonSubgroupList = listOf<LessonSubgroup>()
+        val lessonSubgroupDao = database.lessonSubgroupDao()
 
-        lessonSqlList.forEach {
-
+        lessonSubgroupList.forEach { lessonSubgroup ->
+            subgroupSqlList.forEach subgroups@{ subgroup ->
+                if (subgroup.extId == lessonSubgroup.subgroupId) {
+                    lessonSubgroup.subgroupId = subgroup.id
+                    return@subgroups
+                }
+            }
         }
+
+        lessonSubgroupDao.insert(*lessonSubgroupList.toTypedArray())
     }
 }

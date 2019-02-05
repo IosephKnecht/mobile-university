@@ -11,4 +11,4 @@ import androidx.room.Index
         ForeignKey(entity = Subgroup::class, parentColumns = ["id"], childColumns = ["subgroup_id"], onDelete = CASCADE)],
     indices = [Index(value = ["lesson_id"]), Index("subgroup_id"), Index(value = ["lesson_id", "subgroup_id"], unique = true)])
 data class LessonSubgroup(@ColumnInfo(name = "lesson_id") val lessonId: Long,
-                          @ColumnInfo(name = "subgroup_id") val subgroupId: Long)
+                          @ColumnInfo(name = "subgroup_id") var subgroupId: Long)
