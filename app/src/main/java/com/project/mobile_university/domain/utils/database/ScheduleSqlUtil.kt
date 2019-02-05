@@ -1,6 +1,8 @@
 package com.project.mobile_university.domain.utils.database
 
+import com.project.mobile_university.data.room.shared.AbstractDao
 import com.project.mobile_university.data.room.entity.LessonSubgroup
+import com.project.mobile_university.data.room.shared.AbstractEntity
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.data.gson.ScheduleDay as ScheduleDayGson
@@ -40,14 +42,7 @@ object ScheduleSqlUtil {
 
     private fun insertOrReplaceScheduleDay(database: UniversityDatabase,
                                            scheduleDaySqlList: List<ScheduleDaySql>) {
-        val scheduleDayDao = database.sheduleDayDao()
-        val scheduleDayIds = scheduleDayDao.insert(*scheduleDaySqlList.toTypedArray())
-
-        val size = scheduleDayIds.size - 1
-
-        for (i in 0..size) {
-            scheduleDaySqlList[i].id = scheduleDayIds[i]
-        }
+        insertAndReassignIds(scheduleDaySqlList, database.sheduleDayDao())
 
         insertOrReplaceLessons(database, scheduleDaySqlList)
     }
@@ -65,13 +60,7 @@ object ScheduleSqlUtil {
             lessonsForInsert.addAll(scheduleDay.lessons)
         }
 
-        val lessonIds = lessonDao.insert(*lessonsForInsert.toTypedArray())
-        val size = lessonIds.size - 1
-
-        for (i in 0..size) {
-            lessonsForInsert[i].id = lessonIds[i]
-        }
-
+        insertAndReassignIds(lessonsForInsert, lessonDao)
         insertSubgroupList(database, lessonsForInsert)
     }
 
@@ -95,13 +84,7 @@ object ScheduleSqlUtil {
             }
         }
 
-        val subgroupsIds = subgroupDao.insert(*subgroupListSql.toTypedArray())
-
-        val size = subgroupsIds.size - 1
-
-        for (i in 0..size) {
-            subgroupListSql[i].id = subgroupsIds[i]
-        }
+        insertAndReassignIds(subgroupListSql, subgroupDao)
 
         createManyToManyRelation(database, lessonSubgroupList, subgroupListSql)
     }
@@ -121,5 +104,14 @@ object ScheduleSqlUtil {
         }
 
         lessonSubgroupDao.insert(*lessonSubgroupList.toTypedArray())
+    }
+
+    private inline fun <reified T : AbstractEntity> insertAndReassignIds(insertList: List<T>, dao: AbstractDao<T>) {
+        val elementIds = dao.insert(*insertList.toTypedArray())
+        val size = elementIds.size - 1
+
+        for (i in 0..size) {
+            insertList[i].id = elementIds[i]
+        }
     }
 }

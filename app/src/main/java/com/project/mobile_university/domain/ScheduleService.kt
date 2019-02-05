@@ -18,6 +18,19 @@ class ScheduleService(private val apiService: ApiService,
             .flatMap {
                 databaseService.saveScheduleDay(it.objectList!!, datesRange)
             }
-            .flatMap { databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)  }
+            .flatMap { databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId) }
+    }
+
+
+    fun syncScheduleDaysForTeacher(startDate: Date,
+                                   endDate: Date,
+                                   teacherId: Long): Observable<List<ScheduleDayWithLessons>> {
+        val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+
+        return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
+            .flatMap {
+                databaseService.saveScheduleDay(it.objectList!!, datesRange)
+            }
+            .flatMap { databaseService.getScheduleDayListForTeacher(datesRange, teacherId) }
     }
 }
