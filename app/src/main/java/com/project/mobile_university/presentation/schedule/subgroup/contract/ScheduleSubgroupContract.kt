@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.contract
+package com.project.mobile_university.presentation.schedule.subgroup.contract
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -9,15 +9,15 @@ import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.mobile_university.data.presentation.ScheduleDay as ScheduleDayPresentation
 import java.util.*
 
-interface ScheduleContract {
+interface ScheduleSubgroupContract {
     enum class State {
         IDLE, INIT
     }
 
     interface ObservableStorage {
         val scheduleDayList: LiveData<List<ScheduleDayPresentation>>
-        val currentDate: MutableLiveData<Date>
         val errorObserver: LiveData<String>
+        val dateObserver: LiveData<Date>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
@@ -38,7 +38,7 @@ interface ScheduleContract {
 
     interface Router : MvpRouter<RouterListener>
 
-    interface ScheduleInputModuleContract {
+    interface InputModule {
         fun createFragment(subgroupId: Long): Fragment
     }
 }

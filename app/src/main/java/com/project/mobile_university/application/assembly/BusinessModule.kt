@@ -6,10 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.data.gson.User
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.DatabaseService
-import com.project.mobile_university.domain.SharedPreferenceService
-import com.project.mobile_university.domain.UniversityDatabase
+import com.project.mobile_university.domain.*
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
@@ -76,7 +73,15 @@ class BusinessModule {
     }
 
     @Provides
+    @PerBusinessLayerScope
     fun provideExceptionConverter(context: Context): ExceptionConverter {
         return ExceptionConverter(context)
+    }
+
+    @Provides
+    @PerBusinessLayerScope
+    fun provideScheduleService(apiService: ApiService,
+                               databaseService: DatabaseService): ScheduleService {
+        return ScheduleService(apiService, databaseService)
     }
 }

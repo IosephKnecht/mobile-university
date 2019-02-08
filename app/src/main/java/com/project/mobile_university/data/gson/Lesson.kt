@@ -20,5 +20,7 @@ data class Lesson(@SerializedName("id")
                   val subgroupList: List<Subgroup>,
                   @SerializedName("subject")
                   val subjectName: String,
-                  @SerializedName("teacher")
-                  val teacherName: String)
+                  @SerializedName("teacher_name")
+                  val teacherName: String,
+                  @SerializedName("teacher_id")
+                  val teacherId: Long)

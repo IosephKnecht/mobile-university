@@ -1,24 +1,26 @@
-package com.project.mobile_university.presentation.schedule.presenter
+package com.project.mobile_university.presentation.schedule.subgroup.presenter
 
 import androidx.lifecycle.MutableLiveData
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
-class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
-                        private val subgroupId: Long)
-    : AbstractPresenter(), ScheduleContract.Presenter, ScheduleContract.Listener {
+class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract.Interactor,
+                                private val subgroupId: Long)
+    : AbstractPresenter(), ScheduleSubgroupContract.Presenter, ScheduleSubgroupContract.Listener {
 
     override val scheduleDayList = MutableLiveData<List<ScheduleDay>>(arrayListOf())
-    override val currentDate = MutableLiveData<Date>(Date())
     override val errorObserver = SingleLiveData<String>()
+    override val dateObserver = MutableLiveData<Date>(Date())
 
-    private var state = ScheduleContract.State.IDLE
+    private var state = ScheduleSubgroupContract.State.IDLE
 
     private lateinit var weekStart: Date
     private lateinit var weekEnd: Date
@@ -29,23 +31,20 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
 
         interactor.setListener(this)
 
-        recalculateWeek(currentDate.value)
+        recalculateWeek(dateObserver.value)
 
-        if (state == ScheduleContract.State.IDLE) {
+        if (state == ScheduleSubgroupContract.State.IDLE) {
             obtainLessonList(subgroupId)
-            state = ScheduleContract.State.INIT
+            state = ScheduleSubgroupContract.State.INIT
         }
 
-        currentDate.observe(androidComponent) {
-            if (it != null && (it < weekStart || it > weekEnd)) {
-                recalculateWeek(it)
-                obtainLessonList(subgroupId)
-            }
-        }
+        EventBus.getDefault().register(this)
     }
 
     override fun detachAndroidComponent() {
         unregisterObservers()
+        EventBus.getDefault().unregister(this)
+
         super.detachAndroidComponent()
     }
 
@@ -74,5 +73,16 @@ class SchedulePresenter(private val interactor: ScheduleContract.Interactor,
         val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(date)
         weekStart = monday
         weekEnd = sunday
+    }
+
+    @Subscribe
+    fun onDateChangeEvent(event: Events.DateChangeEvent) {
+        event.date
+            ?.apply { dateObserver.postValue(this) }
+            ?.takeIf { it < weekStart || it > weekEnd }
+            ?.let {
+                recalculateWeek(it)
+                obtainLessonList(subgroupId)
+            }
     }
 }

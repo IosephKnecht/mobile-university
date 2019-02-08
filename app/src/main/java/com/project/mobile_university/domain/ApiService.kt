@@ -50,17 +50,32 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val currentDateString = CalendarUtil.convertToSimpleFormat(currentDate)
 
-        return universityApi.scheduleDay(loginPassString, currentDateString, subgroupId)
+        return universityApi.getScheduleDayForSubgroup(loginPassString, currentDateString, subgroupId)
     }
 
-    fun getScheduleOfWeek(startWeek: Date,
-                          endWeek: Date,
-                          subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    fun getScheduleOfWeekForSubgroup(startWeek: Date,
+                                     endWeek: Date,
+                                     subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
+        val dateRangeString = obtainDateRangeString(startWeek, endWeek)
+
+        return universityApi.getScheduleWeekForSubgroup(loginPassString, dateRangeString, subgroupId)
+    }
+
+    fun getScheduleOfWeekForTeacher(startWeek: Date,
+                                    endWeek: Date,
+                                    teacherId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+        val loginPassString = sharedPreferenceService.getLoginPassString()
+        val dateRangeString = obtainDateRangeString(startWeek, endWeek)
+
+        return universityApi.getScheduleWeekForTeacher(loginPassString, dateRangeString, teacherId)
+    }
+
+    // TODO: will be transited on CalendarUtil
+    private fun obtainDateRangeString(startWeek: Date,
+                                      endWeek: Date): String {
         val startWeekString = CalendarUtil.convertToSimpleFormat(startWeek)
         val endWeekString = CalendarUtil.convertToSimpleFormat(endWeek)
-        val dateRangeString = "$startWeekString,$endWeekString"
-
-        return universityApi.getScheduleOfWeek(loginPassString, dateRangeString, subgroupId)
+        return "$startWeekString,$endWeekString"
     }
 }

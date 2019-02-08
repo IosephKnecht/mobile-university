@@ -1,14 +1,14 @@
-package com.project.mobile_university.presentation.schedule.assembly
+package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import dagger.BindsInstance
 import dagger.Subcomponent
 
 @Subcomponent(modules = [ScheduleModule::class])
 @PerFeatureLayerScope
-interface ScheduleComponent {
+interface ScheduleSubgroupComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
@@ -17,8 +17,8 @@ interface ScheduleComponent {
         @BindsInstance
         fun subgroup(subgroupId: Long): Builder
 
-        fun build(): ScheduleComponent
+        fun build(): ScheduleSubgroupComponent
     }
 
-    fun getPresenter(): ScheduleContract.Presenter
+    fun getPresenter(): ScheduleSubgroupContract.Presenter
 }

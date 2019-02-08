@@ -1,9 +1,13 @@
 package com.project.mobile_university.data.room.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.project.mobile_university.data.room.shared.AbstractEntity
 
-@Entity
-data class Subgroup(@PrimaryKey(autoGenerate = true) val id: Long = 0,
+@Entity(indices = [Index(value = ["ext_id"], unique = true)])
+data class Subgroup(@PrimaryKey(autoGenerate = true) override var id: Long = 0,
+                    @ColumnInfo(name = "ext_id") val extId: Long,
                     val humanValue: Long,
-                    val name: String)
+                    val name: String) : AbstractEntity

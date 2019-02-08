@@ -13,12 +13,17 @@ interface UniversityApi {
     fun login(@Header("Authorization") loginPassString: String): Observable<BaseServerResponse<User>>
 
     @GET("api/v1/schedule_day/")
-    fun scheduleDay(@Header("Authorization") loginPassString: String,
-                    @Query("current_date") currentDate: String,
-                    @Query("subgroup_id") subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
+    fun getScheduleDayForSubgroup(@Header("Authorization") loginPassString: String,
+                                  @Query("current_date") currentDate: String,
+                                  @Query("subgroup_id") subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
 
     @GET("api/v1/schedule_day/")
-    fun getScheduleOfWeek(@Header("Authorization") loginPassString: String,
-                          @Query("range") dateRangeString: String,
-                          @Query("subgroup_id") subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
+    fun getScheduleWeekForSubgroup(@Header("Authorization") loginPassString: String,
+                                   @Query("range") dateRangeString: String,
+                                   @Query("subgroup_id") subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
+
+    @GET("api/v1/schedule_day/")
+    fun getScheduleWeekForTeacher(@Header("Authorization") loginPassString: String,
+                                  @Query("range") dateRangeString: String,
+                                  @Query("teacher_id") teacherId: Long): Observable<BaseServerResponse<ScheduleDay>>
 }

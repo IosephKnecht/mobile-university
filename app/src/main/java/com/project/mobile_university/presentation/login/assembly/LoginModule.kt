@@ -12,7 +12,7 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import com.project.mobile_university.presentation.login.router.LoginRouter
-import com.project.mobile_university.presentation.schedule.contract.ScheduleContract
+import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -34,8 +34,8 @@ class LoginModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideRouter(scheduleInputModule: ScheduleContract.ScheduleInputModuleContract): LoginContract.Router {
-        return LoginRouter(scheduleInputModule)
+    fun provideRouter(): LoginContract.Router {
+        return LoginRouter()
     }
 }
 

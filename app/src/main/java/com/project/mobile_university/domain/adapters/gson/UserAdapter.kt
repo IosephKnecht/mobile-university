@@ -30,6 +30,7 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
                 userGson.apply {
                     addProperty("is_teacher", src.isTeacher)
                     addProperty("cathedra_id", src.cathedraId)
+                    addProperty("teacher_id", src.teacherId)
                 }
             }
             else -> {
@@ -56,7 +57,8 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
             }
             isTeacher -> {
                 val cathedraId = user.getAsJsonPrimitive("cathedra_id").asLong
-                Teacher(email, firstName, lastName, isTeacher, cathedraId)
+                val teacherId = user.getAsJsonPrimitive("teacher_id").asLong
+                Teacher(email, firstName, lastName, teacherId, isTeacher, cathedraId)
             }
             else -> {
                 throw UnknownUserTypeException()
