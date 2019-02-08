@@ -16,5 +16,6 @@ class Student(override val email: String?,
 class Teacher(override val email: String?,
               override val firstName: String?,
               override val lastName: String?,
+              @SerializedName("teacher_id") val teacherId: Long,
               @SerializedName("is_teacher") val isTeacher: Boolean,
               @SerializedName("cathedra_id") val cathedraId: Long) : User(email, firstName, lastName)

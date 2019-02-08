@@ -104,8 +104,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
                         router.showStudentScheduleScreen(androidComponent!!, user.subgroupId)
                     }
                     is Teacher -> {
-                        // TODO: will be discard teacherId
-                        router.showTeacherScheduleScreen(androidComponent!!, -1L)
+                        router.showTeacherScheduleScreen(androidComponent!!, user.teacherId)
                     }
                 }
             }
