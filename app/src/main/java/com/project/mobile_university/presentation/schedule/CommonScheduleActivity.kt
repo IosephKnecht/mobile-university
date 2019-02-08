@@ -11,6 +11,7 @@ import com.project.mobile_university.presentation.schedule.subgroup.view.Schedul
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.android.synthetic.main.activity_common_schedule.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -53,6 +54,7 @@ class CommonScheduleActivity : AppCompatActivity() {
             }
 
         initCalendar()
+        initBottomNavigationPanel()
     }
 
     private fun obtainParams(): Pair<ScheduleEnum, Long> {
@@ -93,6 +95,22 @@ class CommonScheduleActivity : AppCompatActivity() {
         calendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
                 EventBus.getDefault().post(Events.DateChangeEvent(date?.time))
+            }
+        }
+    }
+
+    private fun initBottomNavigationPanel() {
+        bottom_navigation.setOnNavigationItemSelectedListener listener@{
+            return@listener when (it.itemId) {
+                R.id.schedule_item -> {
+                    true
+                }
+                R.id.setting_item -> {
+                    true
+                }
+                else -> {
+                    true
+                }
             }
         }
     }
