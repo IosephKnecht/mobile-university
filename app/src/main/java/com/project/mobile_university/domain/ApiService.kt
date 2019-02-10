@@ -44,6 +44,11 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
             .subscribeOn(Schedulers.io())
     }
 
+    fun logout(): Observable<Nothing> {
+        val loginPassString = sharedPreferenceService.getLoginPassString()
+        return universityApi.logout(loginPassString)
+    }
+
     fun getScheduleByDate(currentDate: Date,
                           subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
 

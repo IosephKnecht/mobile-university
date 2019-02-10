@@ -32,4 +32,12 @@
         <string name="schedule_string">schedule</string>
         <string name="settings_string">settings</string>
     <!--Bottom navigation scope-->
+
+    <!--Settings screen scope-->
+        <string name="exit_primary_text">Exit to app</string>
+        <string name="exit_description">Close session account</string>
+        <string name="clear_cache_primary_text">Clear cache</string>
+        <string name="clear_cache_description">Allows to reduce the amount of application memory, but reduces the speed of the application</string>
+        <string name="success_logout">Managed to successfully close session</string>
+    <!--Settings screen scope-->
 </resources>
