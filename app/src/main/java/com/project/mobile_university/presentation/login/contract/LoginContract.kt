@@ -8,6 +8,7 @@ import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
+import com.project.mobile_university.presentation.login.view.fragment.LoginFragment
 
 interface LoginContract {
     enum class State {
@@ -55,5 +56,9 @@ interface LoginContract {
 
         fun showTeacherScheduleScreen(androidComponent: AndroidComponent,
                                       teacherId: Long)
+    }
+
+    interface InputModule {
+        fun createFragment(): LoginFragment
     }
 }

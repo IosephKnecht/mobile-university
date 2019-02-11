@@ -3,12 +3,14 @@ package com.project.mobile_university.presentation.schedule
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
@@ -106,6 +108,8 @@ class CommonScheduleActivity : AppCompatActivity() {
                     true
                 }
                 R.id.setting_item -> {
+                    replaceFragment(SettingsFragment.createInstance())
+                    calendar.calendarView.visibility = View.GONE
                     true
                 }
                 else -> {
@@ -113,5 +117,11 @@ class CommonScheduleActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.schedule_fragment_container, fragment)
+            .commit()
     }
 }

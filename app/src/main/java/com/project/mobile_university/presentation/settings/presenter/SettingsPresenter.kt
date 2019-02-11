@@ -65,6 +65,7 @@ class SettingsPresenter(private val interactor: SettingsContract.Interactor,
             throwableObserver.postValue(throwable.localizedMessage)
         } else {
             successLogout.postValue(true)
+            router.goToAuthScreen(androidComponent!!)
         }
     }
 

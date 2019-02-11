@@ -14,8 +14,13 @@ import com.project.mobile_university.databinding.FragmentSettingsBinding
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
+
+    companion object {
+        fun createInstance() = SettingsFragment()
+    }
 
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var diComponent: SettingsComponent
@@ -38,6 +43,14 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        clear_cache.setOnClickListener {
+            presenter.clearCache()
+        }
+
+        logout.setOnClickListener {
+            presenter.exit()
+        }
     }
 
     override fun onStart() {

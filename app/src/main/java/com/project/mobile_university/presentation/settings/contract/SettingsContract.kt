@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
+import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.UserInfo
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 
 interface SettingsContract {
     enum class State {
@@ -36,7 +38,11 @@ interface SettingsContract {
 
     interface RouterListener : MvpRouter.Listener
 
-    interface Router : MvpRouter<RouterListener>
+    interface Router : MvpRouter<RouterListener> {
+        fun goToAuthScreen(androidComponent: AndroidComponent)
+    }
 
-    interface InputModule
+    interface InputModule {
+        fun createFragment(): SettingsFragment
+    }
 }
