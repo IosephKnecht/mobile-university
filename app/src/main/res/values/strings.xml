@@ -29,7 +29,8 @@
     </string-array>
 
     <!--Bottom navigation scope-->
-        <string name="schedule_string">schedule</string>
+        <string name="student_schedule_string">Timetable of classes</string>
+        <string name="teacher_schedule_string">Schedule</string>
         <string name="settings_string">settings</string>
     <!--Bottom navigation scope-->
 

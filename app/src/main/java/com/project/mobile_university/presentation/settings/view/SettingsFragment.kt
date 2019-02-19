@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
 
     companion object {
+        const val TAG = "settings_screen"
+
         fun createInstance() = SettingsFragment()
     }
 

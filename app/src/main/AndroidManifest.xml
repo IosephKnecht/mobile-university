@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".presentation.schedule.CommonScheduleActivity"
+            android:name=".presentation.schedule.screen.view.CommonScheduleActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
