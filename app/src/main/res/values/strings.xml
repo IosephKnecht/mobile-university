@@ -31,7 +31,7 @@
     <!--Bottom navigation scope-->
         <string name="student_schedule_string">Timetable of classes</string>
         <string name="teacher_schedule_string">Schedule</string>
-        <string name="settings_string">settings</string>
+        <string name="settings_string">Settings</string>
     <!--Bottom navigation scope-->
 
     <!--Settings screen scope-->

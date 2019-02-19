@@ -3,7 +3,6 @@ package com.project.mobile_university.presentation.schedule.screen.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractActivity
@@ -12,11 +11,11 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.presentation.schedule.screen.assembly.CommonScheduleComponent
 import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract
+import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract.ScreenState
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
 import org.greenrobot.eventbus.EventBus
-import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract.ScreenState
 import java.util.*
 
 class CommonScheduleActivity : AbstractActivity<CommonScheduleContract.Presenter>() {
@@ -81,47 +80,26 @@ class CommonScheduleActivity : AbstractActivity<CommonScheduleContract.Presenter
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        // FIXME: bad solve
-        val screenState = intent.getStringExtra(SCREEN_TYPE)?.run {
-            ScreenState.valueOf(this)
-        }
-
-        if (menu != null) {
-            val scheduleTitle = when (screenState) {
-                ScreenState.SUBGROUP -> activityComponent.resources.getString(R.string.teacher_schedule_string)
-                ScreenState.TEACHER -> activityComponent.resources.getString(R.string.student_schedule_string)
-                else -> null
-            }
-
-            val scheduleItem = menu.findItem(R.id.schedule_item)
-
-            scheduleTitle?.let { scheduleItem.title = it }
-        }
-
-        return true
-    }
-
     private fun initBottomNavigationPanel() {
         // FIXME: bad solve
         val screenState = intent.getStringExtra(SCREEN_TYPE)?.run {
             ScreenState.valueOf(this)
         }
 
+        BottomNavigationBuilder.buildMenu(bottom_navigation.menu, screenState!!)
+
         val identifier = intent.getLongExtra(IDENTIFIER, -1L)
 
         bottom_navigation.setOnNavigationItemSelectedListener listener@{
             when (it.itemId) {
-                R.id.schedule_item -> {
-                    if (screenState == ScreenState.TEACHER) presenter.obtainTeacherScreen(identifier)
-                    if (screenState == ScreenState.SUBGROUP) presenter.obtainSubgroupScreen(identifier)
+                BottomNavigationItem.SCHEDULE.itemId -> {
+                    presenter.obtainSubgroupScreen(identifier)
                 }
-                R.id.setting_item -> {
+                BottomNavigationItem.WORK_SCHEDULE.itemId -> {
+                    presenter.obtainTeacherScreen(identifier)
+                }
+                BottomNavigationItem.SETTINGS.itemId -> {
                     presenter.obtainSettingsScreen()
-                }
-                else -> {
                 }
             }
             return@listener true
