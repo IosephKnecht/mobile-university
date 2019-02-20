@@ -26,11 +26,9 @@ class SettingsModule {
 
     @PerFeatureLayerScope
     @Provides
-    fun provideInteractor(apiService: ApiService,
-                          sharedPreferenceService: SharedPreferenceService,
+    fun provideInteractor(sharedPreferenceService: SharedPreferenceService,
                           exceptionConverter: ExceptionConverter): SettingsContract.Interactor {
         return SettingsInteractor(sharedPreferenceService,
-            apiService,
             exceptionConverter)
     }
 

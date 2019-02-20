@@ -46,68 +46,24 @@
             app:layout_constraintStart_toEndOf="@id/user_photo"
             tools:text="last name"/>
 
-        <RelativeLayout
-            android:id="@+id/clear_cache"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/settings_list"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:padding="@dimen/small_margin"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/small_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_photo">
+            app:layout_constraintTop_toBottomOf="@+id/barrier"/>
 
-            <TextView
-                android:id="@+id/primary_text_clear_cacher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clear_cache_primary_text"/>
-
-            <TextView
-                android:id="@+id/description_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/primary_text_clear_cacher"
-                android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/clear_cache_description"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                tools:text=">"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/logout"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:padding="@dimen/small_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clear_cache">
-
-            <TextView
-                android:id="@+id/primary_text_exit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/exit_primary_text"/>
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/primary_text_exit"
-                android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/exit_description"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                tools:text=">"/>
-        </RelativeLayout>
+            android:orientation="horizontal"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="user_photo, last_name"
+            tools:listitem="@layout/item_settings"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
@@ -13,6 +15,8 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentSettingsBinding
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
+import com.project.mobile_university.presentation.settings.view.adapter.SettingsAdapter
+import com.project.mobile_university.presentation.settings.view.adapter.SettingsItemBuilder
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -26,6 +30,7 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
 
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var diComponent: SettingsComponent
+    private lateinit var adapter: SettingsAdapter
 
     override fun inject() {
         diComponent = AppDelegate.presentationComponent
@@ -40,18 +45,27 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.viewModel = presenter
 
+        adapter = SettingsAdapter(SettingsItemBuilder.buildList(context!!))
+
+        adapter.exitListener = {
+            presenter.exit()
+        }
+
+        adapter.clearListener = {
+            presenter.clearCache()
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        clear_cache.setOnClickListener {
-            presenter.clearCache()
-        }
-
-        logout.setOnClickListener {
-            presenter.exit()
+        settings_list.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@SettingsFragment.adapter
+            setHasFixedSize(false)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
         }
     }
 

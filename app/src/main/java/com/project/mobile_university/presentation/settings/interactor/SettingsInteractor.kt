@@ -1,6 +1,5 @@
 package com.project.mobile_university.presentation.settings.interactor
 
-import com.project.mobile_university.domain.ApiService
 import com.project.mobile_university.domain.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.UserMapper
@@ -10,7 +9,6 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 
 class SettingsInteractor(private val sharedPreferenceService: SharedPreferenceService,
-                         private val apiService: ApiService,
                          exceptionConverter: ExceptionConverter)
     : InteractorWithErrorHandler<SettingsContract.Listener>(exceptionConverter), SettingsContract.Interactor {
 
@@ -26,7 +24,7 @@ class SettingsInteractor(private val sharedPreferenceService: SharedPreferenceSe
     }
 
     override fun logout() {
-        val observable = apiService.logout()
+        val observable = Observable.fromCallable { sharedPreferenceService.removeLoginPassString() }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             listener!!.onExit(result.throwable)
