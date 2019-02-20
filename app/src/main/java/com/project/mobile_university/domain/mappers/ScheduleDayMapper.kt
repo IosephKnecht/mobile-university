@@ -22,7 +22,8 @@ object ScheduleDayMapper {
         return with(scheduleDayGson) {
             val lessonPresentationList = LessonMapper.toPresentation(lessons)
             ScheduleDayPresentation(currentDate = currentDate,
-                lesson = lessonPresentationList)
+                lesson = lessonPresentationList,
+                extId = id)
         }
     }
 
@@ -33,11 +34,25 @@ object ScheduleDayMapper {
     fun sqlToPresentation(scheduleDayWithLessons: ScheduleDayWithLessons): ScheduleDayPresentation {
         return with(scheduleDayWithLessons) {
             ScheduleDayPresentation(currentDate = this.currentDate,
-                lesson = LessonMapper.sqlToPresentation(this.lessons))
+                lesson = LessonMapper.sqlToPresentation(this.lessons),
+                extId = extId)
         }
     }
 
     fun sqlToPresentation(scheduleDayListWithLessons: List<ScheduleDayWithLessons>): List<ScheduleDayPresentation> {
         return scheduleDayListWithLessons.map { sqlToPresentation(it) }
+    }
+
+    fun toGson(scheduleDay: ScheduleDayPresentation): ScheduleDayGson {
+        return with(scheduleDay) {
+            ScheduleDayGson(
+                id = extId,
+                currentDate = currentDate,
+                lessons = LessonMapper.toGson(lesson))
+        }
+    }
+
+    fun toGson(scheduleDays: List<ScheduleDayPresentation>): List<ScheduleDayGson> {
+        return scheduleDays.map { toGson(it) }
     }
 }

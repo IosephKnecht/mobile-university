@@ -14,7 +14,7 @@ interface ScheduleDayDao : AbstractDao<ScheduleDay> {
 
     @Transaction
     @Query("""Select scheduleday.id,
-        scheduleday.`current_date` as currentDate from scheduleday
+        scheduleday.`current_date` as currentDate, scheduleday.ext_id as extId from scheduleday
         inner join lesson on lesson.day_id = scheduleday.id
         inner join lessonsubgroup on lessonsubgroup.subgroup_id = subgroup_id
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id
@@ -23,7 +23,7 @@ interface ScheduleDayDao : AbstractDao<ScheduleDay> {
 
     @Transaction
     @Query("""Select scheduleday.id,
-        scheduleday.`current_date` as currentDate from scheduleday
+        scheduleday.`current_date` as currentDate, scheduleday.ext_id as extId from scheduleday
         inner join lesson on lesson.day_id = scheduleday.id
         inner join lessonsubgroup on lessonsubgroup.subgroup_id = subgroup_id
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id

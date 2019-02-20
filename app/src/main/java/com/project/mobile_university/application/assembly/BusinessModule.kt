@@ -85,7 +85,8 @@ class BusinessModule {
     @Provides
     @PerBusinessLayerScope
     fun provideScheduleService(apiService: ApiService,
-                               databaseService: DatabaseService): ScheduleService {
-        return ScheduleService(apiService, databaseService)
+                               databaseService: DatabaseService,
+                               sharePrefService: SharedPreferenceService): ScheduleService {
+        return ScheduleService(apiService, databaseService, sharePrefService)
     }
 }

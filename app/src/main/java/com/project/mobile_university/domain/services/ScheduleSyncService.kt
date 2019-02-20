@@ -9,6 +9,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.project.mobile_university.BuildConfig
+import com.project.mobile_university.application.AppDelegate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class ScheduleSyncService : IntentService(TAG) {
     companion object {
@@ -31,6 +35,8 @@ class ScheduleSyncService : IntentService(TAG) {
     // 10 minutes
     private val SYNC_INTERVAL = 60 * 1000 * 10
 
+    private val compositeDisposable = CompositeDisposable()
+
     override fun onCreate() {
         if (Build.VERSION.SDK_INT > 25) {
             startForeground(FOREGROUND_ID, Notification.Builder(this, notificationChannel)
@@ -41,12 +47,23 @@ class ScheduleSyncService : IntentService(TAG) {
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        // TODO: will be add functional for sync schedule
+        compositeDisposable.add(AppDelegate
+            .businessComponent
+            .scheduleService()
+            .syncSchedule()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                //TODO: will be send notification
+            }, {
+                it.printStackTrace()
+            }))
     }
 
     override fun onDestroy() {
         setAlarm()
         stopForeground(true)
+        compositeDisposable.clear()
         super.onDestroy()
     }
 

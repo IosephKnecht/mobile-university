@@ -29,7 +29,7 @@ object LessonMapper {
         return with(lessonGson) {
             val subgroupPresentationList = SubgroupMapper.toPresentation(subgroupList)
 
-            LessonPresentation(id = id,
+            LessonPresentation(extId = id,
                 currentDate = currentDate,
                 dayId = dayId,
                 lectureHallName = lectureHallName,
@@ -38,7 +38,8 @@ object LessonMapper {
                 lessonStart = lessonStart,
                 subjectName = subjectName,
                 teacherName = teacherName,
-                subgroupList = subgroupPresentationList)
+                subgroupList = subgroupPresentationList,
+                teacherId = teacherId)
         }
     }
 
@@ -48,20 +49,41 @@ object LessonMapper {
 
     fun sqlToPresentation(lessonSql: LessonSql): LessonPresentation {
         return with(lessonSql) {
-            LessonPresentation(id = this.id,
-                teacherName = this.teacherName,
-                subjectName = this.subjectName,
-                lessonStart = this.lessonStart,
-                lessonEnd = this.lessonEnd,
-                lectureTypeName = this.lectureTypeName,
-                lectureHallName = this.lectureHallName,
-                dayId = this.dayId,
-                currentDate = this.currentDate,
-                subgroupList = SubgroupMapper.sqlToPresentation(this.subgroupList))
+            LessonPresentation(extId = extId,
+                teacherName = teacherName,
+                subjectName = subjectName,
+                lessonStart = lessonStart,
+                lessonEnd = lessonEnd,
+                lectureTypeName = lectureTypeName,
+                lectureHallName = lectureHallName,
+                dayId = dayId,
+                currentDate = currentDate,
+                subgroupList = SubgroupMapper.sqlToPresentation(subgroupList),
+                teacherId = teacherExtId)
         }
     }
 
     fun sqlToPresentation(lessonSqlList: List<LessonSql>): List<LessonPresentation> {
         return lessonSqlList.map { sqlToPresentation(it) }
+    }
+
+    fun toGson(lesson: LessonPresentation): LessonGson {
+        return with(lesson) {
+            LessonGson(id = extId,
+                currentDate = currentDate,
+                dayId = dayId,
+                lectureHallName = lectureHallName,
+                lectureTypeName = lectureTypeName,
+                lessonEnd = lessonEnd,
+                lessonStart = lessonStart,
+                subjectName = subjectName,
+                teacherId = teacherId,
+                teacherName = teacherName,
+                subgroupList = SubgroupMapper.toGson(subgroupList))
+        }
+    }
+
+    fun toGson(lessons: List<LessonPresentation>): List<LessonGson> {
+        return lessons.map { LessonMapper.toGson(it) }
     }
 }

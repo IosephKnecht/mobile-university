@@ -1,6 +1,6 @@
 package com.project.mobile_university.data.presentation
 
-data class Lesson(val id: Long,
+data class Lesson(val extId: Long,
                   val dayId: Long,
                   val currentDate: String,
                   val lectureHallName: String,
@@ -9,4 +9,5 @@ data class Lesson(val id: Long,
                   val lessonEnd: String,
                   val subgroupList: List<Subgroup>,
                   val subjectName: String,
-                  val teacherName: String)
+                  val teacherName: String,
+                  val teacherId: Long)
