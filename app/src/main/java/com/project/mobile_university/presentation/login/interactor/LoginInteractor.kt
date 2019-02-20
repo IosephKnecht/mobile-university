@@ -1,8 +1,8 @@
 package com.project.mobile_university.presentation.login.interactor
 
 import com.project.mobile_university.data.presentation.ServerConfig
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.services.ApiService
+import com.project.mobile_university.domain.services.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler

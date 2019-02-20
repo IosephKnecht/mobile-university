@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.DatabaseService
-import com.project.mobile_university.domain.ScheduleService
+import com.project.mobile_university.domain.services.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract

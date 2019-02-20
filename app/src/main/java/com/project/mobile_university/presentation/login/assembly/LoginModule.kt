@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.iosephknecht.viper.viewModelProvider
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.services.ApiService
+import com.project.mobile_university.domain.services.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import com.project.mobile_university.presentation.login.router.LoginRouter
-import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject

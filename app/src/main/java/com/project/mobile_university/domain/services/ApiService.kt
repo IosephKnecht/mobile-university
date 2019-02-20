@@ -1,9 +1,10 @@
-package com.project.mobile_university.domain
+package com.project.mobile_university.domain.services
 
 import com.google.gson.Gson
 import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.adapters.retrofit.RxErrorCallFactory
 import com.project.mobile_university.domain.utils.AuthUtil
