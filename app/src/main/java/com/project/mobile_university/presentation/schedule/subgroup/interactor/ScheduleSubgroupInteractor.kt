@@ -18,7 +18,7 @@ class ScheduleSubgroupInteractor(private val scheduleService: ScheduleService,
 
         val observable = scheduleService
             .syncScheduleDaysForSubgroup(startWeek, endWeek, subgroupId)
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { ScheduleDayMapper.toPresentation(it) }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             result.apply {

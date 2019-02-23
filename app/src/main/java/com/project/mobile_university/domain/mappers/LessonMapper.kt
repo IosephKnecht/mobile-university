@@ -1,89 +1,65 @@
 package com.project.mobile_university.domain.mappers
 
+import com.project.mobile_university.data.shared.AbstractLesson
 import com.project.mobile_university.data.presentation.Lesson as LessonPresentation
 import com.project.mobile_university.data.room.entity.Lesson as LessonSql
 import com.project.mobile_university.data.gson.Lesson as LessonGson
 
 object LessonMapper {
-    fun toDatabase(lessonGson: LessonGson): LessonSql {
-        return with(lessonGson) {
-            LessonSql(currentDate = currentDate,
-                lectureHallName = lectureHallName,
-                lessonStart = lessonStart,
-                lessonEnd = lessonEnd,
-                lectureTypeName = lectureTypeName,
-                subjectName = subjectName,
-                teacherName = teacherName,
-                extId = id,
-                dayId = dayId,
-                subgroupList = SubgroupMapper.toDatabase(lessonGson.subgroupList),
-                teacherExtId = lessonGson.teacherId)
-        }
-    }
-
-    fun toDatabase(lessonGsonList: List<LessonGson>): List<LessonSql> {
-        return lessonGsonList.map { toDatabase(it) }
-    }
-
-    fun toPresentation(lessonGson: LessonGson): LessonPresentation {
-        return with(lessonGson) {
-            val subgroupPresentationList = SubgroupMapper.toPresentation(subgroupList)
-
-            LessonPresentation(extId = id,
+    fun toDatabase(lesson: AbstractLesson<*>): LessonSql {
+        return with(lesson) {
+            LessonSql(dayId = dayId,
                 currentDate = currentDate,
-                dayId = dayId,
                 lectureHallName = lectureHallName,
-                lectureTypeName = lectureTypeName,
-                lessonEnd = lessonEnd,
                 lessonStart = lessonStart,
+                lessonEnd = lessonEnd,
+                lectureTypeName = lectureTypeName,
                 subjectName = subjectName,
                 teacherName = teacherName,
-                subgroupList = subgroupPresentationList,
-                teacherId = teacherId)
+                teacherExtId = teacherExtId,
+                extId = extId,
+                subgroupList = SubgroupMapper.toDatabase(subgroupList))
         }
     }
 
-    fun toPresentation(lessonGsonList: List<LessonGson>): List<LessonPresentation> {
-        return lessonGsonList.map { toPresentation(it) }
-    }
-
-    fun sqlToPresentation(lessonSql: LessonSql): LessonPresentation {
-        return with(lessonSql) {
+    fun toPresentation(lesson: AbstractLesson<*>): LessonPresentation {
+        return with(lesson) {
             LessonPresentation(extId = extId,
                 teacherName = teacherName,
                 subjectName = subjectName,
-                lessonStart = lessonStart,
-                lessonEnd = lessonEnd,
                 lectureTypeName = lectureTypeName,
+                lessonEnd = lessonEnd,
+                lessonStart = lessonStart,
                 lectureHallName = lectureHallName,
-                dayId = dayId,
                 currentDate = currentDate,
-                subgroupList = SubgroupMapper.sqlToPresentation(subgroupList),
-                teacherId = teacherExtId)
+                dayId = dayId,
+                teacherExtId = teacherExtId,
+                subgroupList = SubgroupMapper.toPresentation(subgroupList))
         }
     }
 
-    fun sqlToPresentation(lessonSqlList: List<LessonSql>): List<LessonPresentation> {
-        return lessonSqlList.map { sqlToPresentation(it) }
-    }
-
-    fun toGson(lesson: LessonPresentation): LessonGson {
+    fun toGson(lesson: AbstractLesson<*>): LessonGson {
         return with(lesson) {
-            LessonGson(id = extId,
-                currentDate = currentDate,
+            LessonGson(teacherExtId = teacherExtId,
                 dayId = dayId,
+                currentDate = currentDate,
                 lectureHallName = lectureHallName,
-                lectureTypeName = lectureTypeName,
-                lessonEnd = lessonEnd,
                 lessonStart = lessonStart,
+                lessonEnd = lessonEnd,
+                lectureTypeName = lectureTypeName,
                 subjectName = subjectName,
-                teacherId = teacherId,
                 teacherName = teacherName,
+                extId = extId,
                 subgroupList = SubgroupMapper.toGson(subgroupList))
         }
     }
 
-    fun toGson(lessons: List<LessonPresentation>): List<LessonGson> {
-        return lessons.map { LessonMapper.toGson(it) }
-    }
+    fun <T : AbstractLesson<*>> toDatabase(lessonList: List<T>) =
+        lessonList.map { toDatabase(it) }
+
+    fun <T : AbstractLesson<*>> toPresentation(lessonList: List<T>) =
+        lessonList.map { toPresentation(it) }
+
+    fun <T : AbstractLesson<*>> toGson(lessonList: List<T>) =
+        lessonList.map { toGson(it) }
 }

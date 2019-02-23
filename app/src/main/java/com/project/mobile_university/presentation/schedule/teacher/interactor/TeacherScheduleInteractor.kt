@@ -17,7 +17,7 @@ class TeacherScheduleInteractor(private val scheduleService: ScheduleService,
 
     override fun getScheduleDayList(startWeekDay: Date, endWeekDay: Date, teacherId: Long) {
         val observable = scheduleService.syncScheduleDaysForTeacher(startWeekDay, endWeekDay, teacherId)
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { ScheduleDayMapper.toPresentation(it) }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             when {

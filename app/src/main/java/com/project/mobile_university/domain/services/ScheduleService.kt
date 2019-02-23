@@ -62,7 +62,7 @@ class ScheduleService(private val apiService: ApiService,
                     is Teacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
                 }
             }
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { ScheduleDayMapper.toPresentation(it) }
 
         val diffObservable = Observable
             .combineLatest(remoteObservable, storedObservable, diffFunction())

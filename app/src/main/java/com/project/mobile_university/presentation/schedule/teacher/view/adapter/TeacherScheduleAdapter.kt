@@ -25,13 +25,13 @@ class TeacherScheduleAdapter : RecyclerView.Adapter<TeacherScheduleAdapter.ViewH
 
     override fun getItemCount(): Int {
         val currentDay = scheduleDayList.find { it.currentDate == currentDate }
-        return if (currentDay == null) 0 else currentDay.lesson.size
+        return if (currentDay == null) 0 else currentDay.lessons.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentDay = scheduleDayList.find { it.currentDate == currentDate }
         if (currentDay != null) {
-            holder.binding.lesson = currentDay.lesson[position]
+            holder.binding.lesson = currentDay.lessons[position]
         }
     }
 

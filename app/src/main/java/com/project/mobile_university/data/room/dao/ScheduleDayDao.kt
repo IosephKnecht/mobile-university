@@ -2,7 +2,7 @@ package com.project.mobile_university.data.room.dao
 
 import androidx.room.*
 import com.project.mobile_university.data.room.entity.ScheduleDay
-import com.project.mobile_university.data.room.shared.AbstractDao
+import com.project.mobile_university.data.shared.AbstractDao
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 
 @Dao
@@ -27,8 +27,8 @@ interface ScheduleDayDao : AbstractDao<ScheduleDay> {
         inner join lesson on lesson.day_id = scheduleday.id
         inner join lessonsubgroup on lessonsubgroup.subgroup_id = subgroup_id
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id
-        where scheduleday.`current_date` in (:dayIds) and lesson.teacher_ext_id = :teacherId""")
-    fun getScheduleDayWithLessonsForTeacher(dayIds: List<String>, teacherId: Long): List<ScheduleDayWithLessons>
+        where scheduleday.`current_date` in (:dayIds) and lesson.teacher_ext_id = :teacherExtId""")
+    fun getScheduleDayWithLessonsForTeacher(dayIds: List<String>, teacherExtId: Long): List<ScheduleDayWithLessons>
 
     @Query("""Delete from scheduleday
         where scheduleday.`current_date` in (:dayIds)

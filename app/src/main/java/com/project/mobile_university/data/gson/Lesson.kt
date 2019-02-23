@@ -1,26 +1,27 @@
 package com.project.mobile_university.data.gson
 
 import com.google.gson.annotations.SerializedName
+import com.project.mobile_university.data.shared.AbstractLesson
 
 data class Lesson(@SerializedName("id")
-                  val id: Long,
+                  override val extId: Long,
                   @SerializedName("day_id")
-                  val dayId: Long,
+                  override val dayId: Long,
                   @SerializedName("current_date")
-                  val currentDate: String,
+                  override val currentDate: String,
                   @SerializedName("lecture_hall")
-                  val lectureHallName: String,
+                  override val lectureHallName: String,
                   @SerializedName("lesson_type")
-                  val lectureTypeName: String,
+                  override val lectureTypeName: String,
                   @SerializedName("lesson_start")
-                  val lessonStart: String,
+                  override val lessonStart: String,
                   @SerializedName("lesson_end")
-                  val lessonEnd: String,
+                  override val lessonEnd: String,
                   @SerializedName("subgroups")
-                  val subgroupList: List<Subgroup>,
+                  override val subgroupList: List<Subgroup>,
                   @SerializedName("subject")
-                  val subjectName: String,
+                  override val subjectName: String,
                   @SerializedName("teacher_name")
-                  val teacherName: String,
+                  override val teacherName: String,
                   @SerializedName("teacher_id")
-                  val teacherId: Long)
+                  override val teacherExtId: Long) : AbstractLesson<Subgroup>
