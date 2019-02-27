@@ -6,7 +6,8 @@ data class BaseServerResponse<T>(@SerializedName("meta") val meta: Meta,
                                  @SerializedName("objects") val objectList: List<T>?)
 
 data class Meta(@SerializedName("limit") val limit: Int,
-                @SerializedName("next") val nextPage: Int?,
-                @SerializedName("offset") val currentPage: Int,
-                @SerializedName("previous") val previousPage: Int?,
-                @SerializedName("total_count") val size: Int)
+                @SerializedName("next") val nextPage: String?,
+                @SerializedName("offset") val offset: Int,
+                @SerializedName("previous") val previousPage: String?,
+                @SerializedName("total_count") val size: Int,
+                @SerializedName("page_number") val pageNumber: Int)
