@@ -23,6 +23,7 @@ class RxErrorCallFactory private constructor(private val exceptionAdapter: Excep
         original = RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
         return RxErrorCallAdapter((original
             .get(returnType, annotations, retrofit) as CallAdapter<out Any, Any>?)!!,

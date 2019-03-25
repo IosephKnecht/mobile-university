@@ -27,8 +27,6 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
 
-        registerObservers(errorObserver, scheduleDayList)
-
         recalculateWeek(dateObserver.value)
 
         if (state.value == State.IDLE) {
@@ -40,7 +38,6 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
     }
 
     override fun detachAndroidComponent() {
-        unregisterObservers()
         EventBus.getDefault().unregister(this)
 
         super.detachAndroidComponent()

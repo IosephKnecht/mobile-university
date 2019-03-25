@@ -1,8 +1,9 @@
 package com.project.mobile_university.presentation.login.presenter
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.project.iosephknecht.viper.observe
+import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.gson.Student
@@ -38,14 +39,14 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
-        registerObservers(enterEnabled, state, serviceUrl, login, password, params)
         interactor.setListener(this)
 
         if (state.value == LoginContract.State.IDLE) {
             obtainServerConfig()
         }
 
-        params.observe(androidComponent) {
+        // FIXME: maybe remake on rx java?
+        params.observe(androidComponent.activityComponent as LifecycleOwner, Observer {
             val serviceCondition = serviceUrl.value?.run {
                 isNotEmpty()
             } ?: false
@@ -63,12 +64,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
                     loginCondition &&
                     passwordCondition
             )
-        }
+        })
     }
 
     override fun detachAndroidComponent() {
         interactor.setListener(null)
-        unregisterObservers()
         super.detachAndroidComponent()
     }
 

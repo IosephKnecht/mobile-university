@@ -27,7 +27,6 @@ class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
-        registerObservers(scheduleDayList)
 
         interactor.setListener(this)
 
@@ -42,7 +41,6 @@ class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract
     }
 
     override fun detachAndroidComponent() {
-        unregisterObservers()
         EventBus.getDefault().unregister(this)
 
         super.detachAndroidComponent()
