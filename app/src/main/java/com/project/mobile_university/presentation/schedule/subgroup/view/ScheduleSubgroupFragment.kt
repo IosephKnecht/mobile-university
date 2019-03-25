@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -72,24 +72,25 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
     override fun onStart() {
         super.onStart()
 
-        presenter.scheduleDayList.observe(this) {
+        presenter.scheduleDayList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 adapter.scheduleDayList = it
                 adapter.notifyDataSetChanged()
                 schedule_swipe_layout.isRefreshing = false
             }
-        }
+        })
 
-        presenter.errorObserver.observe(this) {
+        presenter.errorObserver.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
             }
-        }
+        })
 
-        presenter.dateObserver.observe(this) {
+
+        presenter.dateObserver.observe(viewLifecycleOwner, Observer {
             // TODO: util does not inject in view element
             adapter.currentDate = CalendarUtil.convertToSimpleFormat(it!!)
             adapter.notifyDataSetChanged()
-        }
+        })
     }
 }

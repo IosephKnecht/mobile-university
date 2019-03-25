@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.login.assembly
 
-import com.project.iosephknecht.viper.view.AndroidComponent
+import androidx.fragment.app.Fragment
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import dagger.BindsInstance
@@ -12,7 +12,7 @@ interface LoginComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
-        fun with(androidComponent: AndroidComponent): Builder
+        fun with(fragment: Fragment): Builder
 
         fun build(): LoginComponent
     }

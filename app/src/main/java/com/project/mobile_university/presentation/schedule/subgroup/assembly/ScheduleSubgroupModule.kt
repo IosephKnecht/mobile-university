@@ -1,11 +1,9 @@
 package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.iosephknecht.viper.viewModelProvider
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.DatabaseService
+import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
@@ -19,10 +17,10 @@ import javax.inject.Inject
 @Module
 class ScheduleModule {
     @Provides
-    fun providePresenter(androidComponent: AndroidComponent,
+    fun providePresenter(fragment: Fragment,
                          factory: ScheduleViewModelFactory
     ): ScheduleSubgroupContract.Presenter {
-        return viewModelProvider(androidComponent, factory).get(ScheduleSubgroupPresenter::class.java)
+        return ViewModelProviders.of(fragment, factory).get(ScheduleSubgroupPresenter::class.java)
     }
 
     @Provides
