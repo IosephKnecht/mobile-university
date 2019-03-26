@@ -1,4 +1,4 @@
-package com.project.mobile_university.data.room.shared
+package com.project.mobile_university.data.shared
 
 import androidx.room.Delete
 import androidx.room.Insert

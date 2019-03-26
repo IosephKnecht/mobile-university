@@ -12,6 +12,10 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
+import com.project.mobile_university.domain.services.ApiService
+import com.project.mobile_university.domain.services.DatabaseService
+import com.project.mobile_university.domain.services.ScheduleService
+import com.project.mobile_university.domain.services.SharedPreferenceService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -81,7 +85,8 @@ class BusinessModule {
     @Provides
     @PerBusinessLayerScope
     fun provideScheduleService(apiService: ApiService,
-                               databaseService: DatabaseService): ScheduleService {
-        return ScheduleService(apiService, databaseService)
+                               databaseService: DatabaseService,
+                               sharePrefService: SharedPreferenceService): ScheduleService {
+        return ScheduleService(apiService, databaseService, sharePrefService)
     }
 }

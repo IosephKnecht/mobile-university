@@ -17,8 +17,6 @@ class CommonSchedulePresenter(private val screenState: ScreenState,
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
 
-        registerObservers(currentScreenState)
-
         router.setListener(this)
 
         if (currentScreenState.value == null) {
@@ -31,7 +29,6 @@ class CommonSchedulePresenter(private val screenState: ScreenState,
     }
 
     override fun detachAndroidComponent() {
-        unregisterObservers()
         router.setListener(null)
         super.detachAndroidComponent()
     }

@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.schedule.screen.assembly
 
-import com.project.iosephknecht.viper.view.AndroidComponent
+import androidx.fragment.app.FragmentActivity
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract
 import dagger.BindsInstance
@@ -12,7 +12,7 @@ interface CommonScheduleComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
-        fun with(androidComponent: AndroidComponent): Builder
+        fun with(activity: FragmentActivity): Builder
 
         @BindsInstance
         fun screenState(state: CommonScheduleContract.ScreenState): Builder

@@ -1,6 +1,5 @@
 package com.project.mobile_university.presentation.schedule.screen.router
 
-import androidx.fragment.app.Fragment
 import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R

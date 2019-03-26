@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -95,11 +95,11 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
 
     @Refactor("handle error")
     private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {
-        viewModel.errorObserver.observe(this) {
+        viewModel.errorObserver.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 Toasty.error(this@LoginFragment.context!!, it, Toast.LENGTH_LONG).show()
             }
-        }
+        })
     }
 
     class OnChangeServerDelegate : OnChangeServerDialog.ChangeServerDialogProvider {

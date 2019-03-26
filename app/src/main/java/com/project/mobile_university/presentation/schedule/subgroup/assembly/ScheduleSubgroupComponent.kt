@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
-import com.project.iosephknecht.viper.view.AndroidComponent
+import androidx.fragment.app.Fragment
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import dagger.BindsInstance
@@ -12,7 +12,7 @@ interface ScheduleSubgroupComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
-        fun with(androidComponent: AndroidComponent): Builder
+        fun with(fragment: Fragment): Builder
 
         @BindsInstance
         fun subgroup(subgroupId: Long): Builder

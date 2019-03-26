@@ -4,7 +4,6 @@ import android.content.Intent
 import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.presentation.MainActivity
-import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 
 class SettingsRouter : AbstractRouter<SettingsContract.RouterListener>(),

@@ -28,6 +28,10 @@
             android:name=".presentation.schedule.screen.view.CommonScheduleActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <service
+            android:name=".domain.services.ScheduleSyncService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

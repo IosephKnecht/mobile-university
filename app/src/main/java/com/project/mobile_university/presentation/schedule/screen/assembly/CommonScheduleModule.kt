@@ -1,9 +1,9 @@
 package com.project.mobile_university.presentation.schedule.screen.assembly
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.iosephknecht.viper.viewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract
 import com.project.mobile_university.presentation.schedule.screen.presenter.CommonSchedulePresenter
@@ -18,9 +18,9 @@ import javax.inject.Inject
 @Module
 class CommonScheduleModule {
     @Provides
-    fun providePresenter(androidComponent: AndroidComponent,
+    fun providePresenter(activity: FragmentActivity,
                          factory: CommonScheduleFactory): CommonScheduleContract.Presenter {
-        return viewModelProvider(androidComponent, factory).get(CommonSchedulePresenter::class.java)
+        return ViewModelProviders.of(activity, factory).get(CommonSchedulePresenter::class.java)
     }
 
     @Provides

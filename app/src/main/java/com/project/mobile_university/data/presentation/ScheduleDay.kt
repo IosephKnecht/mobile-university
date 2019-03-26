@@ -1,4 +1,7 @@
 package com.project.mobile_university.data.presentation
 
-data class ScheduleDay(val currentDate: String,
-                       val lesson: List<Lesson>)
+import com.project.mobile_university.data.shared.AbstractScheduleDay
+
+data class ScheduleDay(override val extId: Long,
+                       override val currentDate: String,
+                       override val lessons: List<Lesson>):AbstractScheduleDay<Lesson>

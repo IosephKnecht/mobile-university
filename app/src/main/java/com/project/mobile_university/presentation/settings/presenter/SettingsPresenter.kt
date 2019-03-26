@@ -23,8 +23,6 @@ class SettingsPresenter(private val interactor: SettingsContract.Interactor,
         super.attachAndroidComponent(androidComponent)
         interactor.setListener(this)
 
-        registerObservers(userInfo, throwableObserver)
-
         when (state) {
             State.IDLE -> obtainUserInfo()
             else -> {
@@ -35,7 +33,6 @@ class SettingsPresenter(private val interactor: SettingsContract.Interactor,
 
     override fun detachAndroidComponent() {
         interactor.setListener(null)
-        unregisterObservers()
         super.detachAndroidComponent()
     }
 

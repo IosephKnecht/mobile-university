@@ -1,41 +1,42 @@
 package com.project.mobile_university.domain.mappers
 
+import com.project.mobile_university.data.shared.AbstractSubgroup
 import com.project.mobile_university.data.presentation.Subgroup as SubgroupPresentation
 import com.project.mobile_university.data.room.entity.Subgroup as SubgroupSql
 import com.project.mobile_university.data.gson.Subgroup as SubgroupGson
 
 object SubgroupMapper {
-    fun toDatabase(subgroupGson: SubgroupGson): SubgroupSql {
-        return with(subgroupGson) {
+
+    fun toDatabase(subgroup: AbstractSubgroup): SubgroupSql {
+        return with(subgroup) {
             SubgroupSql(humanValue = humanValue,
-                name = name,
-                extId = this.id)
-        }
-    }
-
-    fun toDatabase(subgroupGsonList: List<SubgroupGson>): List<SubgroupSql> {
-        return subgroupGsonList.map { toDatabase(it) }
-    }
-
-    fun toPresentation(subgroupGson: SubgroupGson): SubgroupPresentation {
-        return with(subgroupGson) {
-            SubgroupPresentation(humanValue = humanValue,
+                extId = extId,
                 name = name)
         }
     }
 
-    fun toPresentation(subgroupGsonList: List<SubgroupGson>): List<SubgroupPresentation> {
-        return subgroupGsonList.map { toPresentation(it) }
-    }
-
-    fun sqlToPresentation(subgroupSql: SubgroupSql): SubgroupPresentation {
-        return with(subgroupSql) {
-            SubgroupPresentation(humanValue = this.humanValue,
-                name = this.name)
+    fun toPresentation(subgroup: AbstractSubgroup): SubgroupPresentation {
+        return with(subgroup) {
+            SubgroupPresentation(extId = extId,
+                name = name,
+                humanValue = humanValue)
         }
     }
 
-    fun sqlToPresentation(subgroupSqlList: List<SubgroupSql>): List<SubgroupPresentation> {
-        return subgroupSqlList.map { sqlToPresentation(it) }
+    fun toGson(subgroup: AbstractSubgroup): SubgroupGson {
+        return with(subgroup) {
+            SubgroupGson(humanValue = humanValue,
+                name = name,
+                extId = extId)
+        }
     }
+
+    fun <T : AbstractSubgroup> toDatabase(subgroupList: List<T>) =
+        subgroupList.map { toDatabase(it) }
+
+    fun <T : AbstractSubgroup> toPresentation(subgroupList: List<T>) =
+        subgroupList.map { toPresentation(it) }
+
+    fun <T : AbstractSubgroup> toGson(subgroupList: List<T>) =
+        subgroupList.map { toGson(it) }
 }

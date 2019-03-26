@@ -1,8 +1,8 @@
 package com.project.mobile_university.presentation.settings.interactor
 
-import com.project.mobile_university.domain.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.UserMapper
+import com.project.mobile_university.domain.services.SharedPreferenceService
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import io.reactivex.Observable

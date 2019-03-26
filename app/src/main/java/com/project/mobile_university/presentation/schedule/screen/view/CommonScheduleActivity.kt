@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractActivity
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -14,8 +13,9 @@ import com.project.mobile_university.presentation.schedule.screen.contract.Commo
 import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract.ScreenState
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-import kotlinx.android.synthetic.main.activity_common_schedule.*
 import org.greenrobot.eventbus.EventBus
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_common_schedule.*
 import java.util.*
 
 class CommonScheduleActivity : AbstractActivity<CommonScheduleContract.Presenter>() {
@@ -54,11 +54,17 @@ class CommonScheduleActivity : AbstractActivity<CommonScheduleContract.Presenter
 
         initCalendar()
         initBottomNavigationPanel()
-    }
 
-    override fun onStart() {
-        super.onStart()
-        initObservers()
+        presenter.currentScreenState.observe(this, Observer {
+            when (it) {
+                ScreenState.SETTINGS -> {
+                    calendar.calendarView.visibility = View.GONE
+                }
+                else -> {
+                    calendar.calendarView.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     private fun initCalendar() {
@@ -103,19 +109,6 @@ class CommonScheduleActivity : AbstractActivity<CommonScheduleContract.Presenter
                 }
             }
             return@listener true
-        }
-    }
-
-    private fun initObservers() {
-        presenter.currentScreenState.observe(this) {
-            when (it) {
-                ScreenState.SETTINGS -> {
-                    calendar.calendarView.visibility = View.GONE
-                }
-                else -> {
-                    calendar.calendarView.visibility = View.VISIBLE
-                }
-            }
         }
     }
 }

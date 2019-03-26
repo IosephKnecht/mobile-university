@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.iosephknecht.viper.observe
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -67,20 +67,16 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
             setHasFixedSize(false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        presenter.throwableObserver.observe(this) {
+        presenter.throwableObserver.observe(viewLifecycleOwner, Observer {
             if (it != null) Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
-        }
+        })
 
-        presenter.successLogout.observe(this) {
+        presenter.successLogout.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 val message = context!!.getString(R.string.success_logout)
                 Toasty.success(context!!, message, Toast.LENGTH_SHORT).show()
             }
-        }
+        })
     }
 }
