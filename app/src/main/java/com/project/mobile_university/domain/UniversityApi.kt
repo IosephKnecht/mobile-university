@@ -26,4 +26,7 @@ interface UniversityApi {
     fun getScheduleWeekForTeacher(@Header("Authorization") loginPassString: String,
                                   @Query("range") dateRangeString: String,
                                   @Query("teacher_id") teacherId: Long): Observable<BaseServerResponse<ScheduleDay>>
+
+    @GET("api/v1/auth/user/logout")
+    fun logout(@Header("Authorization") loginPassString: String): Observable<Nothing>
 }
