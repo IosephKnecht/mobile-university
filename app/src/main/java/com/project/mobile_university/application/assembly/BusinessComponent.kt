@@ -1,10 +1,10 @@
 package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
-import com.project.mobile_university.domain.ApiService
-import com.project.mobile_university.domain.DatabaseService
-import com.project.mobile_university.domain.ScheduleService
-import com.project.mobile_university.domain.SharedPreferenceService
+import com.project.mobile_university.domain.services.ApiService
+import com.project.mobile_university.domain.services.DatabaseService
+import com.project.mobile_university.domain.services.ScheduleService
+import com.project.mobile_university.domain.services.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import dagger.Component
 

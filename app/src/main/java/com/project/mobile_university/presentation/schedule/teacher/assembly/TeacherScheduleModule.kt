@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.project.mobile_university.domain.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
+import com.project.mobile_university.domain.services.ScheduleService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.interactor.TeacherScheduleInteractor

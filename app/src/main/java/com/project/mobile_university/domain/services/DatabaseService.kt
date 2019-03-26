@@ -1,7 +1,8 @@
-package com.project.mobile_university.domain
+package com.project.mobile_university.domain.services
 
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
+import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.utils.database.ScheduleSqlUtil
 import io.reactivex.Observable
 

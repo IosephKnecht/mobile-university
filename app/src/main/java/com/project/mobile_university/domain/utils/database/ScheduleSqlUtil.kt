@@ -1,8 +1,8 @@
 package com.project.mobile_university.domain.utils.database
 
-import com.project.mobile_university.data.room.shared.AbstractDao
+import com.project.mobile_university.data.shared.AbstractDao
 import com.project.mobile_university.data.room.entity.LessonSubgroup
-import com.project.mobile_university.data.room.shared.AbstractEntity
+import com.project.mobile_university.data.shared.AbstractEntity
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.data.gson.ScheduleDay as ScheduleDayGson

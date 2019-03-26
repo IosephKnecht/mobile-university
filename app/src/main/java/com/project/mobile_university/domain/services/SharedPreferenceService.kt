@@ -1,4 +1,4 @@
-package com.project.mobile_university.domain
+package com.project.mobile_university.domain.services
 
 import android.content.Context
 import com.google.gson.Gson

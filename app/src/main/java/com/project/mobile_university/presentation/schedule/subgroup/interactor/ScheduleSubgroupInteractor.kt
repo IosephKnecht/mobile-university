@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.schedule.subgroup.interactor
 
-import com.project.mobile_university.domain.ScheduleService
+import com.project.mobile_university.domain.services.ScheduleService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
@@ -18,7 +18,7 @@ class ScheduleSubgroupInteractor(private val scheduleService: ScheduleService,
 
         val observable = scheduleService
             .syncScheduleDaysForSubgroup(startWeek, endWeek, subgroupId)
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { ScheduleDayMapper.toPresentation(it) }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             result.apply {
