@@ -1,6 +1,6 @@
 package com.project.mobile_university.presentation.schedule.teacher.assembly
 
-import com.project.iosephknecht.viper.view.AndroidComponent
+import androidx.fragment.app.Fragment
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import dagger.BindsInstance
@@ -12,7 +12,7 @@ interface TeacherScheduleComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
-        fun with(androidComponent: AndroidComponent): Builder
+        fun with(fragment: Fragment): Builder
 
         @BindsInstance
         fun teacherId(teacherId: Long): Builder

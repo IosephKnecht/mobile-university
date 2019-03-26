@@ -1,12 +1,12 @@
 package com.project.mobile_university.presentation.login.assembly
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.iosephknecht.viper.viewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.services.ApiService
 import com.project.mobile_university.domain.services.SharedPreferenceService
-import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
@@ -19,8 +19,8 @@ import javax.inject.Inject
 @Module
 class LoginModule {
     @Provides
-    fun providePresenter(androidComponent: AndroidComponent, viewModelFactory: LoginViewModelFactory): LoginContract.Presenter {
-        return viewModelProvider(androidComponent, viewModelFactory).get(LoginPresenter::class.java)
+    fun providePresenter(fragment: Fragment, viewModelFactory: LoginViewModelFactory): LoginContract.Presenter {
+        return ViewModelProviders.of(fragment, viewModelFactory).get(LoginPresenter::class.java)
     }
 
     @Provides
