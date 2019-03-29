@@ -7,6 +7,8 @@ import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.adapters.retrofit.RxErrorCallFactory
+import com.project.mobile_university.domain.shared.ApiService
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
@@ -16,42 +18,39 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiService(private val sharedPreferenceService: SharedPreferenceService,
-                 private val gson: Gson,
-                 private val okHttpClient: OkHttpClient,
-                 private val retrofitExceptionAdapter: ExceptionAdapter) {
+class ApiServiceImpl(private val sharedPreferenceService: SharedPreferenceService,
+                     private val gson: Gson,
+                     private val okHttpClient: OkHttpClient,
+                     private val retrofitExceptionAdapter: ExceptionAdapter) : ApiService {
 
     private lateinit var universityApi: UniversityApi
 
-    var serviceUrl: String? = null
-        set(value) {
-            field = value
-
-            if (value != null && value.isNotEmpty()) {
-                universityApi = Retrofit.Builder()
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxErrorCallFactory.create(retrofitExceptionAdapter))
-                    .baseUrl(value)
-                    .build()
-                    .create(UniversityApi::class.java)
-            }
+    override fun updateServiceUrl(serviceUrl: String): Observable<Unit> {
+        return Observable.fromCallable {
+            universityApi = Retrofit.Builder()
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxErrorCallFactory.create(retrofitExceptionAdapter))
+                .baseUrl(serviceUrl)
+                .build()
+                .create(UniversityApi::class.java)
         }
+    }
 
-    fun login(login: String, password: String): Observable<BaseServerResponse<User>> {
+    override fun login(login: String, password: String): Observable<BaseServerResponse<User>> {
         val authString = AuthUtil.convertToBase64(login, password)
 
         return universityApi.login(authString)
             .subscribeOn(Schedulers.io())
     }
 
-    fun logout(): Observable<Nothing> {
+    override fun logout(): Observable<Nothing> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         return universityApi.logout(loginPassString)
     }
 
-    fun getScheduleByDate(currentDate: Date,
-                          subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleByDate(currentDate: Date,
+                                   subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
 
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val currentDateString = CalendarUtil.convertToSimpleFormat(currentDate)
@@ -59,18 +58,18 @@ class ApiService(private val sharedPreferenceService: SharedPreferenceService,
         return universityApi.getScheduleDayForSubgroup(loginPassString, currentDateString, subgroupId)
     }
 
-    fun getScheduleOfWeekForSubgroup(startWeek: Date,
-                                     endWeek: Date,
-                                     subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleOfWeekForSubgroup(startWeek: Date,
+                                              endWeek: Date,
+                                              subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 
         return universityApi.getScheduleWeekForSubgroup(loginPassString, dateRangeString, subgroupId)
     }
 
-    fun getScheduleOfWeekForTeacher(startWeek: Date,
-                                    endWeek: Date,
-                                    teacherId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleOfWeekForTeacher(startWeek: Date,
+                                             endWeek: Date,
+                                             teacherId: Long): Observable<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 

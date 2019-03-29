@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
-import com.project.mobile_university.domain.services.ApiService
-import com.project.mobile_university.domain.services.SharedPreferenceService
+import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
@@ -25,10 +24,9 @@ class LoginModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(apiService: ApiService,
-                          sharedPreferenceService: SharedPreferenceService,
+    fun provideInteractor(loginRepository: LoginRepository,
                           errorHandler: ExceptionConverter): LoginContract.Interactor {
-        return LoginInteractor(apiService, sharedPreferenceService, errorHandler)
+        return LoginInteractor(loginRepository, errorHandler)
     }
 
     @Provides

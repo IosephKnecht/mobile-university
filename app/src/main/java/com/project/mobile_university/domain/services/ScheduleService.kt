@@ -5,6 +5,9 @@ import com.project.mobile_university.data.gson.Teacher
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
+import com.project.mobile_university.domain.shared.ApiService
+import com.project.mobile_university.domain.shared.DatabaseService
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction

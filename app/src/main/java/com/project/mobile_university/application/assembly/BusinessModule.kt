@@ -12,10 +12,15 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
-import com.project.mobile_university.domain.services.ApiService
-import com.project.mobile_university.domain.services.DatabaseService
+import com.project.mobile_university.domain.repository.LoginRepositoryImpl
+import com.project.mobile_university.domain.services.ApiServiceImpl
+import com.project.mobile_university.domain.services.DatabaseServiceImpl
 import com.project.mobile_university.domain.services.ScheduleService
-import com.project.mobile_university.domain.services.SharedPreferenceService
+import com.project.mobile_university.domain.services.SharedPreferenceServiceImpl
+import com.project.mobile_university.domain.shared.ApiService
+import com.project.mobile_university.domain.shared.DatabaseService
+import com.project.mobile_university.domain.shared.LoginRepository
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -28,14 +33,14 @@ class BusinessModule {
                           gson: Gson,
                           okHttpClient: OkHttpClient,
                           retrofitExceptionMatcher: ExceptionAdapter): ApiService {
-        return ApiService(sharePrefService, gson, okHttpClient, retrofitExceptionMatcher)
+        return ApiServiceImpl(sharePrefService, gson, okHttpClient, retrofitExceptionMatcher)
     }
 
     @Provides
     @PerBusinessLayerScope
     fun provideSharedPrefService(context: Context,
                                  gson: Gson): SharedPreferenceService {
-        return SharedPreferenceService(context, gson)
+        return SharedPreferenceServiceImpl(context, gson)
     }
 
     @Provides
@@ -59,7 +64,7 @@ class BusinessModule {
     @Provides
     @PerBusinessLayerScope
     fun provideDatabaseService(database: UniversityDatabase): DatabaseService {
-        return DatabaseService(database)
+        return DatabaseServiceImpl(database)
     }
 
     @Provides
@@ -88,5 +93,12 @@ class BusinessModule {
                                databaseService: DatabaseService,
                                sharePrefService: SharedPreferenceService): ScheduleService {
         return ScheduleService(apiService, databaseService, sharePrefService)
+    }
+
+    @Provides
+    @PerBusinessLayerScope
+    fun provideLoginRepository(apiService: ApiService,
+                               sharedPreferenceService: SharedPreferenceService): LoginRepository {
+        return LoginRepositoryImpl(apiService, sharedPreferenceService)
     }
 }
