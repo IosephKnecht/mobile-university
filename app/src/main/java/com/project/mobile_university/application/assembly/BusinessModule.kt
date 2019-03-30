@@ -13,14 +13,11 @@ import com.project.mobile_university.domain.adapters.exception.RetrofitException
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
 import com.project.mobile_university.domain.repository.LoginRepositoryImpl
+import com.project.mobile_university.domain.repository.ScheduleRepositoryImpl
 import com.project.mobile_university.domain.services.ApiServiceImpl
 import com.project.mobile_university.domain.services.DatabaseServiceImpl
-import com.project.mobile_university.domain.services.ScheduleService
 import com.project.mobile_university.domain.services.SharedPreferenceServiceImpl
-import com.project.mobile_university.domain.shared.ApiService
-import com.project.mobile_university.domain.shared.DatabaseService
-import com.project.mobile_university.domain.shared.LoginRepository
-import com.project.mobile_university.domain.shared.SharedPreferenceService
+import com.project.mobile_university.domain.shared.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -89,10 +86,10 @@ class BusinessModule {
 
     @Provides
     @PerBusinessLayerScope
-    fun provideScheduleService(apiService: ApiService,
-                               databaseService: DatabaseService,
-                               sharePrefService: SharedPreferenceService): ScheduleService {
-        return ScheduleService(apiService, databaseService, sharePrefService)
+    fun provideScheduleRepository(apiService: ApiService,
+                                  databaseService: DatabaseService,
+                                  sharePrefService: SharedPreferenceService): ScheduleRepository {
+        return ScheduleRepositoryImpl(apiService, databaseService, sharePrefService)
     }
 
     @Provides

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
-import com.project.mobile_university.domain.services.ScheduleService
+import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.interactor.ScheduleSubgroupInteractor
@@ -25,9 +25,9 @@ class ScheduleModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(scheduleService: ScheduleService,
+    fun provideInteractor(scheduleRepository: ScheduleRepository,
                           errorHandler: ExceptionConverter): ScheduleSubgroupContract.Interactor {
-        return ScheduleSubgroupInteractor(scheduleService,
+        return ScheduleSubgroupInteractor(scheduleRepository,
             errorHandler)
     }
 }

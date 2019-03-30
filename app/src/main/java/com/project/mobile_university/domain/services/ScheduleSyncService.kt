@@ -49,7 +49,7 @@ class ScheduleSyncService : IntentService(TAG) {
     override fun onHandleIntent(intent: Intent?) {
         compositeDisposable.add(AppDelegate
             .businessComponent
-            .scheduleService()
+            .scheduleRepository()
             .syncSchedule()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

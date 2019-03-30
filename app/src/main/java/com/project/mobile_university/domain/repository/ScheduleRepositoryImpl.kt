@@ -1,25 +1,24 @@
-package com.project.mobile_university.domain.services
+package com.project.mobile_university.domain.repository
 
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
 import com.project.mobile_university.data.presentation.ScheduleDay
-import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.shared.ApiService
 import com.project.mobile_university.domain.shared.DatabaseService
+import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import java.util.*
 
-class ScheduleService(private val apiService: ApiService,
-                      private val databaseService: DatabaseService,
-                      private val sharedPreferenceService: SharedPreferenceService) {
-
-    fun syncScheduleDaysForSubgroup(startDate: Date,
-                                    endDate: Date,
-                                    subgroupId: Long): Observable<List<ScheduleDayWithLessons>> {
+class ScheduleRepositoryImpl(private val apiService: ApiService,
+                             private val databaseService: DatabaseService,
+                             private val sharedPreferenceService: SharedPreferenceService) : ScheduleRepository {
+    override fun syncScheduleDaysForSubgroup(startDate: Date,
+                                             endDate: Date,
+                                             subgroupId: Long): Observable<List<ScheduleDay>> {
 
         val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
 
@@ -28,12 +27,13 @@ class ScheduleService(private val apiService: ApiService,
                 databaseService.saveScheduleDay(it.objectList!!, datesRange)
             }
             .flatMap { databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId) }
+            .map { ScheduleDayMapper.toPresentation(it) }
     }
 
 
-    fun syncScheduleDaysForTeacher(startDate: Date,
-                                   endDate: Date,
-                                   teacherId: Long): Observable<List<ScheduleDayWithLessons>> {
+    override fun syncScheduleDaysForTeacher(startDate: Date,
+                                            endDate: Date,
+                                            teacherId: Long): Observable<List<ScheduleDay>> {
         val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
 
         return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
@@ -41,9 +41,10 @@ class ScheduleService(private val apiService: ApiService,
                 databaseService.saveScheduleDay(it.objectList!!, datesRange)
             }
             .flatMap { databaseService.getScheduleDayListForTeacher(datesRange, teacherId) }
+            .map { ScheduleDayMapper.toPresentation(it) }
     }
 
-    fun syncSchedule(): Observable<List<ScheduleDay>> {
+    override fun syncSchedule(): Observable<List<ScheduleDay>> {
         val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(Date())
         val datesRange = CalendarUtil.buildRangeBetweenDates(monday, sunday)
 
