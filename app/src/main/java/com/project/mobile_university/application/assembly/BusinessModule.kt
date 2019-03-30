@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.project.mobile_university.BuildConfig
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.*
@@ -13,7 +14,9 @@ import com.project.mobile_university.domain.adapters.exception.RetrofitException
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
 import com.project.mobile_university.domain.repository.LoginRepositoryImpl
+import com.project.mobile_university.domain.repository.LoginRepositoryMock
 import com.project.mobile_university.domain.repository.ScheduleRepositoryImpl
+import com.project.mobile_university.domain.repository.ScheduleRepositoryMock
 import com.project.mobile_university.domain.services.ApiServiceImpl
 import com.project.mobile_university.domain.services.DatabaseServiceImpl
 import com.project.mobile_university.domain.services.SharedPreferenceServiceImpl
@@ -89,13 +92,21 @@ class BusinessModule {
     fun provideScheduleRepository(apiService: ApiService,
                                   databaseService: DatabaseService,
                                   sharePrefService: SharedPreferenceService): ScheduleRepository {
-        return ScheduleRepositoryImpl(apiService, databaseService, sharePrefService)
+        return if (BuildConfig.MOCK_SETTINGS) {
+            ScheduleRepositoryMock()
+        } else {
+            ScheduleRepositoryImpl(apiService, databaseService, sharePrefService)
+        }
     }
 
     @Provides
     @PerBusinessLayerScope
     fun provideLoginRepository(apiService: ApiService,
                                sharedPreferenceService: SharedPreferenceService): LoginRepository {
-        return LoginRepositoryImpl(apiService, sharedPreferenceService)
+        return if (BuildConfig.MOCK_SETTINGS) {
+            LoginRepositoryMock()
+        } else {
+            LoginRepositoryImpl(apiService, sharedPreferenceService)
+        }
     }
 }
