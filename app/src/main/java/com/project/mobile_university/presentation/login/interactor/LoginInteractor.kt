@@ -1,29 +1,18 @@
 package com.project.mobile_university.presentation.login.interactor
 
 import com.project.mobile_university.data.presentation.ServerConfig
-import com.project.mobile_university.domain.services.ApiService
-import com.project.mobile_university.domain.services.SharedPreferenceService
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
-import com.project.mobile_university.domain.utils.AuthUtil
+import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.login.contract.LoginContract
-import io.reactivex.Observable
 
 class LoginInteractor(
-    private val apiService: ApiService,
-    private val sharedPreferenceService: SharedPreferenceService,
+    private val loginRepository: LoginRepository,
     errorHandler: ExceptionConverter
 ) : InteractorWithErrorHandler<LoginContract.Listener>(errorHandler), LoginContract.Interactor {
 
     override fun login(login: String, password: String) {
-        val observable = apiService.login(login, password)
-            .map { serverResponse ->
-                serverResponse.objectList?.takeIf { it.isNotEmpty() }
-                    ?.let { sharedPreferenceService.saveUserInfo(it[0]) }
-                serverResponse
-            }
-
-        simpleDiscardResult(observable) { listener, result ->
+        simpleDiscardResult(loginRepository.login(login, password)) { listener, result ->
             result.apply {
                 when {
                     data != null -> {
@@ -39,17 +28,11 @@ class LoginInteractor(
     }
 
     override fun setServiceUrl(serviceUrl: String) {
-        apiService.serviceUrl = serviceUrl
+        simpleDiscardResult(loginRepository.setServiceUrl(serviceUrl)){ _, _->}
     }
 
     override fun saveServerConfig(serverConfig: ServerConfig) {
-        val observable = Observable.fromCallable {
-            sharedPreferenceService.saveServerConfig(serverConfig)
-        }.map {
-            sharedPreferenceService.getServerConfig()
-        }
-
-        simpleDiscardResult(observable) { listener, result ->
+        simpleDiscardResult(loginRepository.saveServerConfig(serverConfig)) { listener, result ->
             result.apply {
                 listener!!.onObtainServerConfig(data, throwable)
             }
@@ -57,18 +40,12 @@ class LoginInteractor(
     }
 
     override fun getServerConfig() {
-        val observable = Observable.fromCallable {
-            sharedPreferenceService.getServerConfig()
-        }
-
-        simpleDiscardResult(observable) { listener, result ->
+        simpleDiscardResult(loginRepository.getServerConfig()) { listener, result ->
             listener!!.onObtainServerConfig(result.data, result.throwable)
         }
     }
 
     override fun saveLoginPassString(login: String, pass: String) {
-        AuthUtil.convertToBase64(login, pass).let {
-            sharedPreferenceService.saveLoginPassString(it)
-        }
+        simpleDiscardResult(loginRepository.saveLoginPass(login, pass)) { _, _ -> }
     }
 }

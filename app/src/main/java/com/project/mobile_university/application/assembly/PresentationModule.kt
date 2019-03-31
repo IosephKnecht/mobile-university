@@ -1,6 +1,8 @@
 package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerPresentationLayerScope
+import com.project.mobile_university.presentation.lessonInfo.LessonInfoInputModule
+import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInputModule
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.teacher.TeacherScheduleModuleInput
@@ -28,5 +30,11 @@ class PresentationModule {
     @PerPresentationLayerScope
     fun provideSettingsInputModule(): SettingsContract.InputModule {
         return SettingsInputModule()
+    }
+
+    @Provides
+    @PerPresentationLayerScope
+    fun provideLessonInfoInputModule(): LessonInfoContract.InputModule {
+        return LessonInfoInputModule()
     }
 }

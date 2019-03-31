@@ -89,7 +89,7 @@
                     android:background="@drawable/bg_login_button_selector"
                     android:enabled="@{viewModel.enterEnabled}"
                     android:text="@string/login_button"
-                    android:textSize="@dimen/header3"
+                    android:textSize="@dimen/small_text_size"
                     android:visibility="@{!viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
                     tools:enabled="false" />
 

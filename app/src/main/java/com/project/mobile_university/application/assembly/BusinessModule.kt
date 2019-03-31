@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.project.mobile_university.BuildConfig
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.*
@@ -12,10 +13,14 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
-import com.project.mobile_university.domain.services.ApiService
-import com.project.mobile_university.domain.services.DatabaseService
-import com.project.mobile_university.domain.services.ScheduleService
-import com.project.mobile_university.domain.services.SharedPreferenceService
+import com.project.mobile_university.domain.repository.LoginRepositoryImpl
+import com.project.mobile_university.domain.repository.LoginRepositoryMock
+import com.project.mobile_university.domain.repository.ScheduleRepositoryImpl
+import com.project.mobile_university.domain.repository.ScheduleRepositoryMock
+import com.project.mobile_university.domain.services.ApiServiceImpl
+import com.project.mobile_university.domain.services.DatabaseServiceImpl
+import com.project.mobile_university.domain.services.SharedPreferenceServiceImpl
+import com.project.mobile_university.domain.shared.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -28,14 +33,14 @@ class BusinessModule {
                           gson: Gson,
                           okHttpClient: OkHttpClient,
                           retrofitExceptionMatcher: ExceptionAdapter): ApiService {
-        return ApiService(sharePrefService, gson, okHttpClient, retrofitExceptionMatcher)
+        return ApiServiceImpl(sharePrefService, gson, okHttpClient, retrofitExceptionMatcher)
     }
 
     @Provides
     @PerBusinessLayerScope
     fun provideSharedPrefService(context: Context,
                                  gson: Gson): SharedPreferenceService {
-        return SharedPreferenceService(context, gson)
+        return SharedPreferenceServiceImpl(context, gson)
     }
 
     @Provides
@@ -59,7 +64,7 @@ class BusinessModule {
     @Provides
     @PerBusinessLayerScope
     fun provideDatabaseService(database: UniversityDatabase): DatabaseService {
-        return DatabaseService(database)
+        return DatabaseServiceImpl(database)
     }
 
     @Provides
@@ -84,9 +89,24 @@ class BusinessModule {
 
     @Provides
     @PerBusinessLayerScope
-    fun provideScheduleService(apiService: ApiService,
-                               databaseService: DatabaseService,
-                               sharePrefService: SharedPreferenceService): ScheduleService {
-        return ScheduleService(apiService, databaseService, sharePrefService)
+    fun provideScheduleRepository(apiService: ApiService,
+                                  databaseService: DatabaseService,
+                                  sharePrefService: SharedPreferenceService): ScheduleRepository {
+        return if (BuildConfig.MOCK_SETTINGS) {
+            ScheduleRepositoryMock()
+        } else {
+            ScheduleRepositoryImpl(apiService, databaseService, sharePrefService)
+        }
+    }
+
+    @Provides
+    @PerBusinessLayerScope
+    fun provideLoginRepository(apiService: ApiService,
+                               sharedPreferenceService: SharedPreferenceService): LoginRepository {
+        return if (BuildConfig.MOCK_SETTINGS) {
+            LoginRepositoryMock()
+        } else {
+            LoginRepositoryImpl(apiService, sharedPreferenceService)
+        }
     }
 }

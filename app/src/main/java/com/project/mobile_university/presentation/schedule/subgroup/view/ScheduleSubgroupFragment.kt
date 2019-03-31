@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +62,9 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
             this.adapter = this@ScheduleSubgroupFragment.adapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL).apply {
+                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+            })
         }
 
         schedule_swipe_layout.setOnRefreshListener {

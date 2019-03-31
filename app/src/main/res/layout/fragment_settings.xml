@@ -26,6 +26,7 @@
 
         <TextView
             android:id="@+id/first_name"
+            style="@style/PrimaryText.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_margin"
@@ -37,6 +38,7 @@
 
         <TextView
             android:id="@+id/last_name"
+            style="@style/PrimaryText.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_margin"
@@ -54,7 +56,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/barrier"/>
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            tools:listitem="@layout/item_settings"/>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
@@ -62,8 +65,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="user_photo, last_name"
-            tools:listitem="@layout/item_settings"/>
+            app:constraint_referenced_ids="user_photo, last_name"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -18,6 +18,7 @@
 
         <TextView
             android:id="@+id/primary_text_exit"
+            style="@style/HeaderText.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{item.header}"
@@ -25,6 +26,7 @@
 
         <TextView
             android:id="@+id/description"
+            style="@style/SecondaryText.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/primary_text_exit"
@@ -32,10 +34,12 @@
             android:text="@{item.description}"
             tools:text="@string/exit_description"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            style="@style/IconStyle.Medium"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_right"
             tools:text=">"/>
     </RelativeLayout>
 </layout>

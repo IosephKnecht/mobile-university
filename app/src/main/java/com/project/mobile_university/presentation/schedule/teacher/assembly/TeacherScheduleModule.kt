@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
-import com.project.mobile_university.domain.services.ScheduleService
+import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.interactor.TeacherScheduleInteractor
@@ -24,10 +24,10 @@ class TeacherScheduleModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(scheduleService: ScheduleService,
+    fun provideInteractor(scheduleRepository: ScheduleRepository,
                           exceptionConverter: ExceptionConverter): TeacherScheduleContract.Interactor {
 
-        return TeacherScheduleInteractor(scheduleService, exceptionConverter)
+        return TeacherScheduleInteractor(scheduleRepository, exceptionConverter)
     }
 }
 

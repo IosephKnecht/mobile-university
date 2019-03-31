@@ -26,6 +26,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "boolean", "MOCK_SETTINGS", "false"
+        }
+        debug {
+            buildConfigField "boolean", "MOCK_SETTINGS", "true"
         }
     }
     dataBinding {

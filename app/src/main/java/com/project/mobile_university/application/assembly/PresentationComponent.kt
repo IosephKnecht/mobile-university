@@ -1,6 +1,7 @@
 package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerPresentationLayerScope
+import com.project.mobile_university.presentation.lessonInfo.assembly.LessonInfoComponent
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.schedule.screen.assembly.CommonScheduleComponent
 import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract
@@ -17,4 +18,5 @@ interface PresentationComponent {
     fun subgroupScheduleSubComponent(): ScheduleSubgroupComponent.Builder
     fun teacherScheduleSubComponent(): TeacherScheduleComponent.Builder
     fun settingsSubComponent(): SettingsComponent.Builder
+    fun lessonInfoSubComponent(): LessonInfoComponent.Builder
 }
