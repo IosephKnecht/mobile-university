@@ -28,6 +28,10 @@ class ScheduleRepositoryMock : ScheduleRepository {
         }
     }
 
+    override fun getLesson(lessonId: Long): Observable<Lesson> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun generateScheduleForSubgroup(startDate: Date, endDate: Date, subgroupId: Long): List<ScheduleDay> {
         var current = startDate.clone() as Date
         val fakeDays = mutableListOf<ScheduleDay>()
