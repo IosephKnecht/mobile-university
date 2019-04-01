@@ -12,7 +12,7 @@ class LessonInfoInteractor(private val scheduleRepository: ScheduleRepository) :
 
     override fun getLesson(lessonId: Long, fromCache: Boolean) {
         compositeDisposable.add(discardResult(scheduleRepository.getLesson(lessonId)) { listener, result ->
-            listener?.onObtainLessonFromCache(result.data, result.throwable)
+            listener?.onObtainLesson(result.data, result.throwable)
         })
     }
 
