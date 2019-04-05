@@ -64,7 +64,7 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>() {
 
 
         binding.lessonInfoRefresh.setOnRefreshListener {
-            presenter.obtainLessonFromOnline()
+            presenter.obtainLessonFromCache()
             binding.lessonInfoRefresh.isRefreshing = true
         }
 

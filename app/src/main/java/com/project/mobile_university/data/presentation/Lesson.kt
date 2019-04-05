@@ -4,7 +4,7 @@ import com.project.mobile_university.data.shared.AbstractLesson
 
 data class Lesson(override val extId: Long,
                   override val dayId: Long,
-                  override val currentDate: String,
+                  override var currentDate: String,
                   override val lectureHallName: String,
                   override val lectureTypeName: String,
                   override val lessonStart: String,

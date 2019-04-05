@@ -56,7 +56,9 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ScheduleSubgroupAdapter()
+        adapter = ScheduleSubgroupAdapter { lessonId ->
+            presenter.showLessonInfo(lessonId)
+        }
 
         lesson_list.apply {
             this.adapter = this@ScheduleSubgroupFragment.adapter

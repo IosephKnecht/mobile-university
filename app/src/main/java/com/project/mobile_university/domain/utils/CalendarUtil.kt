@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object CalendarUtil {
-    private enum class DayEnum(private val calendarEnum: Int,
-                               val appEnum: Int) {
+    enum class DayEnum(
+        private val calendarEnum: Int,
+        val appEnum: Int
+    ) {
         MONDAY(Calendar.MONDAY, 1),
         TUESDAY(Calendar.TUESDAY, 2),
         WEDNESDAY(Calendar.WEDNESDAY, 3),
@@ -61,6 +63,12 @@ object CalendarUtil {
         }
 
         return datesInRange
+    }
+
+    fun getDayEnum(date: Date): Int {
+        val calendar = Calendar.getInstance().apply { time = date }
+        val calendarEnum = calendar.get(Calendar.DAY_OF_WEEK)
+        return DayEnum.getAppEnumDay(calendarEnum)
     }
 
     private fun obtainDayOfWeek(date: Date): Int {
