@@ -41,4 +41,14 @@
         <string name="clear_cache_description">Allows to reduce the amount of application memory, but reduces the speed of the application</string>
         <string name="success_logout">Managed to successfully close session</string>
     <!--Settings screen scope-->
+
+    <!--Lesson info screen-->
+        <string name="lesson_type_string">Lesson type: %s</string>
+        <string name="subject_string">Subject: %s</string>
+        <string name="hall_string">Hall: %s</string>
+        <string name="teacher_string">Teacher: %s</string>
+        <string name="subgroups_title">Subgroups</string>
+        <string name="subgroup_string">Subgroup: %s</string>
+        <string name="human_value_string">Human value: %s</string>
+    <!--Lesson info screen-->
 </resources>

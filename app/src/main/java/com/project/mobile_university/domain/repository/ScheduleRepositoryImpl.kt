@@ -2,7 +2,10 @@ package com.project.mobile_university.domain.repository
 
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
+import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
+import com.project.mobile_university.domain.mappers.LessonMapper
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.shared.ApiService
 import com.project.mobile_university.domain.shared.DatabaseService
@@ -77,6 +80,11 @@ class ScheduleRepositoryImpl(private val apiService: ApiService,
             }
 
         return diffObservable
+    }
+
+    override fun getLesson(lessonId: Long): Observable<Lesson> {
+        return databaseService.getLessonWithSubgroup(lessonId)
+            .map { LessonMapper.toPresentation(it) }
     }
 
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {

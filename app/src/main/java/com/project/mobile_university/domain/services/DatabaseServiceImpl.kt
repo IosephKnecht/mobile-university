@@ -1,6 +1,7 @@
 package com.project.mobile_university.domain.services
 
 import com.project.mobile_university.data.gson.ScheduleDay
+import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.shared.DatabaseService
@@ -28,6 +29,12 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
             database.sheduleDayDao().getScheduleDayWithLessonsForTeacher(datesRange, teacherId)
         }
 
+    }
+
+    override fun getLessonWithSubgroup(lessonId: Long): Observable<LessonWithSubgroups> {
+        return makeReactive {
+            database.lessonSubgroupDao().getLessonWithSubgroups(lessonId)
+        }
     }
 
     private fun <T> makeReactive(block: () -> T): Observable<T> {

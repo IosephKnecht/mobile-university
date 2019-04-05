@@ -8,9 +8,10 @@ import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.settings.contract.SettingsContract.State
 
-class SettingsPresenter(private val interactor: SettingsContract.Interactor,
-                        private val router: SettingsContract.Router)
-    : AbstractPresenter(), SettingsContract.Presenter, SettingsContract.Listener,
+class SettingsPresenter(
+    private val interactor: SettingsContract.Interactor,
+    private val router: SettingsContract.Router
+) : AbstractPresenter(), SettingsContract.Presenter, SettingsContract.Listener,
     SettingsContract.ObservableStorage, SettingsContract.RouterListener {
 
     override val userInfo = MutableLiveData<UserInfo>()
@@ -52,7 +53,7 @@ class SettingsPresenter(private val interactor: SettingsContract.Interactor,
                 throwableObserver.postValue(throwable.localizedMessage)
             }
             userInfo != null -> {
-                this.userInfo.postValue(userInfo)
+                this.userInfo.value = userInfo
             }
         }
     }

@@ -4,20 +4,76 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
+import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.databinding.FragmentLessonInfoBinding
+import com.project.mobile_university.presentation.lessonInfo.assembly.LessonInfoComponent
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.lessonInfo.view.adapter.SubgroupAdapter
 
 class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>() {
-    override fun inject() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    companion object {
+        private const val LESSON_KEY = "lesson_key"
+
+        fun createInstance(lessonId: Long) = LessonInfoFragment().apply {
+            arguments = Bundle().apply {
+                putLong(LESSON_KEY, lessonId)
+            }
+        }
     }
 
-    override fun providePresenter(): LessonInfoContract.Presenter {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private lateinit var diComponent: LessonInfoComponent
+    private lateinit var binding: FragmentLessonInfoBinding
+    private lateinit var adapter: SubgroupAdapter
+
+    override fun inject() {
+        val lessonId = arguments?.getLong(LESSON_KEY) ?: throw RuntimeException("Lesson id could not be null")
+
+        diComponent = AppDelegate.presentationComponent
+            .lessonInfoSubComponent()
+            .with(this)
+            .lessonId(lessonId)
+            .build()
     }
+
+    override fun providePresenter() = diComponent.getPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_lesson_info, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lesson_info, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.lessonInfo = presenter
+        adapter = SubgroupAdapter()
+
+        binding.subgroupList.apply {
+            adapter = this@LessonInfoFragment.adapter
+            setHasFixedSize(false)
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        }
+
+
+        binding.lessonInfoRefresh.setOnRefreshListener {
+            presenter.obtainLessonFromCache()
+            binding.lessonInfoRefresh.isRefreshing = true
+        }
+
+        presenter.lesson.observe(viewLifecycleOwner, Observer { lesson ->
+            lesson?.let {
+                adapter.subgroupList = it.subgroupList
+                adapter.notifyDataSetChanged()
+            }
+            binding.lessonInfoRefresh.isRefreshing = false
+        })
     }
 }

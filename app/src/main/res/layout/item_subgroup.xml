@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.project.mobile_university.data.presentation.Subgroup"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_margin">
+
+        <TextView
+            android:id="@+id/subgroup"
+            style="@style/HeaderText.Medium"
+            setSubgroup="@{model.name}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Subgroup: 15-IS-2(B)"/>
+
+        <TextView
+            android:id="@+id/subgroup_value"
+            style="@style/PrimaryText.Medium"
+            setHumanValue="@{model.humanValue}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subgroup"
+            android:layout_marginTop="@dimen/small_margin"
+            tools:text="Human value: 30"/>
+
+    </RelativeLayout>
+</layout>

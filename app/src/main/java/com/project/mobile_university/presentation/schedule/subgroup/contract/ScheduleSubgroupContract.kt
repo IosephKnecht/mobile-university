@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
+import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ScheduleDay as ScheduleDayPresentation
 import java.util.*
 
@@ -22,6 +23,7 @@ interface ScheduleSubgroupContract {
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainLessonList(subgroupId: Long)
+        fun showLessonInfo(lessonId: Long)
     }
 
     interface Listener : MvpInteractor.Listener {
@@ -36,7 +38,9 @@ interface ScheduleSubgroupContract {
 
     interface RouterListener : MvpRouter.Listener
 
-    interface Router : MvpRouter<RouterListener>
+    interface Router : MvpRouter<RouterListener> {
+        fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long)
+    }
 
     interface InputModule {
         fun createFragment(subgroupId: Long): Fragment

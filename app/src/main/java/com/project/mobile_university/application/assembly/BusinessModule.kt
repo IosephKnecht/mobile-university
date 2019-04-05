@@ -104,7 +104,7 @@ class BusinessModule {
     fun provideLoginRepository(apiService: ApiService,
                                sharedPreferenceService: SharedPreferenceService): LoginRepository {
         return if (BuildConfig.MOCK_SETTINGS) {
-            LoginRepositoryMock()
+            LoginRepositoryMock(sharedPreferenceService)
         } else {
             LoginRepositoryImpl(apiService, sharedPreferenceService)
         }

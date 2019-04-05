@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
 class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract.Interactor,
+                                private val router: ScheduleSubgroupContract.Router,
                                 private val subgroupId: Long)
     : AbstractPresenter(), ScheduleSubgroupContract.Presenter, ScheduleSubgroupContract.Listener {
 
@@ -52,6 +53,10 @@ class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract
 
     override fun obtainLessonList(subgroupId: Long) {
         interactor.getLessonList(weekStart, weekEnd, subgroupId)
+    }
+
+    override fun showLessonInfo(lessonId: Long) {
+        router.showLessonInfo(androidComponent!!, lessonId)
     }
 
     override fun onObtainLessonList(lessonList: List<ScheduleDay>?, throwable: Throwable?) {
