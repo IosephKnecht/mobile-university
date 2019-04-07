@@ -16,6 +16,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.application.annotations.Refactor
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.databinding.FragmentLoginBinding
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
 import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.view.dialog.ChangeServerDialog
@@ -25,7 +26,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.concurrent.TimeUnit
 
-class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog {
+class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServerDialog, FragmentBackPressed {
     private lateinit var diComponent: LoginComponent
     private lateinit var binding: FragmentLoginBinding
 
@@ -92,6 +93,8 @@ class LoginFragment : AbstractFragment<LoginContract.Presenter>(), OnChangeServe
     override fun onChangeServerDialog(serverConfig: ServerConfig) {
         presenter.onChangeServerConfig(serverConfig)
     }
+
+    override fun onBackPressed() = true
 
     @Refactor("handle error")
     private fun observeViewModel(viewModel: LoginContract.ObservableStorage) {

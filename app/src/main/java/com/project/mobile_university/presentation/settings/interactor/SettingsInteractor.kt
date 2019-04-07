@@ -25,6 +25,7 @@ class SettingsInteractor(private val sharedPreferenceService: SharedPreferenceSe
 
     override fun logout() {
         val observable = Observable.fromCallable { sharedPreferenceService.removeLoginPassString() }
+            .map { sharedPreferenceService.removeUserInfo() }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             listener!!.onExit(result.throwable)

@@ -42,9 +42,11 @@ class SettingsPresenter(
     }
 
     override fun clearCache() {
+        throwableObserver.setValue("The functionality is in development.")
     }
 
     override fun exit() {
+        interactor.logout()
     }
 
     override fun onObtainUserInfo(userInfo: UserInfo?, throwable: Throwable?) {

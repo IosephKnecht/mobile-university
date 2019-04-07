@@ -10,10 +10,12 @@ class SettingsRouter : AbstractRouter<SettingsContract.RouterListener>(),
     SettingsContract.Router {
 
     override fun goToAuthScreen(androidComponent: AndroidComponent) {
-        androidComponent.activityComponent?.let {
-            val intent = MainActivity.createInstance(it.applicationContext)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            it.startActivity(intent)
+        // FIXME: bad solve
+        androidComponent.activityComponent?.apply {
+            startActivity(Intent(this, MainActivity::class.java).apply {
+                putExtra("LOGOUT", true)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            })
         }
     }
 }
