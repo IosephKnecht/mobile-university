@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
@@ -17,7 +18,7 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
 import java.util.*
 
-class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>() {
+class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -68,6 +69,21 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>() 
                 }
             })
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (childFragmentManager.backStackEntryCount == 0) {
+            return true
+        }
+
+        childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
+            if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
+                childFragmentManager.popBackStackImmediate()
+                return false
+            }
+        }
+
+        return false
     }
 
     private fun initCalendar() {

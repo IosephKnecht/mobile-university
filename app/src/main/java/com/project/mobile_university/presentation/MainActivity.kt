@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.project.mobile_university.R
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.login.view.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,14 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, fragment, LoginFragment.TAG)
                 .commit()
+        }
+    }
+
+    override fun onBackPressed() {
+        supportFragmentManager.findFragmentById(R.id.fragment_container)?.let { fragment ->
+            if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
+                super.onBackPressed()
+            }
         }
     }
 }

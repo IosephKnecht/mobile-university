@@ -13,6 +13,7 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentSettingsBinding
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.settings.view.adapter.SettingsAdapter
@@ -20,7 +21,7 @@ import com.project.mobile_university.presentation.settings.view.adapter.Settings
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
+class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), FragmentBackPressed {
 
     companion object {
         const val TAG = "settings_screen"
@@ -79,4 +80,6 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
             }
         })
     }
+
+    override fun onBackPressed() = true
 }
