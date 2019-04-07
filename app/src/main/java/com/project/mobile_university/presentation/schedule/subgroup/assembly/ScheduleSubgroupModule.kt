@@ -8,6 +8,8 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
+import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.interactor.ScheduleSubgroupInteractor
 import com.project.mobile_university.presentation.schedule.subgroup.presenter.ScheduleSubgroupPresenter
@@ -19,18 +21,23 @@ import javax.inject.Inject
 @Module
 class ScheduleModule {
     @Provides
-    fun providePresenter(fragment: Fragment,
-                         factory: ScheduleViewModelFactory
+    fun providePresenter(
+        fragment: Fragment,
+        factory: ScheduleViewModelFactory
     ): ScheduleSubgroupContract.Presenter {
         return ViewModelProviders.of(fragment, factory).get(ScheduleSubgroupPresenter::class.java)
     }
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(scheduleRepository: ScheduleRepository,
-                          errorHandler: ExceptionConverter): ScheduleSubgroupContract.Interactor {
-        return ScheduleSubgroupInteractor(scheduleRepository,
-            errorHandler)
+    fun provideInteractor(
+        scheduleRepository: ScheduleRepository,
+        errorHandler: ExceptionConverter
+    ): ScheduleSubgroupContract.Interactor {
+        return ScheduleSubgroupInteractor(
+            scheduleRepository,
+            errorHandler
+        )
     }
 
     @Provides
@@ -38,19 +45,27 @@ class ScheduleModule {
     fun provideRouter(lessonInfoInputModule: LessonInfoContract.InputModule): ScheduleSubgroupContract.Router {
         return ScheduleSubgroupRouter(lessonInfoInputModule)
     }
+
+    @Provides
+    fun provideHostObservableStorage(fragment: Fragment): ScheduleHostContract.ObservableStorage {
+        return ViewModelProviders.of(fragment.parentFragment!!).get(ScheduleHostPresenter::class.java)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
 @PerFeatureLayerScope
-class ScheduleViewModelFactory @Inject constructor(private val interactor: ScheduleSubgroupContract.Interactor,
-                                                   private val router: ScheduleSubgroupContract.Router,
-                                                   private val groupId: Long)
-    : ViewModelProvider.Factory {
+class ScheduleViewModelFactory @Inject constructor(
+    private val interactor: ScheduleSubgroupContract.Interactor,
+    private val router: ScheduleSubgroupContract.Router,
+    private val groupId: Long,
+    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ScheduleSubgroupPresenter(
             interactor,
             router,
-            groupId
+            groupId,
+            hostObservableStorage
         ) as T
     }
 

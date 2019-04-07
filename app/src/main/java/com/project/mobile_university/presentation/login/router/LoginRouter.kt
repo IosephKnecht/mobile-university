@@ -2,22 +2,36 @@ package com.project.mobile_university.presentation.login.router
 
 import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.R
 import com.project.mobile_university.presentation.login.contract.LoginContract
-import com.project.mobile_university.presentation.schedule.screen.view.CommonScheduleActivity
-import com.project.mobile_university.presentation.schedule.screen.contract.CommonScheduleContract.ScreenState
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 
-class LoginRouter
-    : AbstractRouter<LoginContract.RouterListener>(), LoginContract.Router {
+class LoginRouter(private val scheduleHostInputModule: ScheduleHostContract.InputModule) :
+    AbstractRouter<LoginContract.RouterListener>(), LoginContract.Router {
 
     override fun showStudentScheduleScreen(androidComponent: AndroidComponent, subgroupId: Long) {
-        androidComponent.activityComponent?.let {
-            it.startActivity(CommonScheduleActivity.createInstance(it, subgroupId, ScreenState.SUBGROUP))
+        androidComponent.fragmentManagerComponent?.apply {
+            beginTransaction()
+                .replace(
+                    R.id.fragment_container, scheduleHostInputModule.createFragment(
+                        identifier = subgroupId,
+                        screenType = ScheduleHostContract.ScreenType.SUBGROUP
+                    )
+                )
+                .commit()
         }
     }
 
     override fun showTeacherScheduleScreen(androidComponent: AndroidComponent, teacherId: Long) {
-        androidComponent.activityComponent?.let {
-            it.startActivity(CommonScheduleActivity.createInstance(it, teacherId, ScreenState.TEACHER))
+        androidComponent.fragmentManagerComponent?.apply {
+            beginTransaction()
+                .replace(
+                    R.id.fragment_container, scheduleHostInputModule.createFragment(
+                        identifier = teacherId,
+                        screenType = ScheduleHostContract.ScreenType.TEACHER
+                    )
+                )
+                .commit()
         }
     }
 }

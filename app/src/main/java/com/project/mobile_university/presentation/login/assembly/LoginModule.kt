@@ -11,6 +11,7 @@ import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.login.interactor.LoginInteractor
 import com.project.mobile_university.presentation.login.presenter.LoginPresenter
 import com.project.mobile_university.presentation.login.router.LoginRouter
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -24,22 +25,26 @@ class LoginModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(loginRepository: LoginRepository,
-                          errorHandler: ExceptionConverter): LoginContract.Interactor {
+    fun provideInteractor(
+        loginRepository: LoginRepository,
+        errorHandler: ExceptionConverter
+    ): LoginContract.Interactor {
         return LoginInteractor(loginRepository, errorHandler)
     }
 
     @Provides
     @PerFeatureLayerScope
-    fun provideRouter(): LoginContract.Router {
-        return LoginRouter()
+    fun provideRouter(scheduleHostInputModule: ScheduleHostContract.InputModule): LoginContract.Router {
+        return LoginRouter(scheduleHostInputModule)
     }
 }
 
 @Suppress("UNCHECKED_CAST")
 @PerFeatureLayerScope
-class LoginViewModelFactory @Inject constructor(private val interactor: LoginContract.Interactor,
-                                                private val router: LoginContract.Router) : ViewModelProvider.Factory {
+class LoginViewModelFactory @Inject constructor(
+    private val interactor: LoginContract.Interactor,
+    private val router: LoginContract.Router
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return LoginPresenter(interactor, router) as T
     }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        if (supportFragmentManager.findFragmentByTag(LoginFragment.TAG) == null) {
+        if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
             val fragment = LoginFragment.createInstance()
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, fragment, LoginFragment.TAG)
