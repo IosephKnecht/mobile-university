@@ -12,11 +12,12 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentLessonInfoBinding
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.lessonInfo.assembly.LessonInfoComponent
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.lessonInfo.view.adapter.SubgroupAdapter
 
-class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>() {
+class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), FragmentBackPressed {
 
     companion object {
         private const val LESSON_KEY = "lesson_key"
@@ -75,5 +76,9 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>() {
             }
             binding.lessonInfoRefresh.isRefreshing = false
         })
+    }
+
+    override fun onBackPressed(): Boolean {
+        return true
     }
 }

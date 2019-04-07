@@ -2,6 +2,7 @@ package com.project.mobile_university.presentation.schedule.subgroup.assembly
 
 import androidx.fragment.app.Fragment
 import com.project.mobile_university.presentation.PerFeatureLayerScope
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import dagger.BindsInstance
 import dagger.Subcomponent

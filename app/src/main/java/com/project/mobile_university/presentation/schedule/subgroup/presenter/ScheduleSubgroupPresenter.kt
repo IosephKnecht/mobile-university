@@ -1,21 +1,22 @@
 package com.project.mobile_university.presentation.schedule.subgroup.presenter
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
-class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract.Interactor,
-                                private val router: ScheduleSubgroupContract.Router,
-                                private val subgroupId: Long)
-    : AbstractPresenter(), ScheduleSubgroupContract.Presenter, ScheduleSubgroupContract.Listener {
+class ScheduleSubgroupPresenter(
+    private val interactor: ScheduleSubgroupContract.Interactor,
+    private val router: ScheduleSubgroupContract.Router,
+    private val subgroupId: Long,
+    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+) : AbstractPresenter(), ScheduleSubgroupContract.Presenter, ScheduleSubgroupContract.Listener {
 
     override val scheduleDayList = MutableLiveData<List<ScheduleDay>>(arrayListOf())
     override val errorObserver = SingleLiveData<String>()
@@ -38,12 +39,12 @@ class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract
             state = ScheduleSubgroupContract.State.INIT
         }
 
-        EventBus.getDefault().register(this)
+        hostObservableStorage.dateChange
+            .observe(androidComponent.activityComponent!!, dateChangeObserver)
     }
 
     override fun detachAndroidComponent() {
-        EventBus.getDefault().unregister(this)
-
+        hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
         super.detachAndroidComponent()
     }
 
@@ -78,13 +79,11 @@ class ScheduleSubgroupPresenter(private val interactor: ScheduleSubgroupContract
         weekEnd = sunday
     }
 
-    @Subscribe
-    fun onDateChangeEvent(event: Events.DateChangeEvent) {
-        event.date
-            ?.apply { dateObserver.postValue(this) }
-            ?.takeIf { it < weekStart || it > weekEnd }
-            ?.let {
-                recalculateWeek(it)
+    private val dateChangeObserver = Observer<Date> { date ->
+        date?.apply { dateObserver.value = this }
+            ?.takeIf { date -> date < weekStart || date > weekEnd }
+            ?.let { date ->
+                recalculateWeek(date)
                 obtainLessonList(subgroupId)
             }
     }

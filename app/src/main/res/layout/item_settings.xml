@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,7 +10,7 @@
             type="com.project.mobile_university.data.presentation.SettingsItem"/>
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,27 +20,34 @@
         <TextView
             android:id="@+id/primary_text_exit"
             style="@style/HeaderText.Large"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{item.header}"
+            app:layout_constraintEnd_toStartOf="@id/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/exit_primary_text"/>
 
         <TextView
             android:id="@+id/description"
             style="@style/SecondaryText.Medium"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/primary_text_exit"
             android:layout_marginTop="@dimen/small_margin"
             android:text="@{item.description}"
+            app:layout_constraintEnd_toStartOf="@id/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/primary_text_exit"
             tools:text="@string/exit_description"/>
 
         <ImageView
+            android:id="@+id/arrow"
             style="@style/IconStyle.Medium"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
             android:src="@drawable/ic_arrow_right"
-            tools:text=">"/>
-    </RelativeLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

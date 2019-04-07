@@ -12,13 +12,15 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.view.adapter.TeacherScheduleAdapter
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_teacher_schedule.*
 
-class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Presenter>() {
+class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Presenter>(), FragmentBackPressed {
 
     companion object {
         const val TAG = "teacher_schedule_fragment"
@@ -91,4 +93,6 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             adapter.notifyDataSetChanged()
         })
     }
+
+    override fun onBackPressed() = true
 }

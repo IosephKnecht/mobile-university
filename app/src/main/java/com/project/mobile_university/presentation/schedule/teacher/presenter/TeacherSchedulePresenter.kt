@@ -1,19 +1,21 @@
 package com.project.mobile_university.presentation.schedule.teacher.presenter
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
-import com.project.mobile_university.data.presentation.Events
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract.State
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
-class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.Interactor,
-                               private val teacherId: Long) : AbstractPresenter(), TeacherScheduleContract.Presenter,
+class TeacherSchedulePresenter(
+    private val interactor: TeacherScheduleContract.Interactor,
+    private val teacherId: Long,
+    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+) : AbstractPresenter(), TeacherScheduleContract.Presenter,
     TeacherScheduleContract.Listener {
 
     override val errorObserver = MutableLiveData<String>()
@@ -34,12 +36,12 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
             state.value = State.INIT
         }
 
-        EventBus.getDefault().register(this)
+        hostObservableStorage.dateChange
+            .observe(androidComponent.activityComponent!!, dateChangeObserver)
     }
 
     override fun detachAndroidComponent() {
-        EventBus.getDefault().unregister(this)
-
+        hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
         super.detachAndroidComponent()
     }
 
@@ -70,13 +72,11 @@ class TeacherSchedulePresenter(private val interactor: TeacherScheduleContract.I
         weekEnd = sunday
     }
 
-    @Subscribe
-    fun onDateChangeEvent(event: Events.DateChangeEvent) {
-        event.date
-            ?.apply { dateObserver.postValue(this) }
-            ?.takeIf { it < weekStart || it > weekEnd }
-            ?.let {
-                recalculateWeek(it)
+    private val dateChangeObserver = Observer<Date> { date ->
+        date?.apply { dateObserver.value = this }
+            ?.takeIf { date -> date < weekStart || date > weekEnd }
+            ?.let { date ->
+                recalculateWeek(date)
                 obtainScheduleDayList(teacherId)
             }
     }

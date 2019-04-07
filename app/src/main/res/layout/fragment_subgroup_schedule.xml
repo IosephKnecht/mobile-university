@@ -10,6 +10,7 @@
         android:id="@+id/lesson_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:listDivider="@drawable/ic_divider"
         tools:listitem="@layout/item_lesson"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

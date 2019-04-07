@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +14,7 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentSettingsBinding
+import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.settings.view.adapter.SettingsAdapter
@@ -20,7 +22,7 @@ import com.project.mobile_university.presentation.settings.view.adapter.Settings
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
+class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), FragmentBackPressed {
 
     companion object {
         const val TAG = "settings_screen"
@@ -65,7 +67,9 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
             layoutManager = LinearLayoutManager(context)
             adapter = this@SettingsFragment.adapter
             setHasFixedSize(false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+            })
         }
 
         presenter.throwableObserver.observe(viewLifecycleOwner, Observer {
@@ -79,4 +83,6 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>() {
             }
         })
     }
+
+    override fun onBackPressed() = true
 }
