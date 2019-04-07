@@ -51,4 +51,11 @@
         <string name="subgroup_string">Subgroup: %s</string>
         <string name="human_value_string">Human value: %s</string>
     <!--Lesson info screen-->
+
+    <!--Navigation view-->
+        <string name="navigation_profile">Profile (not implemented)</string>
+        <string name="navigation_teacher_schedule">Teacher\'s schedule (not implemented)</string>
+        <string name="navigation_home_works">Home works (not implemented)</string>
+        <string name="navigation_logout">Logout (not implemented)</string>
+    <!--Navigation view-->
 </resources>

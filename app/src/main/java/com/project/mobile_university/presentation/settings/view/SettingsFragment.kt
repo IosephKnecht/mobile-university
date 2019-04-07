@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -66,7 +67,9 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
             layoutManager = LinearLayoutManager(context)
             adapter = this@SettingsFragment.adapter
             setHasFixedSize(false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+            })
         }
 
         presenter.throwableObserver.observe(viewLifecycleOwner, Observer {

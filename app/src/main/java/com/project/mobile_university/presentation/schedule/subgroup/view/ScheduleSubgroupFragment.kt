@@ -66,7 +66,7 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
             this.adapter = this@ScheduleSubgroupFragment.adapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL).apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
                 this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
             })
         }
