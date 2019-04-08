@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.lessonInfo.view.LessonInfoFragment
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
@@ -95,6 +98,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
             if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
                 childFragmentManager.popBackStackImmediate()
+                val currentScreenType = mapFragmentToScreenType(childFragmentManager.fragments.lastOrNull())
+                currentScreenType?.let { presenter.onBackPressed(it) }
                 return false
             }
         }
@@ -139,6 +144,17 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                 }
             }
             return@listener true
+        }
+    }
+
+    // FIXME: bad solve
+    private fun mapFragmentToScreenType(fragment: Fragment?): ScheduleHostContract.CurrentScreenType? {
+        return when (fragment) {
+            is SettingsFragment -> ScheduleHostContract.CurrentScreenType.SETTINGS
+            is TeacherScheduleFragment -> ScheduleHostContract.CurrentScreenType.TEACHER
+            is ScheduleSubgroupFragment -> ScheduleHostContract.CurrentScreenType.SUBGROUP
+            is LessonInfoFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
+            else -> null
         }
     }
 }

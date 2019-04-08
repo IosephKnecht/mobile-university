@@ -64,6 +64,10 @@ class ScheduleHostPresenter(
         router.showLessonInfo(androidComponent!!, lessonId)
     }
 
+    override fun onBackPressed(currentScreenType: CurrentScreenType) {
+        this.currentScreen.value = currentScreenType
+    }
+
     override fun onDestroy() {
         // not implemented
     }

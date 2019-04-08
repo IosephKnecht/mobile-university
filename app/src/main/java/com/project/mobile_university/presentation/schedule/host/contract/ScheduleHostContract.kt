@@ -34,6 +34,7 @@ interface ScheduleHostContract {
         fun onShowSettings()
         fun onDateChange(date: Date)
         fun onShowLessonInfo(lessonId: Long)
+        fun onBackPressed(currentScreenType: CurrentScreenType)
     }
 
     interface Listener : MvpInteractor.Listener
