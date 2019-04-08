@@ -15,7 +15,7 @@ class LoginRouter(private val scheduleHostInputModule: ScheduleHostContract.Inpu
                 .replace(
                     R.id.fragment_container, scheduleHostInputModule.createFragment(
                         identifier = subgroupId,
-                        screenType = ScheduleHostContract.ScreenType.SUBGROUP
+                        initialScreenType = ScheduleHostContract.InitialScreenType.SUBGROUP
                     )
                 )
                 .commit()
@@ -28,7 +28,7 @@ class LoginRouter(private val scheduleHostInputModule: ScheduleHostContract.Inpu
                 .replace(
                     R.id.fragment_container, scheduleHostInputModule.createFragment(
                         identifier = teacherId,
-                        screenType = ScheduleHostContract.ScreenType.TEACHER
+                        initialScreenType = ScheduleHostContract.InitialScreenType.TEACHER
                     )
                 )
                 .commit()

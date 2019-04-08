@@ -4,7 +4,7 @@ import android.view.Menu
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.project.mobile_university.R
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 
 enum class BottomNavigationItem(
     val itemId: Int,
@@ -18,8 +18,8 @@ enum class BottomNavigationItem(
 }
 
 object BottomNavigationBuilder {
-    fun buildMenu(menu: Menu, screenType: ScreenType) {
-        if (screenType == ScreenType.SUBGROUP) {
+    fun buildMenu(menu: Menu, initialScreenType: InitialScreenType) {
+        if (initialScreenType == InitialScreenType.SUBGROUP) {
             menu.add(BottomNavigationItem.SCHEDULE)
         } else {
             menu.add(BottomNavigationItem.WORK_SCHEDULE)

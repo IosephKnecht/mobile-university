@@ -4,29 +4,32 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.CurrentScreenType
 import java.util.*
 
 class ScheduleHostPresenter(
     override val identifier: Long,
-    override val screenType: ScheduleHostContract.ScreenType,
+    override val initialScreenType: ScheduleHostContract.InitialScreenType,
     private val router: ScheduleHostContract.Router
 ) : AbstractPresenter(), ScheduleHostContract.Presenter, ScheduleHostContract.Listener,
     ScheduleHostContract.RouterListener {
 
     override val dateChange = MutableLiveData<Date>()
-    override val toolbarVisible = MutableLiveData<Boolean>()
+    override val currentScreen = MutableLiveData<CurrentScreenType>()
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
         router.setListener(this)
 
-        when (screenType) {
-            ScreenType.SUBGROUP -> {
-                router.showSubgroupScreen(androidComponent, identifier)
-            }
-            ScreenType.TEACHER -> {
-                router.showTeacherScreen(androidComponent, identifier)
+        if (currentScreen.value == null) {
+            when (initialScreenType) {
+                InitialScreenType.SUBGROUP -> {
+                    router.showSubgroupScreen(androidComponent, identifier)
+                }
+                InitialScreenType.TEACHER -> {
+                    router.showTeacherScreen(androidComponent, identifier)
+                }
             }
         }
     }
@@ -53,8 +56,8 @@ class ScheduleHostPresenter(
         router.showSettingsScreen(androidComponent!!)
     }
 
-    override fun onChangeScreen(toolbarVisible: Boolean) {
-        this.toolbarVisible.value = toolbarVisible
+    override fun onChangeScreen(currentScreenType: CurrentScreenType) {
+        this.currentScreen.value = currentScreenType
     }
 
     override fun onShowLessonInfo(lessonId: Long) {

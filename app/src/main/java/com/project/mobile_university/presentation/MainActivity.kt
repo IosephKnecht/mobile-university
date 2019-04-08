@@ -15,8 +15,6 @@ import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.login.view.fragment.LoginFragment
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostFragment
-import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
-import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager.addFragment(
                             ScheduleHostFragment.createInstance(
                                 user.subgroupId,
-                                ScheduleHostContract.ScreenType.SUBGROUP
+                                ScheduleHostContract.InitialScreenType.SUBGROUP
                             )
                         )
                     }
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager.addFragment(
                             ScheduleHostFragment.createInstance(
                                 user.teacherId,
-                                ScheduleHostContract.ScreenType.TEACHER
+                                ScheduleHostContract.InitialScreenType.TEACHER
                             )
                         )
                     }

@@ -9,8 +9,12 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import java.util.*
 
 interface ScheduleHostContract {
-    enum class ScreenType {
+    enum class InitialScreenType {
         SUBGROUP, TEACHER
+    }
+
+    enum class CurrentScreenType {
+        SUBGROUP, TEACHER, SETTINGS, LESSON_INFO
     }
 
     interface ExternalObservableStorage {
@@ -18,12 +22,12 @@ interface ScheduleHostContract {
     }
 
     interface InternalNavigationStorage {
-        val toolbarVisible: LiveData<Boolean>
+        val currentScreen: LiveData<CurrentScreenType>
     }
 
     interface Presenter : MvpPresenter, ExternalObservableStorage, InternalNavigationStorage {
         val identifier: Long
-        val screenType: ScreenType
+        val initialScreenType: InitialScreenType
 
         fun onShowSubgroupSchedule(identifier: Long)
         fun onShowTeacherSchedule(identifier: Long)
@@ -37,7 +41,7 @@ interface ScheduleHostContract {
     interface Interactor : MvpInteractor<Listener>
 
     interface RouterListener : MvpRouter.Listener {
-        fun onChangeScreen(toolbarVisible: Boolean)
+        fun onChangeScreen(currentScreenType: CurrentScreenType)
     }
 
     interface Router : MvpRouter<RouterListener> {
@@ -48,6 +52,6 @@ interface ScheduleHostContract {
     }
 
     interface InputModule {
-        fun createFragment(identifier: Long, screenType: ScreenType): Fragment
+        fun createFragment(identifier: Long, initialScreenType: InitialScreenType): Fragment
     }
 }

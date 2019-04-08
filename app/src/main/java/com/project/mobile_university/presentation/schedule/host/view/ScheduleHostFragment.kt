@@ -12,7 +12,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
@@ -30,10 +30,10 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         private const val SCREEN_TYPE = "screen_type"
         private const val IDENTIFIER = "identifier"
 
-        fun createInstance(identifier: Long, type: ScreenType) = ScheduleHostFragment().apply {
+        fun createInstance(identifier: Long, typeInitial: InitialScreenType) = ScheduleHostFragment().apply {
             arguments = Bundle().apply {
                 putLong(IDENTIFIER, identifier)
-                putString(SCREEN_TYPE, type.name)
+                putString(SCREEN_TYPE, typeInitial.name)
             }
         }
     }
@@ -44,7 +44,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     override fun inject() {
         val identifier = arguments!!.getLong(IDENTIFIER)
         val screenType = arguments!!.getString(SCREEN_TYPE)?.run {
-            ScreenType.valueOf(this)
+            InitialScreenType.valueOf(this)
         } ?: throw RuntimeException("Screen type could not be null")
 
         diComponent = AppDelegate.presentationComponent.scheduleHostSubComponent()
@@ -65,10 +65,19 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         initBottomNavigationPanel()
 
         with(presenter) {
-            toolbarVisible.observe(viewLifecycleOwner, Observer { visible ->
-                visible?.let {
-                    val visibleInt = if (it) View.VISIBLE else View.GONE
-                    calendar.calendarView.visibility = visibleInt
+            currentScreen.observe(viewLifecycleOwner, Observer { currentScreen ->
+                when (currentScreen) {
+                    ScheduleHostContract.CurrentScreenType.SETTINGS,
+                    ScheduleHostContract.CurrentScreenType.LESSON_INFO -> {
+                        calendar.calendarView.visibility = View.GONE
+                    }
+                    ScheduleHostContract.CurrentScreenType.TEACHER,
+                    ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
+                        calendar.calendarView.visibility = View.VISIBLE
+                    }
+                    else -> {
+
+                    }
                 }
             })
         }
@@ -115,7 +124,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     }
 
     private fun initBottomNavigationPanel() {
-        BottomNavigationBuilder.buildMenu(bottom_navigation.menu, presenter.screenType)
+        BottomNavigationBuilder.buildMenu(bottom_navigation.menu, presenter.initialScreenType)
 
         bottom_navigation.setOnNavigationItemSelectedListener listener@{
             when (it.itemId) {

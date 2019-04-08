@@ -7,7 +7,6 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
@@ -26,7 +25,7 @@ class ScheduleHostRouter(
         androidComponent.fragmentManagerComponent?.showIfNeed(ScheduleSubgroupFragment.TAG, {
             subgroupInputModule.createFragment(identifier)
         }, {
-            routerListener?.onChangeScreen(true)
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.SUBGROUP)
         })
     }
 
@@ -34,7 +33,7 @@ class ScheduleHostRouter(
         androidComponent.fragmentManagerComponent?.showIfNeed(TeacherScheduleFragment.TAG, {
             teacherInputModule.createFragment(identifier)
         }, {
-            routerListener?.onChangeScreen(true)
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.TEACHER)
         })
     }
 
@@ -42,7 +41,7 @@ class ScheduleHostRouter(
         androidComponent.fragmentManagerComponent?.showIfNeed(SettingsFragment.TAG, {
             settingsInputModule.createFragment()
         }, {
-            routerListener?.onChangeScreen(false)
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.SETTINGS)
         })
     }
 
@@ -53,7 +52,7 @@ class ScheduleHostRouter(
             ?.addToBackStack(null)
             ?.commit()
 
-        routerListener?.onChangeScreen(false)
+        routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
     }
 
     private fun FragmentManager.showIfNeed(tag: String, block: () -> Fragment, callback: ((Fragment) -> Unit)? = null) {

@@ -32,7 +32,7 @@ interface ScheduleHostComponent {
         fun identifier(identifier: Long): Builder
 
         @BindsInstance
-        fun screenType(screenType: ScheduleHostContract.ScreenType): Builder
+        fun screenType(initialScreenType: ScheduleHostContract.InitialScreenType): Builder
 
         fun build(): ScheduleHostComponent
     }
@@ -71,7 +71,7 @@ class ScheduleHostModule {
 @PerFeatureLayerScope
 class ScheduleHostViewModelFactory @Inject constructor(
     private val identifier: Long,
-    private val screenType: ScheduleHostContract.ScreenType,
+    private val initialScreenType: ScheduleHostContract.InitialScreenType,
     private val router: ScheduleHostContract.Router
 ) : ViewModelProvider.Factory {
 
@@ -79,7 +79,7 @@ class ScheduleHostViewModelFactory @Inject constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ScheduleHostPresenter(
             identifier,
-            screenType,
+            initialScreenType,
             router
         ) as T
     }
