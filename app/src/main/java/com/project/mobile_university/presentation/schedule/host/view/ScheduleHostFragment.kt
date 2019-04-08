@@ -13,12 +13,15 @@ import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
+import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
+import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
 import java.util.*
 
-class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed {
+class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed,
+    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -71,6 +74,10 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         }
     }
 
+    override fun showLessonInfo(lessonId: Long) {
+        presenter.onShowLessonInfo(lessonId)
+    }
+
     override fun onBackPressed(): Boolean {
         if (childFragmentManager.backStackEntryCount == 0) {
             return true
@@ -113,13 +120,13 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         bottom_navigation.setOnNavigationItemSelectedListener listener@{
             when (it.itemId) {
                 BottomNavigationItem.SCHEDULE.itemId -> {
-                    presenter.obtainSubgroupScreen(presenter.identifier)
+                    presenter.onShowSubgroupSchedule(presenter.identifier)
                 }
                 BottomNavigationItem.WORK_SCHEDULE.itemId -> {
-                    presenter.obtainTeacherScreen(presenter.identifier)
+                    presenter.onShowTeacherSchedule(presenter.identifier)
                 }
                 BottomNavigationItem.SETTINGS.itemId -> {
-                    presenter.obtainSettingsScreen()
+                    presenter.onShowSettings()
                 }
             }
             return@listener true

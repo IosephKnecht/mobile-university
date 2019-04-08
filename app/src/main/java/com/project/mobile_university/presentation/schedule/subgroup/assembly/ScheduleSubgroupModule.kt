@@ -13,7 +13,6 @@ import com.project.mobile_university.presentation.schedule.host.presenter.Schedu
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.interactor.ScheduleSubgroupInteractor
 import com.project.mobile_university.presentation.schedule.subgroup.presenter.ScheduleSubgroupPresenter
-import com.project.mobile_university.presentation.schedule.subgroup.router.ScheduleSubgroupRouter
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -41,13 +40,7 @@ class ScheduleModule {
     }
 
     @Provides
-    @PerFeatureLayerScope
-    fun provideRouter(lessonInfoInputModule: LessonInfoContract.InputModule): ScheduleSubgroupContract.Router {
-        return ScheduleSubgroupRouter(lessonInfoInputModule)
-    }
-
-    @Provides
-    fun provideHostObservableStorage(fragment: Fragment): ScheduleHostContract.ObservableStorage {
+    fun provideHostObservableStorage(fragment: Fragment): ScheduleHostContract.ExternalObservableStorage {
         return ViewModelProviders.of(fragment.parentFragment!!).get(ScheduleHostPresenter::class.java)
     }
 }
@@ -56,14 +49,12 @@ class ScheduleModule {
 @PerFeatureLayerScope
 class ScheduleViewModelFactory @Inject constructor(
     private val interactor: ScheduleSubgroupContract.Interactor,
-    private val router: ScheduleSubgroupContract.Router,
     private val groupId: Long,
-    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+    private val hostObservableStorage: ScheduleHostContract.ExternalObservableStorage
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ScheduleSubgroupPresenter(
             interactor,
-            router,
             groupId,
             hostObservableStorage
         ) as T

@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
+import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
@@ -17,7 +18,8 @@ import com.project.mobile_university.presentation.settings.view.SettingsFragment
 class ScheduleHostRouter(
     private val subgroupInputModule: ScheduleSubgroupContract.InputModule,
     private val teacherInputModule: TeacherScheduleContract.InputModule,
-    private val settingsInputModule: SettingsContract.InputModule
+    private val settingsInputModule: SettingsContract.InputModule,
+    private val lessonInfoInputModule: LessonInfoContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -42,6 +44,16 @@ class ScheduleHostRouter(
         }, {
             routerListener?.onChangeScreen(false)
         })
+    }
+
+    override fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long) {
+        androidComponent.fragmentManagerComponent
+            ?.beginTransaction()
+            ?.replace(R.id.schedule_fragment_container, lessonInfoInputModule.createFragment(lessonId))
+            ?.addToBackStack(null)
+            ?.commit()
+
+        routerListener?.onChangeScreen(false)
     }
 
     private fun FragmentManager.showIfNeed(tag: String, block: () -> Fragment, callback: ((Fragment) -> Unit)? = null) {

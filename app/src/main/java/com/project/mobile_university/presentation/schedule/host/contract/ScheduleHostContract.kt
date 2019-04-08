@@ -13,19 +13,23 @@ interface ScheduleHostContract {
         SUBGROUP, TEACHER
     }
 
-    interface ObservableStorage {
+    interface ExternalObservableStorage {
         val dateChange: LiveData<Date>
+    }
+
+    interface InternalNavigationStorage {
         val toolbarVisible: LiveData<Boolean>
     }
 
-    interface Presenter : MvpPresenter, ObservableStorage {
+    interface Presenter : MvpPresenter, ExternalObservableStorage, InternalNavigationStorage {
         val identifier: Long
         val screenType: ScreenType
 
-        fun obtainSubgroupScreen(identifier: Long)
-        fun obtainTeacherScreen(identifier: Long)
-        fun obtainSettingsScreen()
+        fun onShowSubgroupSchedule(identifier: Long)
+        fun onShowTeacherSchedule(identifier: Long)
+        fun onShowSettings()
         fun onDateChange(date: Date)
+        fun onShowLessonInfo(lessonId: Long)
     }
 
     interface Listener : MvpInteractor.Listener
@@ -40,6 +44,7 @@ interface ScheduleHostContract {
         fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showTeacherScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showSettingsScreen(androidComponent: AndroidComponent)
+        fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long)
     }
 
     interface InputModule {

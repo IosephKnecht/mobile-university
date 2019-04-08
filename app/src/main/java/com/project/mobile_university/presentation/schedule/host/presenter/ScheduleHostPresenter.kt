@@ -26,7 +26,7 @@ class ScheduleHostPresenter(
                 router.showSubgroupScreen(androidComponent, identifier)
             }
             ScreenType.TEACHER -> {
-                router.showSubgroupScreen(androidComponent, identifier)
+                router.showTeacherScreen(androidComponent, identifier)
             }
         }
     }
@@ -41,20 +41,24 @@ class ScheduleHostPresenter(
         dateChange.value = date
     }
 
-    override fun obtainSubgroupScreen(identifier: Long) {
+    override fun onShowSubgroupSchedule(identifier: Long) {
         router.showSubgroupScreen(androidComponent!!, identifier)
     }
 
-    override fun obtainTeacherScreen(identifier: Long) {
+    override fun onShowTeacherSchedule(identifier: Long) {
         router.showTeacherScreen(androidComponent!!, identifier)
     }
 
-    override fun obtainSettingsScreen() {
+    override fun onShowSettings() {
         router.showSettingsScreen(androidComponent!!)
     }
 
     override fun onChangeScreen(toolbarVisible: Boolean) {
         this.toolbarVisible.value = toolbarVisible
+    }
+
+    override fun onShowLessonInfo(lessonId: Long) {
+        router.showLessonInfo(androidComponent!!, lessonId)
     }
 
     override fun onDestroy() {

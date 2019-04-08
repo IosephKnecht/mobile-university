@@ -15,6 +15,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.adapter.ScheduleSubgroupAdapter
@@ -22,6 +23,8 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_subgroup_schedule.*
 
 class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Presenter>(), FragmentBackPressed {
+
+    interface Host : ScheduleHostListener
 
     companion object {
         const val TAG = "schedule_fragment"
@@ -59,7 +62,7 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ScheduleSubgroupAdapter { lessonId ->
-            presenter.showLessonInfo(lessonId)
+            (parentFragment as Host).showLessonInfo(lessonId)
         }
 
         lesson_list.apply {

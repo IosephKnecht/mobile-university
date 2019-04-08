@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.presentation.PerFeatureLayerScope
+import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
 import com.project.mobile_university.presentation.schedule.host.router.ScheduleHostRouter
@@ -55,12 +56,14 @@ class ScheduleHostModule {
     fun provideRouter(
         subgroupInputModule: ScheduleSubgroupContract.InputModule,
         teacherInputModule: TeacherScheduleContract.InputModule,
-        settingsInputModule: SettingsContract.InputModule
+        settingsInputModule: SettingsContract.InputModule,
+        lessonInfoInputModule: LessonInfoContract.InputModule
     ): ScheduleHostContract.Router {
         return ScheduleHostRouter(
             subgroupInputModule,
             teacherInputModule,
-            settingsInputModule
+            settingsInputModule,
+            lessonInfoInputModule
         )
     }
 }
