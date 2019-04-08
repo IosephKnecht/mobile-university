@@ -5,7 +5,7 @@ import com.project.mobile_university.presentation.schedule.host.contract.Schedul
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostFragment
 
 class ScheduleHostInputModule : ScheduleHostContract.InputModule {
-    override fun createFragment(identifier: Long, screenType: ScheduleHostContract.ScreenType): Fragment {
-        return ScheduleHostFragment.createInstance(identifier, screenType)
+    override fun createFragment(identifier: Long, initialScreenType: ScheduleHostContract.InitialScreenType): Fragment {
+        return ScheduleHostFragment.createInstance(identifier, initialScreenType)
     }
 }

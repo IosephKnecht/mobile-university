@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -60,7 +61,9 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
             adapter = this@LessonInfoFragment.adapter
             setHasFixedSize(false)
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+            })
         }
 
 

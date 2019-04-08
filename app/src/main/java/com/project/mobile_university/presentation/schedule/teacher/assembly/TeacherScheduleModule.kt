@@ -37,7 +37,7 @@ class TeacherScheduleModule {
     }
 
     @Provides
-    fun provideHostObservableStorage(fragment: Fragment): ScheduleHostContract.ObservableStorage {
+    fun provideHostObservableStorage(fragment: Fragment): ScheduleHostContract.ExternalObservableStorage {
         return ViewModelProviders.of(fragment.parentFragment!!).get(ScheduleHostPresenter::class.java)
     }
 }
@@ -47,7 +47,7 @@ class TeacherScheduleModule {
 class TeacherScheduleViewModelFactory @Inject constructor(
     private val interactor: TeacherScheduleContract.Interactor,
     private val teacherId: Long,
-    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+    private val hostObservableStorage: ScheduleHostContract.ExternalObservableStorage
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

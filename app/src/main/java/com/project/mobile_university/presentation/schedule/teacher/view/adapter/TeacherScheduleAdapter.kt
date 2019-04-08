@@ -8,7 +8,8 @@ import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.databinding.ItemLessonBinding
 
-class TeacherScheduleAdapter : RecyclerView.Adapter<TeacherScheduleAdapter.ViewHolder>() {
+class TeacherScheduleAdapter(private val lessonClick: (lessonId: Long) -> Unit) :
+    RecyclerView.Adapter<TeacherScheduleAdapter.ViewHolder>() {
 
     var scheduleDayList: List<ScheduleDay> = listOf()
     var currentDate: String? = null
@@ -31,7 +32,9 @@ class TeacherScheduleAdapter : RecyclerView.Adapter<TeacherScheduleAdapter.ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentDay = scheduleDayList.find { it.currentDate == currentDate }
         if (currentDay != null) {
-            holder.binding.lesson = currentDay.lessons[position]
+            val lesson = currentDay.lessons[position]
+            holder.binding.lesson = lesson
+            holder.itemView.setOnClickListener { lessonClick.invoke(lesson.extId) }
         }
     }
 

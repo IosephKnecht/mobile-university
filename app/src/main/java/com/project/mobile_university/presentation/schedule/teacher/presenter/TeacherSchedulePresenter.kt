@@ -14,7 +14,7 @@ import java.util.*
 class TeacherSchedulePresenter(
     private val interactor: TeacherScheduleContract.Interactor,
     private val teacherId: Long,
-    private val hostObservableStorage: ScheduleHostContract.ObservableStorage
+    private val hostObservableStorage: ScheduleHostContract.ExternalObservableStorage
 ) : AbstractPresenter(), TeacherScheduleContract.Presenter,
     TeacherScheduleContract.Listener {
 

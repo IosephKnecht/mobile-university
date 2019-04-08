@@ -4,21 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.lessonInfo.view.LessonInfoFragment
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.ScreenType
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
+import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
+import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
 import java.util.*
 
-class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed {
+class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed,
+    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -27,10 +33,10 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         private const val SCREEN_TYPE = "screen_type"
         private const val IDENTIFIER = "identifier"
 
-        fun createInstance(identifier: Long, type: ScreenType) = ScheduleHostFragment().apply {
+        fun createInstance(identifier: Long, typeInitial: InitialScreenType) = ScheduleHostFragment().apply {
             arguments = Bundle().apply {
                 putLong(IDENTIFIER, identifier)
-                putString(SCREEN_TYPE, type.name)
+                putString(SCREEN_TYPE, typeInitial.name)
             }
         }
     }
@@ -41,7 +47,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     override fun inject() {
         val identifier = arguments!!.getLong(IDENTIFIER)
         val screenType = arguments!!.getString(SCREEN_TYPE)?.run {
-            ScreenType.valueOf(this)
+            InitialScreenType.valueOf(this)
         } ?: throw RuntimeException("Screen type could not be null")
 
         diComponent = AppDelegate.presentationComponent.scheduleHostSubComponent()
@@ -62,13 +68,26 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         initBottomNavigationPanel()
 
         with(presenter) {
-            toolbarVisible.observe(viewLifecycleOwner, Observer { visible ->
-                visible?.let {
-                    val visibleInt = if (it) View.VISIBLE else View.GONE
-                    calendar.calendarView.visibility = visibleInt
+            currentScreen.observe(viewLifecycleOwner, Observer { currentScreen ->
+                when (currentScreen) {
+                    ScheduleHostContract.CurrentScreenType.SETTINGS,
+                    ScheduleHostContract.CurrentScreenType.LESSON_INFO -> {
+                        calendar.calendarView.visibility = View.GONE
+                    }
+                    ScheduleHostContract.CurrentScreenType.TEACHER,
+                    ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
+                        calendar.calendarView.visibility = View.VISIBLE
+                    }
+                    else -> {
+
+                    }
                 }
             })
         }
+    }
+
+    override fun showLessonInfo(lessonId: Long) {
+        presenter.onShowLessonInfo(lessonId)
     }
 
     override fun onBackPressed(): Boolean {
@@ -78,7 +97,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
 
         childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
             if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
-                childFragmentManager.popBackStackImmediate()
+                presenter.backPressed()
                 return false
             }
         }
@@ -108,18 +127,18 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     }
 
     private fun initBottomNavigationPanel() {
-        BottomNavigationBuilder.buildMenu(bottom_navigation.menu, presenter.screenType)
+        BottomNavigationBuilder.buildMenu(bottom_navigation.menu, presenter.initialScreenType)
 
         bottom_navigation.setOnNavigationItemSelectedListener listener@{
             when (it.itemId) {
                 BottomNavigationItem.SCHEDULE.itemId -> {
-                    presenter.obtainSubgroupScreen(presenter.identifier)
+                    presenter.onShowSubgroupSchedule(presenter.identifier)
                 }
                 BottomNavigationItem.WORK_SCHEDULE.itemId -> {
-                    presenter.obtainTeacherScreen(presenter.identifier)
+                    presenter.onShowTeacherSchedule(presenter.identifier)
                 }
                 BottomNavigationItem.SETTINGS.itemId -> {
-                    presenter.obtainSettingsScreen()
+                    presenter.onShowSettings()
                 }
             }
             return@listener true

@@ -14,6 +14,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.view.adapter.TeacherScheduleAdapter
@@ -32,6 +33,8 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             }
         }
     }
+
+    interface Host : ScheduleHostListener
 
     private lateinit var adapter: TeacherScheduleAdapter
     private lateinit var diComponent: TeacherScheduleComponent
@@ -56,7 +59,9 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TeacherScheduleAdapter()
+        adapter = TeacherScheduleAdapter { lessonId ->
+            (parentFragment as Host).showLessonInfo(lessonId)
+        }
 
         lesson_list.apply {
             layoutManager = LinearLayoutManager(context)

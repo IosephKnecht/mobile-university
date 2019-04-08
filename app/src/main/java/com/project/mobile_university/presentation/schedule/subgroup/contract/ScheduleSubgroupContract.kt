@@ -23,7 +23,6 @@ interface ScheduleSubgroupContract {
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainLessonList(subgroupId: Long)
-        fun showLessonInfo(lessonId: Long)
     }
 
     interface Listener : MvpInteractor.Listener {
@@ -34,12 +33,6 @@ interface ScheduleSubgroupContract {
         fun getLessonList(startWeek: Date,
                           endWeek: Date,
                           subgroupId: Long)
-    }
-
-    interface RouterListener : MvpRouter.Listener
-
-    interface Router : MvpRouter<RouterListener> {
-        fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long)
     }
 
     interface InputModule {
