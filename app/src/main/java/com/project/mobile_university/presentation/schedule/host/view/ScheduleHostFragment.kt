@@ -97,9 +97,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
 
         childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
             if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
-                childFragmentManager.popBackStackImmediate()
-                val currentScreenType = mapFragmentToScreenType(childFragmentManager.fragments.lastOrNull())
-                currentScreenType?.let { presenter.onBackPressed(it) }
+                presenter.backPressed()
                 return false
             }
         }
@@ -144,17 +142,6 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                 }
             }
             return@listener true
-        }
-    }
-
-    // FIXME: bad solve
-    private fun mapFragmentToScreenType(fragment: Fragment?): ScheduleHostContract.CurrentScreenType? {
-        return when (fragment) {
-            is SettingsFragment -> ScheduleHostContract.CurrentScreenType.SETTINGS
-            is TeacherScheduleFragment -> ScheduleHostContract.CurrentScreenType.TEACHER
-            is ScheduleSubgroupFragment -> ScheduleHostContract.CurrentScreenType.SUBGROUP
-            is LessonInfoFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
-            else -> null
         }
     }
 }

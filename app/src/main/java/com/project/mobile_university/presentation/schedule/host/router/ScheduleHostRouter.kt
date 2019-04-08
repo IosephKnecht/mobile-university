@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.lessonInfo.view.LessonInfoFragment
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
@@ -55,6 +56,17 @@ class ScheduleHostRouter(
         routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
     }
 
+    override fun onBackPressed(androidComponent: AndroidComponent) {
+        val currentScreenType = androidComponent.fragmentManagerComponent?.run {
+            popBackStackImmediate()
+            mapFragmentToScreenType(fragments.firstOrNull())
+        }
+
+        if (currentScreenType != null) {
+            routerListener?.onChangeScreen(currentScreenType)
+        }
+    }
+
     private fun FragmentManager.showIfNeed(tag: String, block: () -> Fragment, callback: ((Fragment) -> Unit)? = null) {
         val fragment = findFragmentByTag(tag)
         if (fragment == null) {
@@ -65,6 +77,16 @@ class ScheduleHostRouter(
                 .commit()
 
             callback?.invoke(newInstanceFragment)
+        }
+    }
+
+    private fun mapFragmentToScreenType(fragment: Fragment?): ScheduleHostContract.CurrentScreenType? {
+        return when (fragment) {
+            is SettingsFragment -> ScheduleHostContract.CurrentScreenType.SETTINGS
+            is TeacherScheduleFragment -> ScheduleHostContract.CurrentScreenType.TEACHER
+            is ScheduleSubgroupFragment -> ScheduleHostContract.CurrentScreenType.SUBGROUP
+            is LessonInfoFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
+            else -> null
         }
     }
 }

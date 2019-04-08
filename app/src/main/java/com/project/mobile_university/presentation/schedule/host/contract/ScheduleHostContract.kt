@@ -34,7 +34,7 @@ interface ScheduleHostContract {
         fun onShowSettings()
         fun onDateChange(date: Date)
         fun onShowLessonInfo(lessonId: Long)
-        fun onBackPressed(currentScreenType: CurrentScreenType)
+        fun backPressed()
     }
 
     interface Listener : MvpInteractor.Listener
@@ -50,6 +50,7 @@ interface ScheduleHostContract {
         fun showTeacherScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showSettingsScreen(androidComponent: AndroidComponent)
         fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long)
+        fun onBackPressed(androidComponent: AndroidComponent)
     }
 
     interface InputModule {
