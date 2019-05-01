@@ -1,5 +1,6 @@
 package com.project.mobile_university.presentation.schedule.teacher.interactor
 
+import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.shared.ScheduleRepository
@@ -8,8 +9,10 @@ import com.project.mobile_university.presentation.schedule.teacher.contract.Teac
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
-class TeacherScheduleInteractor(private val scheduleRepository: ScheduleRepository,
-                                exceptionConverter: ExceptionConverter) :
+class TeacherScheduleInteractor(
+    private val scheduleRepository: ScheduleRepository,
+    exceptionConverter: ExceptionConverter
+) :
     InteractorWithErrorHandler<TeacherScheduleContract.Listener>(exceptionConverter),
     TeacherScheduleContract.Interactor {
 
@@ -17,6 +20,13 @@ class TeacherScheduleInteractor(private val scheduleRepository: ScheduleReposito
 
     override fun getScheduleDayList(startWeekDay: Date, endWeekDay: Date, teacherId: Long) {
         val observable = scheduleRepository.syncScheduleDaysForTeacher(startWeekDay, endWeekDay, teacherId)
+            .map { scheduleDays ->
+                val daysMap = mutableMapOf<String, ScheduleDay>()
+                scheduleDays.forEach { scheduleDay ->
+                    daysMap[scheduleDay.currentDate] = scheduleDay
+                }
+                daysMap
+            }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
             when {

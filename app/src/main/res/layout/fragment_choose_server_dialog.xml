@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="@dimen/large_margin">
 
-    <com.project.mobile_university.presentation.common.WrapContentListView
+    <com.project.mobile_university.presentation.common.ui.WrapContentListView
         android:id="@+id/url_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.common
+package com.project.mobile_university.presentation.common.ui
 
 import android.content.Context
 import android.util.AttributeSet

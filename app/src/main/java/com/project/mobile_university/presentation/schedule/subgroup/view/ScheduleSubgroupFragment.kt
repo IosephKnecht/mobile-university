@@ -82,26 +82,22 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
     override fun onStart() {
         super.onStart()
 
-        presenter.scheduleDayList.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                adapter.scheduleDayList = it
-                adapter.notifyDataSetChanged()
-                schedule_swipe_layout.isRefreshing = false
-            }
-        })
+        with(presenter) {
+            errorObserver.observe(viewLifecycleOwner, Observer { errorMessage ->
+                if (errorMessage != null) {
+                    Toasty.error(context!!, errorMessage, Toast.LENGTH_LONG).show()
+                }
+            })
 
-        presenter.errorObserver.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
-            }
-        })
-
-
-        presenter.dateObserver.observe(viewLifecycleOwner, Observer {
-            // TODO: util does not inject in view element
-            adapter.currentDate = CalendarUtil.convertToSimpleFormat(it!!)
-            adapter.notifyDataSetChanged()
-        })
+            lessonsObserver.observe(viewLifecycleOwner, Observer { lessons ->
+                if (lessons != null) {
+                    adapter.reload(lessons, schedule_swipe_layout)
+                    if (lessons.isEmpty()) {
+                        // TODO: show placeholder
+                    }
+                }
+            })
+        }
     }
 
     override fun onBackPressed() = true

@@ -47,15 +47,7 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.viewModel = presenter
 
-        adapter = SettingsAdapter(SettingsItemBuilder.buildList(context!!))
-
-        adapter.exitListener = {
-            presenter.exit()
-        }
-
-        adapter.clearListener = {
-            presenter.clearCache()
-        }
+        adapter = SettingsAdapter()
 
         return binding.root
     }
@@ -71,6 +63,8 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
                 this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
             })
         }
+
+        adapter.reload(SettingsItemBuilder.buildList(context!!, presenter))
 
         presenter.throwableObserver.observe(viewLifecycleOwner, Observer {
             if (it != null) Toasty.error(context!!, it, Toast.LENGTH_LONG).show()

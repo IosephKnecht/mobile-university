@@ -5,20 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
+import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import java.util.*
 
 interface TeacherScheduleContract {
-    enum class State {
-        IDLE, INIT
-    }
-
     interface ObservableStorage {
         val errorObserver: LiveData<String>
-        val scheduleDayList: LiveData<List<ScheduleDay>>
-        val dateObserver: LiveData<Date>
-        val state: LiveData<State>
+        val lessonsObserver: LiveData<List<Lesson>>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
@@ -26,13 +21,18 @@ interface TeacherScheduleContract {
     }
 
     interface Listener : MvpInteractor.Listener {
-        fun onObtainScheduleDayList(scheduleDayList: List<ScheduleDay>?,
-                                    throwable: Throwable?)
+        fun onObtainScheduleDayList(
+            scheduleDayList: Map<String, ScheduleDay>?,
+            throwable: Throwable?
+        )
     }
 
     interface Interactor : MvpInteractor<Listener> {
-        fun getScheduleDayList(startWeekDay: Date,
-                               endWeekDay: Date, teacherId: Long)
+        fun getScheduleDayList(
+            startWeekDay: Date,
+            endWeekDay: Date,
+            teacherId: Long
+        )
     }
 
     interface InputModule {

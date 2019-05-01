@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
-import com.project.mobile_university.presentation.lessonInfo.view.LessonInfoFragment
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
-import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
@@ -115,6 +112,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         calendar = HorizontalCalendar.Builder(activity, R.id.calendar_view)
             .range(startDate, endDate)
             .datesNumberOnScreen(7)
+            .defaultSelectedDate(presenter.restoreDefaultDate())
             .build()
 
         calendar.calendarListener = object : HorizontalCalendarListener() {
