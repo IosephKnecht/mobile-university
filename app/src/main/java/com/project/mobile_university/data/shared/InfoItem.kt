@@ -4,4 +4,5 @@ interface InfoItem {
     val id: Int
     val header: String?
     val description: String?
+    val action: (() -> Unit)?
 }

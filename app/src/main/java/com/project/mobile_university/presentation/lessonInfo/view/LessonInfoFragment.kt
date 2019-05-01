@@ -74,8 +74,7 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
 
         presenter.lesson.observe(viewLifecycleOwner, Observer { lesson ->
             lesson?.let {
-                adapter.subgroupList = it.subgroupList
-                adapter.notifyDataSetChanged()
+                adapter.reload(it.subgroupList)
             }
             binding.lessonInfoRefresh.isRefreshing = false
         })
