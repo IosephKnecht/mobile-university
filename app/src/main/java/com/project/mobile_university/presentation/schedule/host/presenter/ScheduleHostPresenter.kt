@@ -3,6 +3,7 @@ package com.project.mobile_university.presentation.schedule.host.presenter
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.CurrentScreenType
@@ -15,8 +16,12 @@ class ScheduleHostPresenter(
 ) : AbstractPresenter(), ScheduleHostContract.Presenter, ScheduleHostContract.Listener,
     ScheduleHostContract.RouterListener {
 
-    override val dateChange = MutableLiveData<Date>()
+    override val dateChange = MutableLiveData<String>()
     override val currentScreen = MutableLiveData<CurrentScreenType>()
+
+    init {
+        dateChange.value = CalendarUtil.convertToSimpleFormat(Date())
+    }
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
@@ -41,7 +46,7 @@ class ScheduleHostPresenter(
     }
 
     override fun onDateChange(date: Date) {
-        dateChange.value = date
+        dateChange.value = CalendarUtil.convertToSimpleFormat(date)
     }
 
     override fun onShowSubgroupSchedule(identifier: Long) {
@@ -66,6 +71,14 @@ class ScheduleHostPresenter(
 
     override fun backPressed() {
         router.onBackPressed(androidComponent!!)
+    }
+
+    override fun restoreDefaultDate(): Calendar {
+        return Calendar.getInstance().apply {
+            time = dateChange.value?.run {
+                CalendarUtil.parseFromString(this)
+            } ?: Date()
+        }
     }
 
     override fun onDestroy() {

@@ -32,6 +32,10 @@ object CalendarUtil {
         return simpleDateFormat.format(date)
     }
 
+    fun parseFromString(stringDate: String): Date {
+        return simpleDateFormat.parse(stringDate)
+    }
+
     fun obtainMondayAndSunday(date: Date): Pair<Date, Date> {
         val diff = obtainDayOfWeek(date) - DayEnum.MONDAY.appEnum
 

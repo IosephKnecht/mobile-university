@@ -18,7 +18,7 @@ interface ScheduleHostContract {
     }
 
     interface ExternalObservableStorage {
-        val dateChange: LiveData<Date>
+        val dateChange: LiveData<String>
     }
 
     interface InternalNavigationStorage {
@@ -35,6 +35,7 @@ interface ScheduleHostContract {
         fun onDateChange(date: Date)
         fun onShowLessonInfo(lessonId: Long)
         fun backPressed()
+        fun restoreDefaultDate(): Calendar
     }
 
     interface Listener : MvpInteractor.Listener

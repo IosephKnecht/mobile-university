@@ -7,18 +7,14 @@ import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.ScheduleDay as ScheduleDayPresentation
 import java.util.*
 
 interface ScheduleSubgroupContract {
-    enum class State {
-        IDLE, INIT
-    }
-
     interface ObservableStorage {
-        val scheduleDayList: LiveData<List<ScheduleDayPresentation>>
+        val lessonsObserver: LiveData<List<Lesson>>
         val errorObserver: LiveData<String>
-        val dateObserver: LiveData<Date>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
@@ -26,13 +22,15 @@ interface ScheduleSubgroupContract {
     }
 
     interface Listener : MvpInteractor.Listener {
-        fun onObtainLessonList(lessonList: List<ScheduleDayPresentation>?, throwable: Throwable?)
+        fun onObtainLessonList(lessonList: Map<String, ScheduleDayPresentation>?, throwable: Throwable?)
     }
 
     interface Interactor : MvpInteractor<Listener> {
-        fun getLessonList(startWeek: Date,
-                          endWeek: Date,
-                          subgroupId: Long)
+        fun getLessonList(
+            startWeek: Date,
+            endWeek: Date,
+            subgroupId: Long
+        )
     }
 
     interface InputModule {
