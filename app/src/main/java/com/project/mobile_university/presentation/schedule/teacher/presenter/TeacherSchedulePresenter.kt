@@ -38,10 +38,13 @@ class TeacherSchedulePresenter(
 
         hostObservableStorage.dateChange
             .observe(androidComponent.activityComponent!!, dateChangeObserver)
+
+        interactor.setListener(this)
     }
 
     override fun detachAndroidComponent() {
         hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
+        interactor.setListener(null)
         super.detachAndroidComponent()
     }
 
@@ -83,7 +86,7 @@ class TeacherSchedulePresenter(
                 recalculateWeek(parseDate)
                 obtainScheduleDayList(teacherId)
             } else {
-                lessonsObserver.value = daysMap?.get(stringDate)?.lessons
+                lessonsObserver.value = daysMap?.get(stringDate)?.lessons ?: listOf()
             }
         }
     }
