@@ -1,5 +1,7 @@
 package com.project.mobile_university.data.shared
 
+import com.project.mobile_university.data.presentation.LessonStatus
+
 interface AbstractLesson<T : AbstractSubgroup> {
     val extId: Long
     val dayId: Long
@@ -12,4 +14,5 @@ interface AbstractLesson<T : AbstractSubgroup> {
     val subjectName: String
     val teacherName: String
     val teacherExtId: Long
+    val lessonStatus: Int
 }

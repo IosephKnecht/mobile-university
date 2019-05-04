@@ -63,7 +63,9 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swipeHelper = TeacherScheduleSwipeHelper(view.context, lesson_list, ItemTouchHelper.LEFT, 100)
+        swipeHelper = TeacherScheduleSwipeHelper(
+            view.context, lesson_list, ItemTouchHelper.LEFT, 100
+        ) { position, lessonStatus -> presenter.updateLessonStatus(position, lessonStatus) }
 
         adapter = TeacherScheduleAdapter { lessonId ->
             (parentFragment as Host).showLessonInfo(lessonId)

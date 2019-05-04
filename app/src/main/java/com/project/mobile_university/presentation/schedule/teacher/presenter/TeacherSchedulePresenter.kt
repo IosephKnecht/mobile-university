@@ -5,8 +5,10 @@ import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Lesson
+import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.less
 import com.project.mobile_university.presentation.more
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
@@ -20,7 +22,7 @@ class TeacherSchedulePresenter(
 ) : AbstractPresenter(), TeacherScheduleContract.Presenter,
     TeacherScheduleContract.Listener {
 
-    override val errorObserver = MutableLiveData<String>()
+    override val errorObserver = SingleLiveData<String>()
     override val lessonsObserver = MutableLiveData<List<Lesson>>()
 
     @set:Synchronized
@@ -52,6 +54,12 @@ class TeacherSchedulePresenter(
         interactor.getScheduleDayList(weekStart!!, weekEnd!!, teacherId)
     }
 
+    override fun updateLessonStatus(position: Int, lessonStatus: LessonStatus) {
+        lessonsObserver.value?.get(position)?.let { lesson ->
+            interactor.updateLessonStatus(lesson.extId, lessonStatus)
+        }
+    }
+
     override fun onObtainScheduleDayList(scheduleDayList: Map<String, ScheduleDay>?, throwable: Throwable?) {
         when {
             scheduleDayList != null -> {
@@ -61,6 +69,14 @@ class TeacherSchedulePresenter(
             throwable != null -> {
                 errorObserver.postValue(throwable.localizedMessage)
             }
+        }
+    }
+
+    override fun onUpdateLessonStatus(throwable: Throwable?) {
+        if (throwable != null) {
+            errorObserver.setValue(throwable.localizedMessage)
+        } else {
+            obtainScheduleDayList(teacherId)
         }
     }
 

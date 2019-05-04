@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.mobile_university.data.presentation.Lesson
+import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import java.util.*
@@ -18,6 +19,7 @@ interface TeacherScheduleContract {
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainScheduleDayList(teacherId: Long)
+        fun updateLessonStatus(position: Int, lessonStatus: LessonStatus)
     }
 
     interface Listener : MvpInteractor.Listener {
@@ -25,6 +27,8 @@ interface TeacherScheduleContract {
             scheduleDayList: Map<String, ScheduleDay>?,
             throwable: Throwable?
         )
+
+        fun onUpdateLessonStatus(throwable: Throwable?)
     }
 
     interface Interactor : MvpInteractor<Listener> {
@@ -33,6 +37,8 @@ interface TeacherScheduleContract {
             endWeekDay: Date,
             teacherId: Long
         )
+
+        fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus)
     }
 
     interface InputModule {

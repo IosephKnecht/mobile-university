@@ -1,6 +1,7 @@
 package com.project.mobile_university.data
 
 import com.project.mobile_university.data.presentation.Lesson
+import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.data.presentation.Subgroup
 import com.project.mobile_university.domain.utils.CalendarUtil
@@ -64,7 +65,8 @@ object Beans {
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 2L,
@@ -77,7 +79,8 @@ object Beans {
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 3L,
@@ -90,7 +93,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
 
     )
@@ -107,7 +111,8 @@ object Beans {
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 5L,
@@ -120,7 +125,8 @@ object Beans {
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
     )
 
@@ -136,7 +142,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 8L,
@@ -149,7 +156,8 @@ object Beans {
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 9L,
@@ -162,7 +170,8 @@ object Beans {
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
     )
 
@@ -178,7 +187,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
     )
 
@@ -194,7 +204,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 15L,
@@ -207,7 +218,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
     )
 
@@ -223,7 +235,8 @@ object Beans {
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 17L,
@@ -236,7 +249,8 @@ object Beans {
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
             extId = 18L,
@@ -249,7 +263,8 @@ object Beans {
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
-            subgroupList = subgroups
+            subgroupList = subgroups,
+            lessonStatus = LessonStatus.READY.identifier
         )
     )
 

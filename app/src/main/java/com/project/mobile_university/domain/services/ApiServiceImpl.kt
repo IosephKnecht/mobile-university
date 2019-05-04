@@ -1,6 +1,7 @@
 package com.project.mobile_university.domain.services
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
@@ -18,10 +19,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiServiceImpl(private val sharedPreferenceService: SharedPreferenceService,
-                     private val gson: Gson,
-                     private val okHttpClient: OkHttpClient,
-                     private val retrofitExceptionAdapter: ExceptionAdapter) : ApiService {
+class ApiServiceImpl(
+    private val sharedPreferenceService: SharedPreferenceService,
+    private val gson: Gson,
+    private val okHttpClient: OkHttpClient,
+    private val retrofitExceptionAdapter: ExceptionAdapter
+) : ApiService {
 
     private lateinit var universityApi: UniversityApi
 
@@ -49,8 +52,10 @@ class ApiServiceImpl(private val sharedPreferenceService: SharedPreferenceServic
         return universityApi.logout(loginPassString)
     }
 
-    override fun getScheduleByDate(currentDate: Date,
-                                   subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleByDate(
+        currentDate: Date,
+        subgroupId: Long
+    ): Observable<BaseServerResponse<ScheduleDay>> {
 
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val currentDateString = CalendarUtil.convertToSimpleFormat(currentDate)
@@ -58,27 +63,38 @@ class ApiServiceImpl(private val sharedPreferenceService: SharedPreferenceServic
         return universityApi.getScheduleDayForSubgroup(loginPassString, currentDateString, subgroupId)
     }
 
-    override fun getScheduleOfWeekForSubgroup(startWeek: Date,
-                                              endWeek: Date,
-                                              subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleOfWeekForSubgroup(
+        startWeek: Date,
+        endWeek: Date,
+        subgroupId: Long
+    ): Observable<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 
         return universityApi.getScheduleWeekForSubgroup(loginPassString, dateRangeString, subgroupId)
     }
 
-    override fun getScheduleOfWeekForTeacher(startWeek: Date,
-                                             endWeek: Date,
-                                             teacherId: Long): Observable<BaseServerResponse<ScheduleDay>> {
+    override fun getScheduleOfWeekForTeacher(
+        startWeek: Date,
+        endWeek: Date,
+        teacherId: Long
+    ): Observable<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 
         return universityApi.getScheduleWeekForTeacher(loginPassString, dateRangeString, teacherId)
     }
 
+    override fun updateLessonStatus(lessonId: Long, body: JsonObject): Observable<Unit> {
+        return Observable.fromCallable { sharedPreferenceService.getLoginPassString() }
+            .flatMap { loginPassString -> universityApi.patchLessonStatus(loginPassString, lessonId, body) }
+    }
+
     // TODO: will be transited on CalendarUtil
-    private fun obtainDateRangeString(startWeek: Date,
-                                      endWeek: Date): String {
+    private fun obtainDateRangeString(
+        startWeek: Date,
+        endWeek: Date
+    ): String {
         val startWeekString = CalendarUtil.convertToSimpleFormat(startWeek)
         val endWeekString = CalendarUtil.convertToSimpleFormat(endWeek)
         return "$startWeekString,$endWeekString"
