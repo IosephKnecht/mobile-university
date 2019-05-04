@@ -7,17 +7,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.common.helpers.swipe.SwipeHelper
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.view.adapter.TeacherScheduleAdapter
+import com.project.mobile_university.presentation.schedule.teacher.view.adapter.TeacherScheduleSwipeHelper
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_teacher_schedule.*
 
@@ -38,6 +41,7 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
 
     private lateinit var adapter: TeacherScheduleAdapter
     private lateinit var diComponent: TeacherScheduleComponent
+    private lateinit var swipeHelper: SwipeHelper
     private var teacherId: Long = -1L
 
     override fun inject() {
@@ -59,6 +63,8 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeHelper = TeacherScheduleSwipeHelper(view.context, lesson_list, ItemTouchHelper.LEFT, 100)
+
         adapter = TeacherScheduleAdapter { lessonId ->
             (parentFragment as Host).showLessonInfo(lessonId)
         }
@@ -67,7 +73,7 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(false)
             this.adapter = this@TeacherScheduleFragment.adapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         schedule_swipe_layout.setOnRefreshListener {
