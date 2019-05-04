@@ -5,13 +5,13 @@
     <string name="password_hint">Enter your password</string>
     <string name="login_button">Enter</string>
     <string name="login_other_button">Other</string>
-    
+
     <string name="server_dialog_url_title">Server url</string>
     <string name="server_dialog_hint">name:port</string>
     <string name="server_dialog_secure_title">Use https connection</string>
-    
+
     <string name="schedule_enum_pattern">%s/n%s</string>
-    
+
     <string name="lesson_subject_desc">Subject:</string>
     <string name="lesson_teacher_desc">Teacher:</string>
     <string name="lesson_lecture_hall_desc">Lecture hall:</string>
@@ -58,4 +58,16 @@
         <string name="navigation_home_works">Home works (not implemented)</string>
         <string name="navigation_logout">Logout (not implemented)</string>
     <!--Navigation view-->
+
+    <!--Lesson status strings-->
+        <string name="lesson_status_ready_string">Ready</string>
+        <string name="lesson_status_pending_string">Pending</string>
+        <string name="lesson_status_canceled_string">Canceled</string>
+    <!--Lesson status strings-->
+
+    <!--Schedule teacher screen-->
+        <string name="positive_change_lesson_status_string">Change</string>
+        <string name="negative_text_lesson_status_string">Cancel</string>
+        <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
+    <!--Schedule teacher screen-->
 </resources>

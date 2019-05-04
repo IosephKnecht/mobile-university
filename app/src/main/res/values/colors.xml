@@ -12,4 +12,11 @@
 
     <color name="color_red">#cc0707</color>
     <color name="color_green">#05ac1b</color>
+
+
+    <!--Lesson status color-->
+        <color name="lesson_status_ready_color">@color/color_green</color>
+        <color name="lesson_status_pending_color">@color/primary</color>
+        <color name="lesson_status_canceled_color">@color/color_red</color>
+    <!--Lesson status color-->
 </resources>

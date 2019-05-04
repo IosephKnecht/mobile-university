@@ -15,4 +15,20 @@ data class Lesson(
     override val teacherName: String,
     override val teacherExtId: Long,
     override val lessonStatus: Int
-) : AbstractLesson<Subgroup>
+) : AbstractLesson<Subgroup> {
+
+    fun deepCopy() = Lesson(
+        extId = extId,
+        dayId = dayId,
+        currentDate = currentDate,
+        lectureHallName = lectureHallName,
+        lectureTypeName = lectureTypeName,
+        lessonStart = lessonStart,
+        lessonEnd = lessonEnd,
+        subgroupList = subgroupList,
+        subjectName = subjectName,
+        teacherName = teacherName,
+        teacherExtId = teacherExtId,
+        lessonStatus = lessonStatus
+    )
+}

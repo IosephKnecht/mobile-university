@@ -15,14 +15,23 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/small_margin">
 
+        <View
+            android:id="@+id/lesson_status_divider"
+            lesson_status_background="@{lesson.lessonStatus}"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_lesson_status_height"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/lesson_status_ready_color"/>
+
         <TextView
             android:id="@+id/lesson_type"
             style="@style/HeaderText.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
             android:text="@{lesson.lectureTypeName}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_status_divider"
             tools:text="lecture"/>
 
         <TextView

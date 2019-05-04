@@ -14,4 +14,5 @@
     <dimen name="divider_desc">4dp</dimen>
 
     <dimen name="swipe_drawable_width">30dp</dimen>
+    <dimen name="divider_lesson_status_height">5dp</dimen>
 </resources>

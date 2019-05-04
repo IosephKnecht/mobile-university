@@ -24,6 +24,8 @@ class TeacherSchedulePresenter(
 
     override val errorObserver = SingleLiveData<String>()
     override val lessonsObserver = MutableLiveData<List<Lesson>>()
+    override val showWarningDialog = MutableLiveData<Pair<Lesson, LessonStatus>>()
+    override val cancelWarningDialog = SingleLiveData<Boolean>()
 
     @set:Synchronized
     private var weekStart: Date? = null
@@ -54,10 +56,26 @@ class TeacherSchedulePresenter(
         interactor.getScheduleDayList(weekStart!!, weekEnd!!, teacherId)
     }
 
-    override fun updateLessonStatus(position: Int, lessonStatus: LessonStatus) {
-        lessonsObserver.value?.get(position)?.let { lesson ->
+    override fun updateLessonStatus(lesson: Lesson?, lessonStatus: LessonStatus?, force: Boolean) {
+        if (lesson == null ||
+            lessonStatus == null ||
+            lessonStatus.identifier == lesson.lessonStatus
+        ) return
+
+        if (!force) {
+            showWarningDialog.value = Pair(lesson, lessonStatus)
+        } else {
             interactor.updateLessonStatus(lesson.extId, lessonStatus)
         }
+    }
+
+    override fun getLessonByPosition(position: Int): Lesson? {
+        return lessonsObserver.value?.get(position)?.run { deepCopy() }
+    }
+
+    override fun cancelUpdateLessonStatus() {
+        showWarningDialog.value = null
+        cancelWarningDialog.setValue(true)
     }
 
     override fun onObtainScheduleDayList(scheduleDayList: Map<String, ScheduleDay>?, throwable: Throwable?) {
@@ -78,6 +96,9 @@ class TeacherSchedulePresenter(
         } else {
             obtainScheduleDayList(teacherId)
         }
+
+        showWarningDialog.value = null
+        cancelWarningDialog.setValue(true)
     }
 
     override fun onDestroy() {
