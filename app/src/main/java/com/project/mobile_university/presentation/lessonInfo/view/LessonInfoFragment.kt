@@ -17,15 +17,16 @@ import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.lessonInfo.assembly.LessonInfoComponent
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.lessonInfo.view.adapter.SubgroupAdapter
+import es.dmoral.toasty.Toasty
 
 class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), FragmentBackPressed {
 
     companion object {
-        private const val LESSON_KEY = "lesson_key"
+        private const val LESSON_EXT_KEY = "lesson_ext_key"
 
-        fun createInstance(lessonId: Long) = LessonInfoFragment().apply {
+        fun createInstance(lessonExtId: Long) = LessonInfoFragment().apply {
             arguments = Bundle().apply {
-                putLong(LESSON_KEY, lessonId)
+                putLong(LESSON_EXT_KEY, lessonExtId)
             }
         }
     }
@@ -35,12 +36,13 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
     private lateinit var adapter: SubgroupAdapter
 
     override fun inject() {
-        val lessonId = arguments?.getLong(LESSON_KEY) ?: throw RuntimeException("Lesson id could not be null")
+        val lessonExtId =
+            arguments?.getLong(LESSON_EXT_KEY) ?: throw RuntimeException("lesson ext id could not be null")
 
         diComponent = AppDelegate.presentationComponent
             .lessonInfoSubComponent()
             .with(this)
-            .lessonId(lessonId)
+            .lessonExtId(lessonExtId)
             .build()
     }
 
@@ -55,6 +57,8 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
         super.onViewCreated(view, savedInstanceState)
 
         binding.lessonInfo = presenter
+        binding.setLifecycleOwner(viewLifecycleOwner)
+
         adapter = SubgroupAdapter()
 
         binding.subgroupList.apply {
@@ -68,16 +72,29 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
 
 
         binding.lessonInfoRefresh.setOnRefreshListener {
-            presenter.obtainLessonFromCache()
+            presenter.obtainLessonFromOnline()
             binding.lessonInfoRefresh.isRefreshing = true
         }
+    }
 
-        presenter.lesson.observe(viewLifecycleOwner, Observer { lesson ->
-            lesson?.let {
-                adapter.reload(it.subgroupList)
-            }
-            binding.lessonInfoRefresh.isRefreshing = false
-        })
+    override fun onStart() {
+        super.onStart()
+
+        with(presenter) {
+            lesson.observe(viewLifecycleOwner, Observer { lesson ->
+                lesson?.let {
+                    adapter.reload(it.subgroupList)
+                }
+                binding.lessonInfoRefresh.isRefreshing = false
+            })
+
+            errorObserver.observe(viewLifecycleOwner, Observer { throwable ->
+                if (throwable != null) {
+                    context?.let { Toasty.error(it, throwable.localizedMessage).show() }
+                    binding.lessonInfoRefresh.isRefreshing = false
+                }
+            })
+        }
     }
 
     override fun onBackPressed(): Boolean {

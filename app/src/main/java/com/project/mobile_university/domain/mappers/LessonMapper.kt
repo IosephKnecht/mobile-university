@@ -29,6 +29,7 @@ object LessonMapper {
     fun toPresentation(lessonWithSubgroups: LessonWithSubgroups): LessonPresentation {
         return with(lessonWithSubgroups) {
             LessonPresentation(
+                id = lesson!!.id,
                 extId = lesson!!.extId,
                 teacherExtId = lesson!!.teacherExtId,
                 currentDate = lesson!!.currentDate,
@@ -48,6 +49,8 @@ object LessonMapper {
     fun toPresentation(lesson: AbstractLesson<*>): LessonPresentation {
         return with(lesson) {
             LessonPresentation(
+                // FIXME: database id should be parse already
+                id = (lesson as? LessonSql)?.id ?: -1L,
                 extId = extId,
                 teacherName = teacherName,
                 subjectName = subjectName,

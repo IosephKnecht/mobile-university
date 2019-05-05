@@ -50,6 +50,7 @@
         <string name="subgroups_title">Subgroups</string>
         <string name="subgroup_string">Subgroup: %s</string>
         <string name="human_value_string">Human value: %s</string>
+        <string name="lesson_status_string">Lesson\'s status: %s</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->

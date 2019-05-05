@@ -8,30 +8,41 @@ import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 @Dao
 interface ScheduleDayDao : AbstractDao<ScheduleDay> {
 
-    @Query("""Select * from scheduleday
-                    where scheduleday.`current_date` in (:dayIds)""")
+    @Query(
+        """Select * from scheduleday
+                    where scheduleday.`current_date` in (:dayIds)"""
+    )
     fun getScheduleDayList(dayIds: List<String>): List<ScheduleDay>
 
     @Transaction
-    @Query("""Select scheduleday.id,
+    @Query(
+        """Select scheduleday.id,
         scheduleday.`current_date` as currentDate, scheduleday.ext_id as extId from scheduleday
         inner join lesson on lesson.day_id = scheduleday.id
         inner join lessonsubgroup on lessonsubgroup.subgroup_id = subgroup_id
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id
-        where scheduleday.`current_date` in (:dayIds) and subgroup.ext_id = :subgroupId""")
+        where scheduleday.`current_date` in (:dayIds) and subgroup.ext_id = :subgroupId"""
+    )
     fun getScheduleDayWithLessonsForSubgroup(dayIds: List<String>, subgroupId: Long): List<ScheduleDayWithLessons>
 
     @Transaction
-    @Query("""Select scheduleday.id,
+    @Query(
+        """Select scheduleday.id,
         scheduleday.`current_date` as currentDate, scheduleday.ext_id as extId from scheduleday
         inner join lesson on lesson.day_id = scheduleday.id
         inner join lessonsubgroup on lessonsubgroup.subgroup_id = subgroup_id
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id
-        where scheduleday.`current_date` in (:dayIds) and lesson.teacher_ext_id = :teacherExtId""")
+        where scheduleday.`current_date` in (:dayIds) and lesson.teacher_ext_id = :teacherExtId"""
+    )
     fun getScheduleDayWithLessonsForTeacher(dayIds: List<String>, teacherExtId: Long): List<ScheduleDayWithLessons>
 
-    @Query("""Delete from scheduleday
+    @Query(
+        """Delete from scheduleday
         where scheduleday.`current_date` in (:dayIds)
-    """)
+    """
+    )
     fun deleteScheduleDayList(dayIds: List<String>)
+
+    @Query("""Select * from scheduleday where scheduleday.ext_id = :extId""")
+    fun getScheduleDayByExtId(extId: Long): ScheduleDay
 }

@@ -55,6 +55,7 @@ object Beans {
 
     private val lessonsMonday = listOf(
         Lesson(
+            id = 1L,
             extId = 1L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -69,6 +70,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 2L,
             extId = 2L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -83,6 +85,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 3L,
             extId = 3L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -101,6 +104,7 @@ object Beans {
 
     private val lessonsTuesday = listOf(
         Lesson(
+            id = 4L,
             extId = 4L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -115,6 +119,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 5L,
             extId = 5L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -132,6 +137,7 @@ object Beans {
 
     private val lessonsWensday = listOf(
         Lesson(
+            id = 7L,
             extId = 7L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -146,6 +152,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 8L,
             extId = 8L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -160,6 +167,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 9L,
             extId = 9L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -177,6 +185,7 @@ object Beans {
 
     private val lessonsThursDay = listOf(
         Lesson(
+            id = 10L,
             extId = 10L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -194,6 +203,7 @@ object Beans {
 
     private val lessonsFriday = listOf(
         Lesson(
+            id = 13L,
             extId = 13L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -208,6 +218,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 15,
             extId = 15L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -225,6 +236,7 @@ object Beans {
 
     private val lessonsSaturday = listOf(
         Lesson(
+            id = 16L,
             extId = 16L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -239,6 +251,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 17L,
             extId = 17L,
             dayId = -1L,
             teacherExtId = teachers[0].first,
@@ -253,6 +266,7 @@ object Beans {
             lessonStatus = LessonStatus.READY.identifier
         ),
         Lesson(
+            id = 18L,
             extId = 18L,
             dayId = -1L,
             teacherExtId = teachers[0].first,

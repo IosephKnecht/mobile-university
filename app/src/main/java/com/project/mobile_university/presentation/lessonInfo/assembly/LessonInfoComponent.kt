@@ -15,7 +15,7 @@ interface LessonInfoComponent {
         fun with(fragment: Fragment): Builder
 
         @BindsInstance
-        fun lessonId(lessonId: Long): Builder
+        fun lessonExtId(lessonExtId: Long): Builder
 
         fun build(): LessonInfoComponent
     }

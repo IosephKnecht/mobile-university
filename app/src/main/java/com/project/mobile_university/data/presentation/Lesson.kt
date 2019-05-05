@@ -3,6 +3,7 @@ package com.project.mobile_university.data.presentation
 import com.project.mobile_university.data.shared.AbstractLesson
 
 data class Lesson(
+    val id: Long,
     override val extId: Long,
     override val dayId: Long,
     override var currentDate: String,
@@ -18,6 +19,7 @@ data class Lesson(
 ) : AbstractLesson<Subgroup> {
 
     fun deepCopy() = Lesson(
+        id = id,
         extId = extId,
         dayId = dayId,
         currentDate = currentDate,

@@ -6,7 +6,7 @@ import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.presentation.common.ui.ViewHolder
 import com.project.mobile_university.presentation.common.ui.ViewModelAdapter
 
-class TeacherScheduleAdapter(private val lessonClick: (lessonId: Long) -> Unit) : ViewModelAdapter() {
+class TeacherScheduleAdapter(private val lessonClick: (lessonExtId: Long) -> Unit) : ViewModelAdapter() {
     init {
         cell<Lesson>(R.layout.item_lesson, BR.lesson)
     }

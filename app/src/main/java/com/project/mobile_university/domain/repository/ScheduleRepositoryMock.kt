@@ -4,7 +4,6 @@ import com.project.mobile_university.data.Beans
 import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
-import com.project.mobile_university.data.presentation.Subgroup
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Observable
@@ -38,14 +37,18 @@ class ScheduleRepositoryMock : ScheduleRepository {
         }
     }
 
-    override fun getLesson(lessonId: Long): Observable<Lesson> {
-        return Observable.fromCallable { Beans.getLesson(lessonId) }
+    override fun getLesson(lessonExtId: Long): Observable<Lesson> {
+        return Observable.fromCallable { Beans.getLesson(lessonExtId) }
     }
 
     override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Observable<Unit> {
         return Observable.create { emitter ->
             emitter.onNext(Unit)
         }
+    }
+
+    override fun syncLesson(lessonExtId: Long): Observable<Lesson> {
+        return Observable.error(Throwable())
     }
 
     private fun generateScheduleForSubgroup(startDate: Date, endDate: Date, subgroupId: Long): List<ScheduleDay> {

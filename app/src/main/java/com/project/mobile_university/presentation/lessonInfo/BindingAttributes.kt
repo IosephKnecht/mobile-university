@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import com.project.mobile_university.R
+import com.project.mobile_university.data.presentation.LessonStatus
 
 @BindingAdapter("setLessonType")
 fun TextView.convertLessonType(lessonType: String?) {
@@ -34,6 +35,15 @@ fun TextView.setSubgroup(subgroup: String?) {
 @BindingAdapter("setHumanValue")
 fun TextView.setHumanValue(humanValue: Long?) {
     text = context.format(R.string.human_value_string, humanValue?.toString())
+}
+
+@BindingAdapter("setLessonStatus")
+fun TextView.setLessonStatus(lessonStatus: Int) {
+    val lessonStatusEnum = LessonStatus.fromInt(lessonStatus) ?: return
+    text = context.format(
+        R.string.lesson_status_string,
+        context.getString(lessonStatusEnum.description)
+    )
 }
 
 private fun Context.format(@StringRes stringValue: Int, argument: String?): String {

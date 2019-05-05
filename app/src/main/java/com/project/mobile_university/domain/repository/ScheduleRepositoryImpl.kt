@@ -3,7 +3,9 @@ package com.project.mobile_university.domain.repository
 import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
-import com.project.mobile_university.data.presentation.Lesson
+import com.project.mobile_university.data.presentation.Lesson as PresentationLesson
+import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
+import com.project.mobile_university.data.gson.Lesson as GsonLesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.mappers.LessonMapper
@@ -89,8 +91,24 @@ class ScheduleRepositoryImpl(
         return diffObservable
     }
 
-    override fun getLesson(lessonId: Long): Observable<Lesson> {
-        return databaseService.getLessonWithSubgroup(lessonId)
+    override fun syncLesson(lessonExtId: Long): Observable<PresentationLesson> {
+        return Observable.zip(
+            apiService.getLesson(lessonExtId),
+            databaseService.getLessonByExtId(lessonExtId),
+            BiFunction<GsonLesson, SqlLesson, Pair<GsonLesson, SqlLesson>> { gsonLesson, sqlLesson ->
+                Pair(gsonLesson, sqlLesson)
+            }
+        ).flatMap { (gsonLesson, sqlLesson) ->
+            databaseService.deleteRelationsForLesson(sqlLesson.id)
+                .flatMap {
+                    databaseService.saveLesson(LessonMapper.toDatabase(gsonLesson))
+                        .map { LessonMapper.toPresentation(gsonLesson) }
+                }
+        }
+    }
+
+    override fun getLesson(lessonExtId: Long): Observable<PresentationLesson> {
+        return databaseService.getLessonWithSubgroup(lessonExtId)
             .map { LessonMapper.toPresentation(it) }
     }
 

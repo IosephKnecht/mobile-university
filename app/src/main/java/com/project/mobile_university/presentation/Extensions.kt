@@ -3,11 +3,9 @@ package com.project.mobile_university.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.gson.Gson
-import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.adapters.retrofit.RxErrorCallFactory
-import com.project.mobile_university.domain.shared.SharedPreferenceService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

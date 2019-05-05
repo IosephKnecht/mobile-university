@@ -65,8 +65,8 @@ class ScheduleHostPresenter(
         this.currentScreen.value = currentScreenType
     }
 
-    override fun onShowLessonInfo(lessonId: Long) {
-        router.showLessonInfo(androidComponent!!, lessonId)
+    override fun onShowLessonInfo(lessonExtId: Long) {
+        router.showLessonInfo(androidComponent!!, lessonExtId)
     }
 
     override fun backPressed() {

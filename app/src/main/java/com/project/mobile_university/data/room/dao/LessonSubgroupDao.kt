@@ -26,4 +26,7 @@ interface LessonSubgroupDao : AbstractDao<LessonSubgroup> {
         where lessonsubgroup.lesson_id = :lessonId"""
     )
     fun getLessonWithSubgroups(lessonId: Long): LessonWithSubgroups
+
+    @Query("""Delete from lessonsubgroup where lessonsubgroup.lesson_id = :lessonId""")
+    fun removeRelationsForLesson(lessonId: Long)
 }

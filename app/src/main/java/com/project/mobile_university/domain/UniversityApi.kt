@@ -2,6 +2,7 @@ package com.project.mobile_university.domain
 
 import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.BaseServerResponse
+import com.project.mobile_university.data.gson.Lesson
 import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
 import io.reactivex.Observable
@@ -31,6 +32,12 @@ interface UniversityApi {
         @Query("range") dateRangeString: String,
         @Query("teacher_id") teacherId: Long
     ): Observable<BaseServerResponse<ScheduleDay>>
+
+    @GET("api/v1/schedule_cell/{id}/")
+    fun getLesson(
+        @Header("Authorization") loginPassString: String,
+        @Path("id") lessonId: Long
+    ): Observable<Lesson>
 
     @PATCH("api/v1/schedule_cell/{id}/")
     fun patchLessonStatus(

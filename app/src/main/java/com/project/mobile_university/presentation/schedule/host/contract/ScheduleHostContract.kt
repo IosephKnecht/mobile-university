@@ -33,7 +33,7 @@ interface ScheduleHostContract {
         fun onShowTeacherSchedule(identifier: Long)
         fun onShowSettings()
         fun onDateChange(date: Date)
-        fun onShowLessonInfo(lessonId: Long)
+        fun onShowLessonInfo(lessonExtId: Long)
         fun backPressed()
         fun restoreDefaultDate(): Calendar
     }
@@ -50,7 +50,7 @@ interface ScheduleHostContract {
         fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showTeacherScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showSettingsScreen(androidComponent: AndroidComponent)
-        fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long)
+        fun showLessonInfo(androidComponent: AndroidComponent, lessonExtId: Long)
         fun onBackPressed(androidComponent: AndroidComponent)
     }
 
