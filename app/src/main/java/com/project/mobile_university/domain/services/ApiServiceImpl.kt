@@ -7,36 +7,32 @@ import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
-import com.project.mobile_university.domain.adapters.retrofit.RxErrorCallFactory
 import com.project.mobile_university.domain.shared.ApiService
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.createUniversityApi
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class ApiServiceImpl(
     private val sharedPreferenceService: SharedPreferenceService,
     private val gson: Gson,
     private val okHttpClient: OkHttpClient,
-    private val retrofitExceptionAdapter: ExceptionAdapter
+    private val retrofitExceptionAdapter: ExceptionAdapter,
+    private var universityApi: UniversityApi
 ) : ApiService {
-
-    private lateinit var universityApi: UniversityApi
 
     override fun updateServiceUrl(serviceUrl: String): Observable<Unit> {
         return Observable.fromCallable {
-            universityApi = Retrofit.Builder()
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxErrorCallFactory.create(retrofitExceptionAdapter))
-                .baseUrl(serviceUrl)
-                .build()
-                .create(UniversityApi::class.java)
+            universityApi = createUniversityApi(
+                httpClient = okHttpClient,
+                gson = gson,
+                retrofitExceptionAdapter = retrofitExceptionAdapter,
+                serviceUrl = serviceUrl
+            )
         }
     }
 
