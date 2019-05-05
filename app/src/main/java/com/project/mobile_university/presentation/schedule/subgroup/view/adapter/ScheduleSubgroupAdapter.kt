@@ -7,7 +7,7 @@ import com.project.mobile_university.presentation.common.ui.ViewHolder
 import com.project.mobile_university.presentation.common.ui.ViewModelAdapter
 
 
-class ScheduleSubgroupAdapter(private val lessonClick: (lessonId: Long) -> Unit) : ViewModelAdapter() {
+class ScheduleSubgroupAdapter(private val lessonClick: (lessonExtId: Long) -> Unit) : ViewModelAdapter() {
     init {
         cell<Lesson>(R.layout.item_lesson, BR.lesson)
     }

@@ -9,6 +9,7 @@ import com.project.mobile_university.data.presentation.Lesson
 interface LessonInfoContract {
     interface ObservableStorage {
         val lesson: LiveData<Lesson>
+        val errorObserver: LiveData<Throwable>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
@@ -21,10 +22,11 @@ interface LessonInfoContract {
     }
 
     interface Interactor : MvpInteractor<Listener> {
-        fun getLesson(lessonId: Long, fromCache: Boolean)
+        fun getLessonFromCache(lessonExtId: Long)
+        fun getLessonFromOnline(lessonExtId: Long)
     }
 
     interface InputModule {
-        fun createFragment(lessonId: Long): Fragment
+        fun createFragment(lessonExtId: Long): Fragment
     }
 }

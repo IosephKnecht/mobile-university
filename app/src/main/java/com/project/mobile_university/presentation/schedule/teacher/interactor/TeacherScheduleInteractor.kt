@@ -1,5 +1,6 @@
 package com.project.mobile_university.presentation.schedule.teacher.interactor
 
+import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
@@ -37,6 +38,14 @@ class TeacherScheduleInteractor(
                     listener!!.onObtainScheduleDayList(null, result.throwable)
                 }
             }
+        })
+    }
+
+    override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus) {
+        val observable = scheduleRepository.updateLessonStatus(lessonId, lessonStatus)
+
+        compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
+            listener!!.onUpdateLessonStatus(result.throwable)
         })
     }
 

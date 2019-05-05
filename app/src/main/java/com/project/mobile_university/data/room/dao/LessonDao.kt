@@ -8,4 +8,7 @@ import com.project.mobile_university.data.shared.AbstractDao
 interface LessonDao : AbstractDao<Lesson> {
     @Query("""Select * from lesson where lesson.day_id = :dayId""")
     fun getLessonByScheduleDayId(dayId: Long): List<Lesson>
+
+    @Query("""Select * from lesson where lesson.ext_id = :lessonExtId""")
+    fun getLessonByExtId(lessonExtId: Long): Lesson
 }

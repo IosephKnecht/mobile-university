@@ -2,14 +2,15 @@ package com.project.mobile_university.domain.mappers
 
 import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
 import com.project.mobile_university.data.shared.AbstractLesson
+import com.project.mobile_university.data.gson.Lesson as LessonGson
 import com.project.mobile_university.data.presentation.Lesson as LessonPresentation
 import com.project.mobile_university.data.room.entity.Lesson as LessonSql
-import com.project.mobile_university.data.gson.Lesson as LessonGson
 
 object LessonMapper {
     fun toDatabase(lesson: AbstractLesson<*>): LessonSql {
         return with(lesson) {
-            LessonSql(dayId = dayId,
+            LessonSql(
+                dayId = dayId,
                 currentDate = currentDate,
                 lectureHallName = lectureHallName,
                 lessonStart = lessonStart,
@@ -19,13 +20,16 @@ object LessonMapper {
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
                 extId = extId,
-                subgroupList = SubgroupMapper.toDatabase(subgroupList))
+                subgroupList = SubgroupMapper.toDatabase(subgroupList),
+                lessonStatus = lessonStatus
+            )
         }
     }
 
     fun toPresentation(lessonWithSubgroups: LessonWithSubgroups): LessonPresentation {
         return with(lessonWithSubgroups) {
             LessonPresentation(
+                id = lesson!!.id,
                 extId = lesson!!.extId,
                 teacherExtId = lesson!!.teacherExtId,
                 currentDate = lesson!!.currentDate,
@@ -36,14 +40,18 @@ object LessonMapper {
                 lessonStart = lesson!!.lessonStart,
                 lessonEnd = lesson!!.lessonEnd,
                 dayId = lesson!!.dayId,
-                subgroupList = SubgroupMapper.toPresentation(subgroupList)
+                subgroupList = SubgroupMapper.toPresentation(subgroupList),
+                lessonStatus = lesson!!.lessonStatus
             )
         }
     }
 
     fun toPresentation(lesson: AbstractLesson<*>): LessonPresentation {
         return with(lesson) {
-            LessonPresentation(extId = extId,
+            LessonPresentation(
+                // FIXME: database id should be parse already
+                id = (lesson as? LessonSql)?.id ?: -1L,
+                extId = extId,
                 teacherName = teacherName,
                 subjectName = subjectName,
                 lectureTypeName = lectureTypeName,
@@ -53,13 +61,16 @@ object LessonMapper {
                 currentDate = currentDate,
                 dayId = dayId,
                 teacherExtId = teacherExtId,
-                subgroupList = SubgroupMapper.toPresentation(subgroupList))
+                subgroupList = SubgroupMapper.toPresentation(subgroupList),
+                lessonStatus = lessonStatus
+            )
         }
     }
 
     fun toGson(lesson: AbstractLesson<*>): LessonGson {
         return with(lesson) {
-            LessonGson(teacherExtId = teacherExtId,
+            LessonGson(
+                teacherExtId = teacherExtId,
                 dayId = dayId,
                 currentDate = currentDate,
                 lectureHallName = lectureHallName,
@@ -69,7 +80,9 @@ object LessonMapper {
                 subjectName = subjectName,
                 teacherName = teacherName,
                 extId = extId,
-                subgroupList = SubgroupMapper.toGson(subgroupList))
+                subgroupList = SubgroupMapper.toGson(subgroupList),
+                lessonStatus = lessonStatus
+            )
         }
     }
 

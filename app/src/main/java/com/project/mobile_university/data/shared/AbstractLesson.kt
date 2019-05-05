@@ -12,4 +12,5 @@ interface AbstractLesson<T : AbstractSubgroup> {
     val subjectName: String
     val teacherName: String
     val teacherExtId: Long
+    val lessonStatus: Int
 }

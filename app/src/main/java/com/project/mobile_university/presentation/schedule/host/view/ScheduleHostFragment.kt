@@ -83,8 +83,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         }
     }
 
-    override fun showLessonInfo(lessonId: Long) {
-        presenter.onShowLessonInfo(lessonId)
+    override fun showLessonInfo(lessonExtId: Long) {
+        presenter.onShowLessonInfo(lessonExtId)
     }
 
     override fun onBackPressed(): Boolean {

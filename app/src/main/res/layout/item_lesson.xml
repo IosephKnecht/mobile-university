@@ -10,102 +10,118 @@
             type="com.project.mobile_university.data.presentation.Lesson"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/small_margin">
+        android:layout_marginTop="@dimen/small_margin"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/lesson_type"
-            style="@style/HeaderText.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{lesson.lectureTypeName}"
-            app:layout_constraintStart_toStartOf="parent"
+        <View
+            android:id="@+id/lesson_status_divider"
+            lesson_status_background="@{lesson.lessonStatus}"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_lesson_status_height"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="lecture"/>
+            tools:background="@color/lesson_status_ready_color"/>
 
-        <TextView
-            android:id="@+id/schedule_enum"
-            style="@style/PrimaryText.Medium"
-            schedule_enum="@{lesson}"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            app:layout_constraintBottom_toBottomOf="@id/lesson_info"
-            app:layout_constraintTop_toTopOf="@+id/lesson_info"
-            tools:text="8:30\n10:00"/>
-
-        <RelativeLayout
-            android:id="@+id/lesson_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:padding="@dimen/small_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/schedule_enum"
-            app:layout_constraintTop_toBottomOf="@id/lesson_type">
+            android:padding="@dimen/small_margin">
 
             <TextView
-                android:id="@+id/subject_desc"
-                style="@style/SecondaryText.Medium"
+                android:id="@+id/lesson_type"
+                style="@style/HeaderText.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_subject_desc"/>
-
-            <TextView
-                android:id="@+id/subject"
-                style="@style/SecondaryText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/subject_desc"
-                android:layout_marginStart="@dimen/divider_desc"
-                android:layout_toEndOf="@id/subject_desc"
-                android:text="@{lesson.subjectName}"
-                tools:text="Math"/>
-
-            <TextView
-                android:id="@+id/teacher_desc"
-                style="@style/SecondaryText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/subject"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/lesson_teacher_desc"/>
+                android:text="@{lesson.lectureTypeName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="lecture"/>
 
             <TextView
-                android:id="@+id/teacher"
-                style="@style/SecondaryText.Medium"
+                android:id="@+id/schedule_enum"
+                style="@style/PrimaryText.Medium"
+                schedule_enum="@{lesson}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/subject"
-                android:layout_alignBaseline="@id/teacher_desc"
-                android:layout_marginStart="@dimen/divider_desc"
-                android:layout_toEndOf="@+id/teacher_desc"
-                android:text="@{lesson.teacherName}"
-                tools:text="teacher name"/>
-
-            <TextView
-                android:id="@+id/lecture_hall_desc"
-                style="@style/SecondaryText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/teacher_desc"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/lesson_lecture_hall_desc"/>
+                app:layout_constraintBottom_toBottomOf="@id/lesson_info"
+                app:layout_constraintTop_toTopOf="@+id/lesson_info"
+                tools:text="8:30\n10:00"/>
 
-            <TextView
-                android:id="@+id/lecture_hall"
-                style="@style/SecondaryText.Medium"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/lesson_info"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/lecture_hall_desc"
-                android:layout_marginStart="@dimen/divider_desc"
-                android:layout_toEndOf="@id/lecture_hall_desc"
-                android:text="@{lesson.lectureHallName}"
-                tools:text="E323"/>
-        </RelativeLayout>
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:padding="@dimen/small_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/schedule_enum"
+                app:layout_constraintTop_toBottomOf="@id/lesson_type">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/subject_desc"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lesson_subject_desc"/>
+
+                <TextView
+                    android:id="@+id/subject"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/subject_desc"
+                    android:layout_marginStart="@dimen/divider_desc"
+                    android:layout_toEndOf="@id/subject_desc"
+                    android:text="@{lesson.subjectName}"
+                    tools:text="Math"/>
+
+                <TextView
+                    android:id="@+id/teacher_desc"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/subject"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:text="@string/lesson_teacher_desc"/>
+
+                <TextView
+                    android:id="@+id/teacher"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/subject"
+                    android:layout_alignBaseline="@id/teacher_desc"
+                    android:layout_marginStart="@dimen/divider_desc"
+                    android:layout_toEndOf="@+id/teacher_desc"
+                    android:text="@{lesson.teacherName}"
+                    tools:text="teacher name"/>
+
+                <TextView
+                    android:id="@+id/lecture_hall_desc"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/teacher_desc"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:text="@string/lesson_lecture_hall_desc"/>
+
+                <TextView
+                    android:id="@+id/lecture_hall"
+                    style="@style/SecondaryText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/lecture_hall_desc"
+                    android:layout_marginStart="@dimen/divider_desc"
+                    android:layout_toEndOf="@id/lecture_hall_desc"
+                    android:text="@{lesson.lectureHallName}"
+                    tools:text="E323"/>
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

@@ -5,8 +5,10 @@ import androidx.lifecycle.Observer
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Lesson
+import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.utils.CalendarUtil
+import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.less
 import com.project.mobile_university.presentation.more
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
@@ -20,8 +22,10 @@ class TeacherSchedulePresenter(
 ) : AbstractPresenter(), TeacherScheduleContract.Presenter,
     TeacherScheduleContract.Listener {
 
-    override val errorObserver = MutableLiveData<String>()
+    override val errorObserver = SingleLiveData<String>()
     override val lessonsObserver = MutableLiveData<List<Lesson>>()
+    override val showWarningDialog = MutableLiveData<Pair<Lesson, LessonStatus>>()
+    override val cancelWarningDialog = SingleLiveData<Boolean>()
 
     @set:Synchronized
     private var weekStart: Date? = null
@@ -52,6 +56,28 @@ class TeacherSchedulePresenter(
         interactor.getScheduleDayList(weekStart!!, weekEnd!!, teacherId)
     }
 
+    override fun updateLessonStatus(lesson: Lesson?, lessonStatus: LessonStatus?, force: Boolean) {
+        if (lesson == null ||
+            lessonStatus == null ||
+            lessonStatus.identifier == lesson.lessonStatus
+        ) return
+
+        if (!force) {
+            showWarningDialog.value = Pair(lesson, lessonStatus)
+        } else {
+            interactor.updateLessonStatus(lesson.extId, lessonStatus)
+        }
+    }
+
+    override fun getLessonByPosition(position: Int): Lesson? {
+        return lessonsObserver.value?.get(position)?.run { deepCopy() }
+    }
+
+    override fun cancelUpdateLessonStatus() {
+        showWarningDialog.value = null
+        cancelWarningDialog.setValue(true)
+    }
+
     override fun onObtainScheduleDayList(scheduleDayList: Map<String, ScheduleDay>?, throwable: Throwable?) {
         when {
             scheduleDayList != null -> {
@@ -62,6 +88,17 @@ class TeacherSchedulePresenter(
                 errorObserver.postValue(throwable.localizedMessage)
             }
         }
+    }
+
+    override fun onUpdateLessonStatus(throwable: Throwable?) {
+        if (throwable != null) {
+            errorObserver.setValue(throwable.localizedMessage)
+        } else {
+            obtainScheduleDayList(teacherId)
+        }
+
+        showWarningDialog.value = null
+        cancelWarningDialog.setValue(true)
     }
 
     override fun onDestroy() {

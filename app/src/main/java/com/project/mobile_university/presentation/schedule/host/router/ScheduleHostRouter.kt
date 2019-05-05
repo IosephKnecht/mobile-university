@@ -46,10 +46,10 @@ class ScheduleHostRouter(
         })
     }
 
-    override fun showLessonInfo(androidComponent: AndroidComponent, lessonId: Long) {
+    override fun showLessonInfo(androidComponent: AndroidComponent, lessonExtId: Long) {
         androidComponent.fragmentManagerComponent
             ?.beginTransaction()
-            ?.replace(R.id.schedule_fragment_container, lessonInfoInputModule.createFragment(lessonId))
+            ?.replace(R.id.schedule_fragment_container, lessonInfoInputModule.createFragment(lessonExtId))
             ?.addToBackStack(null)
             ?.commit()
 

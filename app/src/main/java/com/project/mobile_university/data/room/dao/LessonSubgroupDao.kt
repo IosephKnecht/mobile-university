@@ -9,17 +9,24 @@ import com.project.mobile_university.data.shared.AbstractDao
 @Dao
 interface LessonSubgroupDao : AbstractDao<LessonSubgroup> {
 
-    @Query("""Select subgroup.id, subgroup.humanValue, subgroup.name, subgroup.ext_id from subgroup
+    @Query(
+        """Select subgroup.id, subgroup.humanValue, subgroup.name, subgroup.ext_id from subgroup
         inner join lessonsubgroup on subgroup.id = lessonsubgroup.subgroup_id
-        where lessonsubgroup.lesson_id = :lessonId""")
+        where lessonsubgroup.lesson_id = :lessonId"""
+    )
     fun getSubgroupIdsByLessonId(lessonId: Long): List<Subgroup>
 
     @Transaction
-    @Query("""Select lesson.id, lesson.day_id, lesson.ext_id, lesson.`current_date`,
+    @Query(
+        """Select lesson.id, lesson.day_id, lesson.ext_id, lesson.`current_date`,
          lesson.lectureHallName, lesson.lectureTypeName, lesson.lessonStart, lesson.lessonEnd,
-          lesson.subjectName, lesson.teacherName, lesson.teacher_ext_id from lessonsubgroup
+          lesson.subjectName, lesson.teacherName, lesson.teacher_ext_id, lesson.lessonStatus from lessonsubgroup
         inner join subgroup on subgroup.id = lessonsubgroup.subgroup_id
         inner join lesson on lesson.id = lessonsubgroup.lesson_id
-        where lessonsubgroup.lesson_id = :lessonId""")
+        where lessonsubgroup.lesson_id = :lessonId"""
+    )
     fun getLessonWithSubgroups(lessonId: Long): LessonWithSubgroups
+
+    @Query("""Delete from lessonsubgroup where lessonsubgroup.lesson_id = :lessonId""")
+    fun removeRelationsForLesson(lessonId: Long)
 }
