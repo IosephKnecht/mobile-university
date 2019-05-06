@@ -16,8 +16,8 @@ fun TextView.scheduleEnum(lesson: Lesson?) {
 }
 
 @BindingAdapter("lesson_status_background")
-fun View.setLessonStatusBackground(lessonStatus: Int?) {
-    val fromIntLessonStatus = LessonStatus.fromInt(lessonStatus) ?: return
+fun View.setLessonStatusBackground(lessonStatus: LessonStatus?) {
+    val backgroundColor = lessonStatus?.itemColor ?: return
 
-    setBackgroundColor(ContextCompat.getColor(context, fromIntLessonStatus.itemColor))
+    setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
 }

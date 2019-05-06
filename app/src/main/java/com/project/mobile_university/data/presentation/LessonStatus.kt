@@ -24,12 +24,4 @@ enum class LessonStatus(
         R.string.lesson_status_canceled_string,
         R.color.lesson_status_canceled_color
     );
-
-    companion object {
-        fun fromInt(value: Int?): LessonStatus? {
-            return value?.run {
-                values().find { it.identifier == this }
-            }
-        }
-    }
 }

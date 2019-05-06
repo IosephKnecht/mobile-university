@@ -38,11 +38,12 @@ fun TextView.setHumanValue(humanValue: Long?) {
 }
 
 @BindingAdapter("setLessonStatus")
-fun TextView.setLessonStatus(lessonStatus: Int) {
-    val lessonStatusEnum = LessonStatus.fromInt(lessonStatus) ?: return
+fun TextView.setLessonStatus(lessonStatus: LessonStatus?) {
+    if (lessonStatus == null) return
+
     text = context.format(
         R.string.lesson_status_string,
-        context.getString(lessonStatusEnum.description)
+        context.getString(lessonStatus.description)
     )
 }
 

@@ -3,7 +3,6 @@ package com.project.mobile_university.data.room.entity
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.project.mobile_university.data.shared.AbstractEntity
-import com.project.mobile_university.data.shared.AbstractLesson
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -12,26 +11,28 @@ import com.project.mobile_university.data.shared.AbstractLesson
         childColumns = ["day_id"],
         onDelete = CASCADE
     )],
-    indices = [Index(value = ["day_id"])]
+    indices = [Index(value = ["day_id"]), Index(value = ["ext_id"], unique = true)]
 )
 data class Lesson(
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
     @ColumnInfo(name = "day_id")
-    override var dayId: Long = 0,
+    var dayId: Long = 0,
+    @ColumnInfo(name = "day_ext_id")
+    var dayExtId: Long = 0,
     @ColumnInfo(name = "ext_id")
-    override var extId: Long = 0,
+    var extId: Long = 0,
     @ColumnInfo(name = "current_date")
-    override var currentDate: String = "",
-    override var lectureHallName: String = "",
-    override var lectureTypeName: String = "",
-    override var lessonStart: String = "",
-    override var lessonEnd: String = "",
-    override var subjectName: String = "",
-    override var teacherName: String = "",
+    var currentDate: String = "",
+    var lectureHallName: String = "",
+    var lectureTypeName: String = "",
+    var lessonStart: String = "",
+    var lessonEnd: String = "",
+    var subjectName: String = "",
+    var teacherName: String = "",
     @ColumnInfo(name = "teacher_ext_id")
-    override var teacherExtId: Long = -1,
+    var teacherExtId: Long = -1,
     @Ignore
-    override var subgroupList: List<Subgroup> = listOf(),
-    override var lessonStatus: Int = -1
-) : AbstractEntity, AbstractLesson<Subgroup>
+    var subgroupList: List<Subgroup> = listOf(),
+    var lessonStatus: Int = -1
+) : AbstractEntity

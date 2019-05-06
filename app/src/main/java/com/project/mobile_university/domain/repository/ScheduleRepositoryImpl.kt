@@ -30,14 +30,15 @@ class ScheduleRepositoryImpl(
         subgroupId: Long
     ): Observable<List<ScheduleDay>> {
 
-        val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
-
         return apiService.getScheduleOfWeekForSubgroup(startDate, endDate, subgroupId)
             .flatMap {
-                databaseService.saveScheduleDay(it.objectList!!, datesRange)
+                databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
             }
-            .flatMap { databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId) }
-            .map { ScheduleDayMapper.toPresentation(it) }
+            .flatMap {
+                val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+                databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
+            }
+            .map { ScheduleDayMapper.sqlToPresentation(it) }
     }
 
 
@@ -46,19 +47,19 @@ class ScheduleRepositoryImpl(
         endDate: Date,
         teacherId: Long
     ): Observable<List<ScheduleDay>> {
-        val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
-
         return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
             .flatMap {
-                databaseService.saveScheduleDay(it.objectList!!, datesRange)
+                databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
             }
-            .flatMap { databaseService.getScheduleDayListForTeacher(datesRange, teacherId) }
-            .map { ScheduleDayMapper.toPresentation(it) }
+            .flatMap {
+                val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+                databaseService.getScheduleDayListForTeacher(datesRange, teacherId)
+            }
+            .map { ScheduleDayMapper.sqlToPresentation(it) }
     }
 
     override fun syncSchedule(): Observable<List<ScheduleDay>> {
         val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(Date())
-        val datesRange = CalendarUtil.buildRangeBetweenDates(monday, sunday)
 
         val remoteObservable = Observable
             .fromCallable { sharedPreferenceService.getUserInfo() }
@@ -68,23 +69,25 @@ class ScheduleRepositoryImpl(
                     is Teacher -> apiService.getScheduleOfWeekForTeacher(monday, sunday, user.teacherId)
                 }
             }
-            .map { ScheduleDayMapper.toPresentation(it.objectList!!) }
+            .map { ScheduleDayMapper.gsonToPresentation(it.objectList!!) }
 
         val storedObservable = Observable
             .fromCallable { sharedPreferenceService.getUserInfo() }
             .flatMap { user ->
+                val datesRange = CalendarUtil.buildRangeBetweenDates(monday, sunday)
+
                 return@flatMap when (user) {
                     is Student -> databaseService.getScheduleDayListForSubgroup(datesRange, user.subgroupId)
                     is Teacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
                 }
             }
-            .map { ScheduleDayMapper.toPresentation(it) }
+            .map { ScheduleDayMapper.sqlToPresentation(it) }
 
         val diffObservable = Observable
             .combineLatest(remoteObservable, storedObservable, diffFunction())
             .flatMap { diff ->
                 val (insertList, updatedDays) = diff
-                databaseService.saveScheduleDay(ScheduleDayMapper.toGson(insertList), datesRange)
+                databaseService.saveScheduleDay(ScheduleDayMapper.presentationToSql(insertList))
                     .map { updatedDays }
             }
 
@@ -99,7 +102,7 @@ class ScheduleRepositoryImpl(
                 Pair(gsonLesson, sqlLesson)
             }
         ).flatMap { (gsonLesson, sqlLesson) ->
-            databaseService.deleteRelationsForLesson(sqlLesson.id)
+            databaseService.deleteRelationsForLesson(sqlLesson.extId)
                 .flatMap {
                     databaseService.saveLesson(LessonMapper.toDatabase(gsonLesson))
                         .map { LessonMapper.toPresentation(gsonLesson) }

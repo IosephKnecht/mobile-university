@@ -9,7 +9,7 @@ data class LessonWithSubgroups(
     @Embedded
     var lesson: Lesson? = null,
     @Relation(entity = Subgroup::class,
-        entityColumn = "id",
-        parentColumn = "id")
+        entityColumn = "ext_id",
+        parentColumn = "ext_id")
     var subgroupList: List<Subgroup> = listOf()
 )

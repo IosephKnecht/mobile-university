@@ -55,9 +55,8 @@ object Beans {
 
     private val lessonsMonday = listOf(
         Lesson(
-            id = 1L,
             extId = 1L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[0].second,
@@ -67,12 +66,11 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 2L,
             extId = 2L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[1].second,
@@ -82,12 +80,11 @@ object Beans {
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 3L,
             extId = 3L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[1].second,
@@ -97,16 +94,15 @@ object Beans {
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
 
     )
 
     private val lessonsTuesday = listOf(
         Lesson(
-            id = 4L,
             extId = 4L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[3].second,
@@ -116,12 +112,11 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 5L,
             extId = 5L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[0].second,
@@ -131,15 +126,14 @@ object Beans {
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
     )
 
     private val lessonsWensday = listOf(
         Lesson(
-            id = 7L,
             extId = 7L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[2].second,
@@ -149,12 +143,11 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 8L,
             extId = 8L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[3].second,
@@ -164,12 +157,11 @@ object Beans {
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 9L,
             extId = 9L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[1].second,
@@ -179,15 +171,14 @@ object Beans {
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
     )
 
     private val lessonsThursDay = listOf(
         Lesson(
-            id = 10L,
             extId = 10L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[0].second,
@@ -197,15 +188,14 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
     )
 
     private val lessonsFriday = listOf(
         Lesson(
-            id = 13L,
             extId = 13L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[3].second,
@@ -215,12 +205,11 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 15,
             extId = 15L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[1].second,
@@ -230,15 +219,14 @@ object Beans {
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
     )
 
     private val lessonsSaturday = listOf(
         Lesson(
-            id = 16L,
             extId = 16L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[0].second,
@@ -248,12 +236,11 @@ object Beans {
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 17L,
             extId = 17L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[2].second,
@@ -263,12 +250,11 @@ object Beans {
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         ),
         Lesson(
-            id = 18L,
             extId = 18L,
-            dayId = -1L,
+            dayExtId = -1L,
             teacherExtId = teachers[0].first,
             currentDate = dates[0],
             teacherName = teachers[3].second,
@@ -278,7 +264,7 @@ object Beans {
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
-            lessonStatus = LessonStatus.READY.identifier
+            lessonStatus = LessonStatus.READY
         )
     )
 

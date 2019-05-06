@@ -59,7 +59,7 @@ class TeacherSchedulePresenter(
     override fun updateLessonStatus(lesson: Lesson?, lessonStatus: LessonStatus?, force: Boolean) {
         if (lesson == null ||
             lessonStatus == null ||
-            lessonStatus.identifier == lesson.lessonStatus
+            lessonStatus.identifier == lesson.lessonStatus?.identifier
         ) return
 
         if (!force) {

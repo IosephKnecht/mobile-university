@@ -1,45 +1,56 @@
 package com.project.mobile_university.domain.mappers
 
-import com.project.mobile_university.data.shared.AbstractScheduleDay
+import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.data.gson.ScheduleDay as ScheduleDayGson
 import com.project.mobile_university.data.presentation.ScheduleDay as ScheduleDayPresentation
 import com.project.mobile_university.data.room.entity.ScheduleDay as ScheduleDaySql
 
 object ScheduleDayMapper {
-    fun toDatabase(scheduleDay: AbstractScheduleDay<*>): ScheduleDaySql {
+    fun toDatabase(scheduleDay: ScheduleDayGson): ScheduleDaySql {
         return with(scheduleDay) {
             ScheduleDaySql(
                 extId = extId,
                 currentDate = currentDate,
-                lessons = LessonMapper.toDatabase(lessons))
-        }
-    }
-
-    fun toPresentation(scheduleDay: AbstractScheduleDay<*>): ScheduleDayPresentation {
-        return with(scheduleDay) {
-            ScheduleDayPresentation(
-                extId = extId,
-                currentDate = currentDate,
-                lessons = LessonMapper.toPresentation(lessons)
+                lessons = LessonMapper.gsonToDatabase(lessons)
             )
         }
     }
 
-    fun toGson(scheduleDay: AbstractScheduleDay<*>): ScheduleDayGson {
+    fun toDatabase(scheduleDay: ScheduleDayPresentation): ScheduleDaySql {
         return with(scheduleDay) {
-            ScheduleDayGson(
+            ScheduleDaySql(
                 extId = extId,
                 currentDate = currentDate,
-                lessons = LessonMapper.toGson(lessons))
+                lessons = LessonMapper.presentationToDatabase(lessons)
+            )
         }
     }
 
-    fun <T : AbstractScheduleDay<*>> toDatabase(scheduleDayList: List<T>) =
-        scheduleDayList.map { toDatabase(it) }
+    fun toPresentation(scheduleDayWithLessons: ScheduleDayWithLessons): ScheduleDayPresentation {
+        return with(scheduleDayWithLessons) {
+            ScheduleDayPresentation(
+                extId = scheduleDay!!.extId,
+                currentDate = scheduleDay!!.currentDate,
+                lessons = LessonMapper.sqlToPresentation(lessons)
+            )
+        }
+    }
 
-    fun <T : AbstractScheduleDay<*>> toPresentation(scheduleDayList: List<T>) =
-        scheduleDayList.map { toPresentation(it) }
+    fun toPresentation(scheduleDay: ScheduleDayGson): ScheduleDayPresentation {
+        return with(scheduleDay) {
+            ScheduleDayPresentation(
+                extId = extId,
+                currentDate = currentDate,
+                lessons = LessonMapper.gsonToPresentation(lessons)
+            )
+        }
+    }
 
-    fun <T : AbstractScheduleDay<*>> toGson(scheduleDayList: List<T>) =
-        scheduleDayList.map { toGson(it) }
+    fun gsonToSql(list: List<ScheduleDayGson>) = list.map { ScheduleDayMapper.toDatabase(it) }
+
+    fun presentationToSql(list: List<ScheduleDayPresentation>) = list.map { ScheduleDayMapper.toDatabase(it) }
+
+    fun sqlToPresentation(list: List<ScheduleDayWithLessons>) = list.map { ScheduleDayMapper.toPresentation(it) }
+
+    fun gsonToPresentation(list: List<ScheduleDayGson>) = list.map { ScheduleDayMapper.toPresentation(it) }
 }

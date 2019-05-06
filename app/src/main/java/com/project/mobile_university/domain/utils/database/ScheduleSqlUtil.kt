@@ -4,31 +4,26 @@ import com.project.mobile_university.data.room.entity.LessonSubgroup
 import com.project.mobile_university.data.shared.AbstractDao
 import com.project.mobile_university.data.shared.AbstractEntity
 import com.project.mobile_university.domain.UniversityDatabase
-import com.project.mobile_university.domain.mappers.LessonMapper
-import com.project.mobile_university.domain.mappers.ScheduleDayMapper
-import com.project.mobile_university.data.gson.ScheduleDay as ScheduleDayGson
 import com.project.mobile_university.data.room.entity.Lesson as LessonSql
 import com.project.mobile_university.data.room.entity.ScheduleDay as ScheduleDaySql
 import com.project.mobile_university.data.room.entity.Subgroup as SubgroupSql
-import com.project.mobile_university.data.gson.Lesson as LessonGson
 
 object ScheduleSqlUtil {
 
     fun insertOrReplaceScheduleDays(
         database: UniversityDatabase,
-        requestDayIds: List<String>,
-        dayGsonList: List<ScheduleDayGson>
+        scheduleDaySqlList: List<ScheduleDaySql>
     ) {
         val scheduleDayDao = database.sheduleDayDao()
+        val requestDayIds = scheduleDaySqlList.map { it.extId }
+
         val storedDays = scheduleDayDao.getScheduleDayList(requestDayIds)
 
         when {
             storedDays.isEmpty() -> {
-                val scheduleDaySqlList = ScheduleDayMapper.toDatabase(dayGsonList)
                 insertOrReplaceScheduleDay(database, scheduleDaySqlList)
             }
-            storedDays.isNotEmpty() && dayGsonList.isNotEmpty() -> {
-                val scheduleDaySqlList = ScheduleDayMapper.toDatabase(dayGsonList)
+            storedDays.isNotEmpty() && scheduleDaySqlList.isNotEmpty() -> {
                 val diff = storedDays.minus(scheduleDaySqlList)
 
                 if (diff.isEmpty()) {
@@ -38,7 +33,7 @@ object ScheduleSqlUtil {
                     scheduleDayDao.delete(*diff.toTypedArray())
                 }
             }
-            dayGsonList.isEmpty() && storedDays.isNotEmpty() -> {
+            scheduleDaySqlList.isEmpty() && storedDays.isNotEmpty() -> {
                 scheduleDayDao.deleteScheduleDayList(requestDayIds)
             }
         }
@@ -50,22 +45,10 @@ object ScheduleSqlUtil {
     ) {
         val lessonDao = database.lessonDao()
 
-        assignDayIdForLesson(database, lesson)
-
         val lessonsSql = listOf(lesson)
 
         insertAndReassignIds(lessonsSql, lessonDao)
         insertSubgroupList(database, lessonsSql)
-    }
-
-    // FIXME: Working only gson model
-    private fun assignDayIdForLesson(
-        database: UniversityDatabase,
-        lessonSql: LessonSql
-    ) {
-        database.sheduleDayDao().getScheduleDayByExtId(lessonSql.dayId).let {
-            lessonSql.dayId = it.id
-        }
     }
 
     private fun insertOrReplaceScheduleDay(
@@ -106,7 +89,7 @@ object ScheduleSqlUtil {
 
         lessonSqlList.forEach { lesson ->
             lesson.subgroupList.forEach { subgroup ->
-                val lessonSubgroup = LessonSubgroup(lesson.id, subgroup.extId)
+                val lessonSubgroup = LessonSubgroup(lesson.extId, subgroup.extId)
 
                 if (!lessonSubgroupList.contains(lessonSubgroup)) {
                     lessonSubgroupList.add(lessonSubgroup)
@@ -133,7 +116,7 @@ object ScheduleSqlUtil {
         lessonSubgroupList.forEach { lessonSubgroup ->
             subgroupSqlList.forEach subgroups@{ subgroup ->
                 if (subgroup.extId == lessonSubgroup.subgroupId) {
-                    lessonSubgroup.subgroupId = subgroup.id
+                    lessonSubgroup.subgroupId = subgroup.extId
                     return@subgroups
                 }
             }

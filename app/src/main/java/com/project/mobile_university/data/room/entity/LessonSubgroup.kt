@@ -7,8 +7,8 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
 
 @Entity(primaryKeys = ["lesson_id", "subgroup_id"],
-    foreignKeys = [ForeignKey(entity = Lesson::class, parentColumns = ["id"], childColumns = ["lesson_id"], onDelete = CASCADE),
-        ForeignKey(entity = Subgroup::class, parentColumns = ["id"], childColumns = ["subgroup_id"], onDelete = CASCADE)],
+    foreignKeys = [ForeignKey(entity = Lesson::class, parentColumns = ["ext_id"], childColumns = ["lesson_id"], onDelete = CASCADE),
+        ForeignKey(entity = Subgroup::class, parentColumns = ["ext_id"], childColumns = ["subgroup_id"], onDelete = CASCADE)],
     indices = [Index(value = ["lesson_id"]), Index("subgroup_id"), Index(value = ["lesson_id", "subgroup_id"], unique = true)])
 data class LessonSubgroup(@ColumnInfo(name = "lesson_id") val lessonId: Long,
                           @ColumnInfo(name = "subgroup_id") var subgroupId: Long)

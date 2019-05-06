@@ -1,7 +1,7 @@
 package com.project.mobile_university.domain.services
 
-import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.room.entity.Lesson
+import com.project.mobile_university.data.room.entity.ScheduleDay
 import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.UniversityDatabase
@@ -10,12 +10,12 @@ import com.project.mobile_university.domain.utils.database.ScheduleSqlUtil
 import io.reactivex.Observable
 
 class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseService {
+
     override fun saveScheduleDay(
-        scheduleDayList: List<ScheduleDay>,
-        requestedDayIds: List<String>
+        scheduleDayList: List<ScheduleDay>
     ): Observable<Unit> {
         return makeReactive {
-            ScheduleSqlUtil.insertOrReplaceScheduleDays(database, requestedDayIds, scheduleDayList)
+            ScheduleSqlUtil.insertOrReplaceScheduleDays(database, scheduleDayList)
         }
     }
 
@@ -38,11 +38,9 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
 
     }
 
-    override fun getLessonWithSubgroup(lessonId: Long): Observable<LessonWithSubgroups> {
+    override fun getLessonWithSubgroup(lessonExtId: Long): Observable<LessonWithSubgroups> {
         return makeReactive {
-            database.lessonDao().getLessonByExtId(lessonId).run {
-                database.lessonSubgroupDao().getLessonWithSubgroups(this.id)
-            }
+            database.lessonSubgroupDao().getLessonWithSubgroups(lessonExtId)
         }
     }
 
@@ -58,9 +56,9 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
         }
     }
 
-    override fun deleteRelationsForLesson(lessonId: Long): Observable<Unit> {
+    override fun deleteRelationsForLesson(lessonExtId: Long): Observable<Unit> {
         return makeReactive {
-            database.lessonSubgroupDao().removeRelationsForLesson(lessonId)
+            database.lessonSubgroupDao().removeRelationsForLesson(lessonExtId)
         }
     }
 

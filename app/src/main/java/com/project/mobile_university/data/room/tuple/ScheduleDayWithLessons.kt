@@ -1,14 +1,16 @@
 package com.project.mobile_university.data.room.tuple
 
+import androidx.room.Embedded
 import androidx.room.Relation
 import com.project.mobile_university.data.room.entity.Lesson
-import com.project.mobile_university.data.shared.AbstractEntity
-import com.project.mobile_university.data.shared.AbstractScheduleDay
+import com.project.mobile_university.data.room.entity.ScheduleDay
 
-data class ScheduleDayWithLessons(override var id: Long = -1,
-                                  override var currentDate: String = "",
-                                  override var extId: Long = -1,
-                                  @Relation(entity = Lesson::class,
-                                      parentColumn = "id",
-                                      entityColumn = "day_id")
-                                  override var lessons: List<Lesson> = listOf()) : AbstractEntity, AbstractScheduleDay<Lesson>
+data class ScheduleDayWithLessons(
+    @Embedded
+    var scheduleDay: ScheduleDay? = null,
+    @Relation(
+        entity = Lesson::class,
+        parentColumn = "id",
+        entityColumn = "day_id"
+    ) var lessons: List<Lesson> = listOf()
+)
