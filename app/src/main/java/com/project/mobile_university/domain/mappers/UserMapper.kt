@@ -6,8 +6,10 @@ import com.project.mobile_university.data.presentation.UserInfo
 object UserMapper {
     fun toPresentation(user: User): UserInfo {
         return with(user) {
-            UserInfo(firstName = user.firstName ?: "",
-                lastName = user.lastName ?: "")
+            UserInfo(
+                firstName = firstName ?: "",
+                lastName = lastName ?: ""
+            )
         }
     }
 }

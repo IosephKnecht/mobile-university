@@ -9,7 +9,7 @@ object ScheduleDayMapper {
     fun toDatabase(scheduleDay: ScheduleDayGson): ScheduleDaySql {
         return with(scheduleDay) {
             ScheduleDaySql(
-                extId = extId,
+                id = extId,
                 currentDate = currentDate,
                 lessons = LessonMapper.gsonToDatabase(lessons)
             )
@@ -19,7 +19,7 @@ object ScheduleDayMapper {
     fun toDatabase(scheduleDay: ScheduleDayPresentation): ScheduleDaySql {
         return with(scheduleDay) {
             ScheduleDaySql(
-                extId = extId,
+                id = extId,
                 currentDate = currentDate,
                 lessons = LessonMapper.presentationToDatabase(lessons)
             )
@@ -29,7 +29,7 @@ object ScheduleDayMapper {
     fun toPresentation(scheduleDayWithLessons: ScheduleDayWithLessons): ScheduleDayPresentation {
         return with(scheduleDayWithLessons) {
             ScheduleDayPresentation(
-                extId = scheduleDay!!.extId,
+                extId = scheduleDay!!.id,
                 currentDate = scheduleDay!!.currentDate,
                 lessons = LessonMapper.sqlToPresentation(lessons)
             )

@@ -1,16 +1,14 @@
 package com.project.mobile_university.data.room.entity
 
 import androidx.room.*
-import com.project.mobile_university.data.shared.AbstractEntity
 
-@Entity(indices = [Index(value = ["ext_id"], unique = true)])
+@Entity(indices = [Index(value = ["current_date"], unique = true)])
 data class ScheduleDay(
-    @PrimaryKey(autoGenerate = true)
-    override var id: Long = 0,
+    @PrimaryKey
     @ColumnInfo(name = "ext_id")
-    var extId: Long = -1,
+    var id: Long = -1,
     @ColumnInfo(name = "current_date")
     var currentDate: String = "",
     @Ignore
     var lessons: List<Lesson> = listOf()
-) : AbstractEntity
+)

@@ -2,7 +2,6 @@ package com.project.mobile_university.domain.shared
 
 import com.project.mobile_university.data.room.entity.Lesson
 import com.project.mobile_university.data.room.entity.ScheduleDay
-import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import io.reactivex.Observable
 
@@ -19,11 +18,7 @@ interface DatabaseService {
         teacherId: Long
     ): Observable<List<ScheduleDayWithLessons>>
 
-    fun getLessonWithSubgroup(lessonExtId: Long): Observable<LessonWithSubgroups>
+    fun getLessonWithSubgroup(lessonExtId: Long): Observable<Lesson>
 
-    fun getLessonByExtId(extId: Long): Observable<Lesson>
-
-    fun saveLesson(lesson: Lesson): Observable<Unit>
-
-    fun deleteRelationsForLesson(lessonExtId: Long): Observable<Unit>
+    fun saveLessons(lessons: List<Lesson>): Observable<Unit>
 }

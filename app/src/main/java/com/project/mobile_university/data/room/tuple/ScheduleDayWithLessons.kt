@@ -10,7 +10,7 @@ data class ScheduleDayWithLessons(
     var scheduleDay: ScheduleDay? = null,
     @Relation(
         entity = Lesson::class,
-        parentColumn = "id",
-        entityColumn = "day_id"
+        parentColumn = "ext_id",
+        entityColumn = "day_ext_id"
     ) var lessons: List<Lesson> = listOf()
 )

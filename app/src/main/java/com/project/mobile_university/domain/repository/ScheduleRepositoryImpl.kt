@@ -95,19 +95,11 @@ class ScheduleRepositoryImpl(
     }
 
     override fun syncLesson(lessonExtId: Long): Observable<PresentationLesson> {
-        return Observable.zip(
-            apiService.getLesson(lessonExtId),
-            databaseService.getLessonByExtId(lessonExtId),
-            BiFunction<GsonLesson, SqlLesson, Pair<GsonLesson, SqlLesson>> { gsonLesson, sqlLesson ->
-                Pair(gsonLesson, sqlLesson)
+        return apiService.getLesson(lessonExtId)
+            .flatMap { lesson ->
+                databaseService.saveLessons(listOf(LessonMapper.toDatabase(lesson)))
+                    .map { LessonMapper.toPresentation(lesson) }
             }
-        ).flatMap { (gsonLesson, sqlLesson) ->
-            databaseService.deleteRelationsForLesson(sqlLesson.extId)
-                .flatMap {
-                    databaseService.saveLesson(LessonMapper.toDatabase(gsonLesson))
-                        .map { LessonMapper.toPresentation(gsonLesson) }
-                }
-        }
     }
 
     override fun getLesson(lessonExtId: Long): Observable<PresentationLesson> {

@@ -1,6 +1,5 @@
 package com.project.mobile_university.domain.mappers
 
-import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
 import com.project.mobile_university.data.gson.Lesson as LessonGson
 import com.project.mobile_university.data.presentation.Lesson as LessonPresentation
 import com.project.mobile_university.data.room.entity.Lesson as LessonSql
@@ -9,6 +8,7 @@ object LessonMapper {
     fun toDatabase(lesson: LessonGson): LessonSql {
         return with(lesson) {
             LessonSql(
+                id = extId,
                 dayExtId = dayId,
                 currentDate = currentDate,
                 lectureHallName = lectureHallName,
@@ -18,7 +18,6 @@ object LessonMapper {
                 subjectName = subjectName,
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
-                extId = extId,
                 subgroupList = SubgroupMapper.gsonToSql(subgroupList),
                 lessonStatus = lessonStatus
             )
@@ -28,6 +27,7 @@ object LessonMapper {
     fun toDatabase(lesson: LessonPresentation): LessonSql {
         return with(lesson) {
             LessonSql(
+                id = extId,
                 dayExtId = dayExtId,
                 currentDate = currentDate,
                 lectureHallName = lectureHallName,
@@ -37,28 +37,8 @@ object LessonMapper {
                 subjectName = subjectName,
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
-                extId = extId,
                 subgroupList = SubgroupMapper.presentationToSql(subgroupList),
                 lessonStatus = LessonStatusMapper.toInt(lessonStatus)
-            )
-        }
-    }
-
-    fun toPresentation(lessonWithSubgroups: LessonWithSubgroups): LessonPresentation {
-        return with(lessonWithSubgroups) {
-            LessonPresentation(
-                extId = lesson!!.extId,
-                teacherExtId = lesson!!.teacherExtId,
-                currentDate = lesson!!.currentDate,
-                teacherName = lesson!!.teacherName,
-                subjectName = lesson!!.subjectName,
-                lectureTypeName = lesson!!.lectureTypeName,
-                lectureHallName = lesson!!.lectureHallName,
-                lessonStart = lesson!!.lessonStart,
-                lessonEnd = lesson!!.lessonEnd,
-                subgroupList = SubgroupMapper.sqlToPresetation(subgroupList),
-                lessonStatus = LessonStatusMapper.toPresentation(lesson!!.lessonStatus),
-                dayExtId = lesson!!.dayExtId
             )
         }
     }
@@ -66,7 +46,7 @@ object LessonMapper {
     fun toPresentation(lesson: LessonSql): LessonPresentation {
         return with(lesson) {
             LessonPresentation(
-                extId = extId,
+                extId = id,
                 teacherName = teacherName,
                 subjectName = subjectName,
                 lectureTypeName = lectureTypeName,

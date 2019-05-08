@@ -9,8 +9,8 @@ object SubgroupMapper {
     fun toDatabase(subgroup: SubgroupGson): SubgroupSql {
         return with(subgroup) {
             SubgroupSql(
+                id = extId,
                 humanValue = humanValue,
-                extId = extId,
                 name = name
             )
         }
@@ -19,9 +19,9 @@ object SubgroupMapper {
     fun toDatabase(subgroup: SubgroupPresentation): SubgroupSql {
         return with(subgroup) {
             SubgroupSql(
+                id = extId,
                 humanValue = humanValue,
-                name = name,
-                extId = extId
+                name = name
             )
         }
     }
@@ -29,7 +29,7 @@ object SubgroupMapper {
     fun toPresentation(subgroup: SubgroupSql): SubgroupPresentation {
         return with(subgroup) {
             SubgroupPresentation(
-                extId = extId,
+                extId = id,
                 name = name,
                 humanValue = humanValue
             )
