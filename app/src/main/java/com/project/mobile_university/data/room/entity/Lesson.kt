@@ -2,36 +2,40 @@ package com.project.mobile_university.data.room.entity
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import com.project.mobile_university.data.shared.AbstractEntity
-import com.project.mobile_university.data.shared.AbstractLesson
 
 @Entity(
     foreignKeys = [ForeignKey(
         entity = ScheduleDay::class,
-        parentColumns = ["id"],
-        childColumns = ["day_id"],
+        parentColumns = ["ext_id"],
+        childColumns = ["day_ext_id"],
         onDelete = CASCADE
     )],
-    indices = [Index(value = ["day_id"])]
+    indices = [Index(value = ["ext_id"], unique = true), Index(value = ["day_ext_id"])]
 )
 data class Lesson(
-    @PrimaryKey(autoGenerate = true)
-    override var id: Long = 0,
-    @ColumnInfo(name = "day_id")
-    override var dayId: Long = 0,
+    @PrimaryKey
     @ColumnInfo(name = "ext_id")
-    override var extId: Long = 0,
+    var id: Long = 0,
+    @ColumnInfo(name = "day_ext_id")
+    var dayExtId: Long = 0,
     @ColumnInfo(name = "current_date")
-    override var currentDate: String = "",
-    override var lectureHallName: String = "",
-    override var lectureTypeName: String = "",
-    override var lessonStart: String = "",
-    override var lessonEnd: String = "",
-    override var subjectName: String = "",
-    override var teacherName: String = "",
+    var currentDate: String = "",
+    @ColumnInfo(name = "lecture_hall_name")
+    var lectureHallName: String = "",
+    @ColumnInfo(name = "lecture_type_name")
+    var lectureTypeName: String = "",
+    @ColumnInfo(name = "lesson_start")
+    var lessonStart: String = "",
+    @ColumnInfo(name = "lesson_end")
+    var lessonEnd: String = "",
+    @ColumnInfo(name = "subject_name")
+    var subjectName: String = "",
+    @ColumnInfo(name = "teacher_name")
+    var teacherName: String = "",
     @ColumnInfo(name = "teacher_ext_id")
-    override var teacherExtId: Long = -1,
+    var teacherExtId: Long = -1,
     @Ignore
-    override var subgroupList: List<Subgroup> = listOf(),
-    override var lessonStatus: Int = -1
-) : AbstractEntity, AbstractLesson<Subgroup>
+    var subgroupList: List<Subgroup> = listOf(),
+    @ColumnInfo(name = "lesson_status")
+    var lessonStatus: Int = -1
+)

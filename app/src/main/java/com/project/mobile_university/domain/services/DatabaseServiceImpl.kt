@@ -1,21 +1,47 @@
 package com.project.mobile_university.domain.services
 
-import com.project.mobile_university.data.gson.ScheduleDay
 import com.project.mobile_university.data.room.entity.Lesson
-import com.project.mobile_university.data.room.tuple.LessonWithSubgroups
+import com.project.mobile_university.data.room.entity.LessonSubgroup
+import com.project.mobile_university.data.room.entity.ScheduleDay
+import com.project.mobile_university.data.room.entity.Subgroup
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.shared.DatabaseService
-import com.project.mobile_university.domain.utils.database.ScheduleSqlUtil
 import io.reactivex.Observable
 
 class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseService {
+
     override fun saveScheduleDay(
-        scheduleDayList: List<ScheduleDay>,
-        requestedDayIds: List<String>
+        scheduleDayList: List<ScheduleDay>
     ): Observable<Unit> {
         return makeReactive {
-            ScheduleSqlUtil.insertOrReplaceScheduleDays(database, requestedDayIds, scheduleDayList)
+            val lessons = mutableListOf<Lesson>()
+            val subgroups = mutableListOf<Subgroup>()
+            val lessonSubgroupRelations = mutableListOf<LessonSubgroup>()
+
+            scheduleDayList.forEach { day ->
+                val innerLessons = day.lessons
+
+                innerLessons.forEach { innerLesson ->
+                    subgroups.addAll(innerLesson.subgroupList)
+
+                    lessonSubgroupRelations.addAll(innerLesson.subgroupList.map {
+                        LessonSubgroup(
+                            innerLesson.id,
+                            it.id
+                        )
+                    })
+                }
+
+                lessons.addAll(innerLessons)
+            }
+
+            database.scheduleDayDao().insertScheduleDay(
+                scheduleDays = scheduleDayList.toTypedArray(),
+                lessons = lessons.toTypedArray(),
+                subgroups = subgroups.toTypedArray(),
+                lessonSubgroup = lessonSubgroupRelations.toTypedArray()
+            )
         }
     }
 
@@ -24,7 +50,7 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
         subgroupId: Long
     ): Observable<List<ScheduleDayWithLessons>> {
         return makeReactive {
-            database.sheduleDayDao().getScheduleDayWithLessonsForSubgroup(datesRange, subgroupId)
+            database.scheduleDayDao().getScheduleDayWithLessonsForSubgroup(datesRange, subgroupId)
         }
     }
 
@@ -33,34 +59,38 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
         teacherId: Long
     ): Observable<List<ScheduleDayWithLessons>> {
         return makeReactive {
-            database.sheduleDayDao().getScheduleDayWithLessonsForTeacher(datesRange, teacherId)
+            database.scheduleDayDao().getScheduleDayWithLessonsForTeacher(datesRange, teacherId)
         }
 
     }
 
-    override fun getLessonWithSubgroup(lessonId: Long): Observable<LessonWithSubgroups> {
+    override fun getLessonWithSubgroup(lessonExtId: Long): Observable<Lesson> {
         return makeReactive {
-            database.lessonDao().getLessonByExtId(lessonId).run {
-                database.lessonSubgroupDao().getLessonWithSubgroups(this.id)
+            database.scheduleDayDao().getLessonWithSubgroups(lessonExtId)
+        }
+    }
+
+    override fun saveLessons(lessons: List<Lesson>): Observable<Unit> {
+        return makeReactive {
+            val insertSubgroups = mutableListOf<Subgroup>()
+            val lessonSubgroupRelations = mutableListOf<LessonSubgroup>()
+
+            lessons.forEach { lesson ->
+                insertSubgroups.addAll(lesson.subgroupList)
+
+                lessonSubgroupRelations.addAll(lesson.subgroupList.map { subgroup ->
+                    LessonSubgroup(
+                        lesson.id,
+                        subgroup.id
+                    )
+                })
             }
-        }
-    }
 
-    override fun saveLesson(lesson: Lesson): Observable<Unit> {
-        return makeReactive {
-            ScheduleSqlUtil.insertOrReplaceLesson(database, lesson)
-        }
-    }
-
-    override fun getLessonByExtId(extId: Long): Observable<Lesson> {
-        return makeReactive {
-            database.lessonDao().getLessonByExtId(extId)
-        }
-    }
-
-    override fun deleteRelationsForLesson(lessonId: Long): Observable<Unit> {
-        return makeReactive {
-            database.lessonSubgroupDao().removeRelationsForLesson(lessonId)
+            database.scheduleDayDao().insertLessons(
+                lessons.toTypedArray(),
+                insertSubgroups.toTypedArray(),
+                lessonSubgroupRelations.toTypedArray()
+            )
         }
     }
 

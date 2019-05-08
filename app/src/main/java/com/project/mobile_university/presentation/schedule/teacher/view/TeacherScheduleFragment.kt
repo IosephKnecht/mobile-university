@@ -138,7 +138,7 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
                 .content(
                     context.getString(R.string.warning_change_lesson_status_string)
                         .format(
-                            LessonStatus.fromInt(lesson.lessonStatus)?.run { context.getString(description) },
+                            lesson.lessonStatus?.run { context.getString(description) },
                             lessonStatus.description.run { context.getString(this) }
                         )
                 )
