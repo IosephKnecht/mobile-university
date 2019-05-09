@@ -15,6 +15,9 @@ interface ScheduleSubgroupContract {
     interface ObservableStorage {
         val lessonsObserver: LiveData<List<Lesson>>
         val errorObserver: LiveData<String>
+
+        val emptyState: LiveData<Boolean>
+        val loadingState: LiveData<Boolean>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {

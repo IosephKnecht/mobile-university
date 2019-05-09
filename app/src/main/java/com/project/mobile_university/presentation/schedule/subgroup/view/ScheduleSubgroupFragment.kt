@@ -14,11 +14,13 @@ import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.adapter.ScheduleSubgroupAdapter
+import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_subgroup_schedule.*
 
@@ -91,14 +93,44 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
 
             lessonsObserver.observe(viewLifecycleOwner, Observer { lessons ->
                 if (lessons != null) {
-                    adapter.reload(lessons, schedule_swipe_layout)
-                    if (lessons.isEmpty()) {
-                        // TODO: show placeholder
+                    adapter.reload(lessons)
+                }
+            })
+
+            emptyState.observe(viewLifecycleOwner, Observer { isEmpty ->
+                if (isEmpty != null) {
+                    if (isEmpty) {
+                        showPlaceHolder(
+                            PlaceHolderView.State.Empty(
+                                contentRes = R.string.schedule_subgroup_empty_string,
+                                iconRes = R.drawable.ic_placeholder_empty
+                            )
+                        )
+                    } else {
+                        hidePlaceHolder()
                     }
+                }
+            })
+
+            loadingState.observe(viewLifecycleOwner, Observer { isLoading ->
+                if (isLoading != null) {
+                    schedule_swipe_layout.isRefreshing = isLoading
                 }
             })
         }
     }
 
     override fun onBackPressed() = true
+
+    private fun showPlaceHolder(state: PlaceHolderView.State) {
+        lesson_list.visible(false)
+        place_holder.visible(true)
+
+        place_holder.setState(state)
+    }
+
+    private fun hidePlaceHolder() {
+        lesson_list.visible(true)
+        place_holder.visible(false)
+    }
 }

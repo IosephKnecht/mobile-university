@@ -15,6 +15,9 @@ interface TeacherScheduleContract {
         val lessonsObserver: LiveData<List<Lesson>>
         val showWarningDialog: LiveData<Pair<Lesson, LessonStatus>>
         val cancelWarningDialog: LiveData<Boolean>
+
+        val emptyState: LiveData<Boolean>
+        val loadingState: LiveData<Boolean>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {

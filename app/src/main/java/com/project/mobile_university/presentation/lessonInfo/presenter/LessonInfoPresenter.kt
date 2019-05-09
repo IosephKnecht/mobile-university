@@ -16,6 +16,8 @@ class LessonInfoPresenter(
     override val lesson = MutableLiveData<Lesson>()
     override val errorObserver = SingleLiveData<Throwable>()
 
+    override val loadingState = MutableLiveData<Boolean>()
+
     init {
         obtainLessonFromCache()
     }
@@ -31,10 +33,12 @@ class LessonInfoPresenter(
     }
 
     override fun obtainLessonFromCache() {
+        loadingState.value = true
         interactor.getLessonFromCache(lessonExtId)
     }
 
     override fun obtainLessonFromOnline() {
+        loadingState.value = true
         interactor.getLessonFromOnline(lessonExtId)
     }
 
@@ -42,11 +46,14 @@ class LessonInfoPresenter(
         when {
             lesson != null -> {
                 this.lesson.value = lesson
+                errorObserver.setValue(null)
             }
             throwable != null -> {
                 errorObserver.setValue(throwable)
             }
         }
+
+        loadingState.value = false
     }
 
     override fun onDestroy() {

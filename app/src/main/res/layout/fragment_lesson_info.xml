@@ -15,98 +15,113 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/content_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/small_margin">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/date"
-                    style="@style/HeaderText.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{lessonInfo.lesson.currentDate}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="5 March. 2019"/>
-
-                <TextView
-                    android:id="@+id/subject"
-                    style="@style/PrimaryText.Medium"
-                    setSubject="@{lessonInfo.lesson.subjectName}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintTop_toBottomOf="@id/lecture_type"
-                    tools:text="Subject: Math"/>
-
-                <TextView
-                    android:id="@+id/hall"
-                    style="@style/PrimaryText.Medium"
-                    setHall="@{lessonInfo.lesson.lectureHallName}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintTop_toBottomOf="@id/subject"
-                    tools:text="Hall: E323"/>
-
-                <TextView
-                    android:id="@+id/lecture_type"
-                    style="@style/PrimaryText.Medium"
-                    setLessonType="@{lessonInfo.lesson.lectureTypeName}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintTop_toBottomOf="@+id/date"
-                    tools:text="Lesson type: lecture"/>
-
-                <TextView
-                    android:id="@+id/teacher_name"
-                    style="@style/PrimaryText.Medium"
-                    setTeacher="@{lessonInfo.lesson.teacherName}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintTop_toBottomOf="@id/hall"
-                    tools:text="Teacher: Teacher name"/>
-
-                <TextView
-                    android:id="@+id/lesson_status"
-                    style="@style/PrimaryText.Medium"
-                    setLessonStatus="@{lessonInfo.lesson.lessonStatus}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintTop_toBottomOf="@+id/teacher_name"
-                    tools:text="Lesson's status: Ready"/>
-
-                <TextView
-                    android:id="@+id/subgroups"
-                    style="@style/PrimaryText.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:text="@string/subgroups_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lesson_status"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/subgroup_list"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/small_margin"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/subgroups"
-                    tools:listitem="@layout/item_subgroup"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/small_margin">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <TextView
+                        android:id="@+id/date"
+                        style="@style/HeaderText.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{lessonInfo.lesson.currentDate}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="5 March. 2019"/>
+
+                    <TextView
+                        android:id="@+id/subject"
+                        style="@style/PrimaryText.Medium"
+                        setSubject="@{lessonInfo.lesson.subjectName}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintTop_toBottomOf="@id/lecture_type"
+                        tools:text="Subject: Math"/>
+
+                    <TextView
+                        android:id="@+id/hall"
+                        style="@style/PrimaryText.Medium"
+                        setHall="@{lessonInfo.lesson.lectureHallName}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintTop_toBottomOf="@id/subject"
+                        tools:text="Hall: E323"/>
+
+                    <TextView
+                        android:id="@+id/lecture_type"
+                        style="@style/PrimaryText.Medium"
+                        setLessonType="@{lessonInfo.lesson.lectureTypeName}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
+                        tools:text="Lesson type: lecture"/>
+
+                    <TextView
+                        android:id="@+id/teacher_name"
+                        style="@style/PrimaryText.Medium"
+                        setTeacher="@{lessonInfo.lesson.teacherName}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintTop_toBottomOf="@id/hall"
+                        tools:text="Teacher: Teacher name"/>
+
+                    <TextView
+                        android:id="@+id/lesson_status"
+                        style="@style/PrimaryText.Medium"
+                        setLessonStatus="@{lessonInfo.lesson.lessonStatus}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintTop_toBottomOf="@+id/teacher_name"
+                        tools:text="Lesson's status: Ready"/>
+
+                    <TextView
+                        android:id="@+id/subgroups"
+                        style="@style/PrimaryText.Large"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:text="@string/subgroups_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lesson_status"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/subgroup_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/small_margin"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subgroups"
+                        tools:listitem="@layout/item_subgroup"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <com.project.mobile_university.presentation.common.ui.PlaceHolderView
+                android:id="@+id/place_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/small_margin"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

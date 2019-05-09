@@ -23,6 +23,9 @@ class ScheduleSubgroupPresenter(
     override val errorObserver = SingleLiveData<String>()
     override val lessonsObserver = MutableLiveData<List<Lesson>>()
 
+    override val emptyState = MutableLiveData<Boolean>()
+    override val loadingState = MutableLiveData<Boolean>()
+
     @set:Synchronized
     private var weekStart: Date? = null
     @set:Synchronized
@@ -43,7 +46,7 @@ class ScheduleSubgroupPresenter(
 
     override fun detachAndroidComponent() {
         hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
-		interactor.setListener(null)
+        interactor.setListener(null)
         super.detachAndroidComponent()
     }
 
@@ -52,6 +55,8 @@ class ScheduleSubgroupPresenter(
     }
 
     override fun obtainLessonList(subgroupId: Long) {
+        loadingState.value = true
+
         interactor.getLessonList(weekStart!!, weekEnd!!, subgroupId)
     }
 
@@ -75,6 +80,18 @@ class ScheduleSubgroupPresenter(
         weekEnd = sunday
     }
 
+    private fun setLessonToDay(lessons: List<Lesson>?) {
+        if (lessons == null || lessons.isEmpty()) {
+            emptyState.value = true
+            lessonsObserver.value = listOf()
+        } else {
+            emptyState.value = false
+            lessonsObserver.value = lessons
+        }
+
+        loadingState.value = false
+    }
+
     private val dateChangeObserver = Observer<String> { date ->
         date?.let { stringDate ->
             this.currentDate = stringDate
@@ -85,7 +102,7 @@ class ScheduleSubgroupPresenter(
                 recalculateWeek(parseDate)
                 obtainLessonList(subgroupId)
             } else {
-                lessonsObserver.value = daysMap?.get(stringDate)?.lessons ?: listOf()
+                setLessonToDay(daysMap?.get(stringDate)?.lessons)
             }
         }
     }
