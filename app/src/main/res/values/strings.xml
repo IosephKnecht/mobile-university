@@ -16,6 +16,10 @@
     <string name="lesson_teacher_desc">Teacher:</string>
     <string name="lesson_lecture_hall_desc">Lecture hall:</string>
 
+    <!--Subgroup schedule screen-->
+        <string name="schedule_subgroup_empty_string">There are no lessons in the schedule. Perhaps this day should rest or do homework?</string>
+    <!--Subgroup schedule screen-->
+
     <!--Error message scope-->
         <string name="no_authorize_message">Sorry, your login or password was be wrong</string>
         <string name="connection_message">Having trouble connecting, please check the connection.</string>
@@ -51,6 +55,7 @@
         <string name="subgroup_string">Subgroup: %s</string>
         <string name="human_value_string">Human value: %s</string>
         <string name="lesson_status_string">Lesson\'s status: %s</string>
+        <string name="lesson_info_error_string">Failed to get information for lesson.\nTry to refresh page.</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->
@@ -70,5 +75,6 @@
         <string name="positive_change_lesson_status_string">Change</string>
         <string name="negative_text_lesson_status_string">Cancel</string>
         <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
+        <string name="teacher_schedule_screen_empty_string">There is nothing in schedule for this day, so you can relax.</string>
     <!--Schedule teacher screen-->
 </resources>

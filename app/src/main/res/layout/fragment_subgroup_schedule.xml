@@ -6,12 +6,25 @@
     android:layout_height="match_parent"
     android:layout_below="@id/calendar_view">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lesson_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listDivider="@drawable/ic_divider"
-        tools:listitem="@layout/item_lesson"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lesson_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listDivider="@drawable/ic_divider"
+            tools:listitem="@layout/item_lesson"/>
+
+        <com.project.mobile_university.presentation.common.ui.PlaceHolderView
+            android:id="@+id/place_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/small_margin"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

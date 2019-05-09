@@ -11,6 +11,7 @@ import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.less
 import com.project.mobile_university.presentation.more
+import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import java.util.*
@@ -26,6 +27,9 @@ class TeacherSchedulePresenter(
     override val lessonsObserver = MutableLiveData<List<Lesson>>()
     override val showWarningDialog = MutableLiveData<Pair<Lesson, LessonStatus>>()
     override val cancelWarningDialog = SingleLiveData<Boolean>()
+
+    override val emptyState = MutableLiveData<Boolean>()
+    override val loadingState = MutableLiveData<Boolean>()
 
     @set:Synchronized
     private var weekStart: Date? = null
@@ -53,6 +57,8 @@ class TeacherSchedulePresenter(
     }
 
     override fun obtainScheduleDayList(teacherId: Long) {
+        loadingState.value = true
+
         interactor.getScheduleDayList(weekStart!!, weekEnd!!, teacherId)
     }
 
@@ -60,11 +66,16 @@ class TeacherSchedulePresenter(
         if (lesson == null ||
             lessonStatus == null ||
             lessonStatus.identifier == lesson.lessonStatus?.identifier
-        ) return
+        ) {
+            lessonsObserver.renotify()
+            return
+        }
 
         if (!force) {
             showWarningDialog.value = Pair(lesson, lessonStatus)
         } else {
+            lessonsObserver.renotify()
+            loadingState.value = true
             interactor.updateLessonStatus(lesson.extId, lessonStatus)
         }
     }
@@ -82,12 +93,16 @@ class TeacherSchedulePresenter(
         when {
             scheduleDayList != null -> {
                 this.daysMap = scheduleDayList
-                lessonsObserver.value = scheduleDayList[currentDate]?.lessons ?: listOf()
+
+                setLessonsForToday(scheduleDayList[currentDate]?.lessons)
             }
             throwable != null -> {
-                errorObserver.postValue(throwable.localizedMessage)
+                errorObserver.setValue(throwable.localizedMessage)
+                setLessonsForToday(listOf())
             }
         }
+
+        loadingState.value = false
     }
 
     override fun onUpdateLessonStatus(throwable: Throwable?) {
@@ -99,6 +114,7 @@ class TeacherSchedulePresenter(
 
         showWarningDialog.value = null
         cancelWarningDialog.setValue(true)
+        loadingState.value = false
     }
 
     override fun onDestroy() {
@@ -113,6 +129,15 @@ class TeacherSchedulePresenter(
         weekEnd = sunday
     }
 
+    private fun setLessonsForToday(lessonsForToday: List<Lesson>?) {
+        if (lessonsForToday != null && lessonsForToday.isNotEmpty()) {
+            lessonsObserver.value = lessonsForToday
+            emptyState.value = false
+        } else {
+            emptyState.value = true
+        }
+    }
+
     private val dateChangeObserver = Observer<String> { date ->
         date?.let { stringDate ->
             this.currentDate = stringDate
@@ -123,7 +148,7 @@ class TeacherSchedulePresenter(
                 recalculateWeek(parseDate)
                 obtainScheduleDayList(teacherId)
             } else {
-                lessonsObserver.value = daysMap?.get(stringDate)?.lessons ?: listOf()
+                setLessonsForToday(daysMap?.get(stringDate)?.lessons)
             }
         }
     }

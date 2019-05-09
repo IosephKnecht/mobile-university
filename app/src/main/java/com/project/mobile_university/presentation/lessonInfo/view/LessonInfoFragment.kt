@@ -14,9 +14,11 @@ import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentLessonInfoBinding
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.lessonInfo.assembly.LessonInfoComponent
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.lessonInfo.view.adapter.SubgroupAdapter
+import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 
 class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), FragmentBackPressed {
@@ -73,7 +75,6 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
 
         binding.lessonInfoRefresh.setOnRefreshListener {
             presenter.obtainLessonFromOnline()
-            binding.lessonInfoRefresh.isRefreshing = true
         }
     }
 
@@ -85,13 +86,24 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
                 lesson?.let {
                     adapter.reload(it.subgroupList)
                 }
-                binding.lessonInfoRefresh.isRefreshing = false
             })
 
             errorObserver.observe(viewLifecycleOwner, Observer { throwable ->
                 if (throwable != null) {
-                    context?.let { Toasty.error(it, throwable.localizedMessage).show() }
-                    binding.lessonInfoRefresh.isRefreshing = false
+                    showPlaceHolder(
+                        PlaceHolderView.State.Error(
+                            content = context!!.getString(R.string.lesson_info_error_string),
+                            iconRes = R.drawable.ic_placeholder_error
+                        )
+                    )
+                } else {
+                    hidePlaceHolder()
+                }
+            })
+
+            loadingState.observe(viewLifecycleOwner, Observer { isLoading ->
+                if (isLoading != null) {
+                    binding.lessonInfoRefresh.isRefreshing = isLoading
                 }
             })
         }
@@ -99,5 +111,20 @@ class LessonInfoFragment : AbstractFragment<LessonInfoContract.Presenter>(), Fra
 
     override fun onBackPressed(): Boolean {
         return true
+    }
+
+    private fun showPlaceHolder(state: PlaceHolderView.State) {
+        with(binding) {
+            contentContainer.visible(false)
+            placeHolder.visible(true)
+            placeHolder.setState(state)
+        }
+    }
+
+    private fun hidePlaceHolder() {
+        with(binding) {
+            contentContainer.visible(true)
+            placeHolder.visible(false)
+        }
     }
 }
