@@ -2,10 +2,7 @@ package com.project.mobile_university.domain.services
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.project.mobile_university.data.gson.BaseServerResponse
-import com.project.mobile_university.data.gson.Lesson
-import com.project.mobile_university.data.gson.ScheduleDay
-import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.data.gson.*
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.shared.ApiService
@@ -91,6 +88,23 @@ class ApiServiceImpl(
         return Observable.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString -> universityApi.getLesson(loginPassString, lessonId) }
+    }
+
+    override fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>> {
+        return Observable.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString ->
+            universityApi.getCheckList(loginPassString, checkListExtId)
+                .map { serverResponse -> serverResponse.objectList!! }
+        }
+    }
+
+    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
+        return Observable.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString ->
+            universityApi.putCheckList(loginPassString, records)
+        }
     }
 
     // TODO: will be transited on CalendarUtil

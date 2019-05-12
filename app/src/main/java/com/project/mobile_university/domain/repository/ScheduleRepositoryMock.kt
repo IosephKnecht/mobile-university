@@ -1,6 +1,7 @@
 package com.project.mobile_university.domain.repository
 
 import com.project.mobile_university.data.Beans
+import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
@@ -48,6 +49,14 @@ class ScheduleRepositoryMock : ScheduleRepository {
     }
 
     override fun syncLesson(lessonExtId: Long): Observable<Lesson> {
+        return Observable.error(Throwable())
+    }
+
+    override fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>> {
+        return Observable.error(Throwable())
+    }
+
+    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
         return Observable.error(Throwable())
     }
 

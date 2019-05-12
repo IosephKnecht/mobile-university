@@ -1,5 +1,6 @@
 package com.project.mobile_university.domain.shared
 
+import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
@@ -13,4 +14,6 @@ interface ScheduleRepository {
     fun getLesson(lessonExtId: Long): Observable<Lesson>
     fun syncLesson(lessonExtId: Long): Observable<Lesson>
     fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Observable<Unit>
+    fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>>
+    fun putCheckList(records: List<CheckListRecord>): Observable<Unit>
 }

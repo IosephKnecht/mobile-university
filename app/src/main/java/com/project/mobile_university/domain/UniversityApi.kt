@@ -1,10 +1,7 @@
 package com.project.mobile_university.domain
 
 import com.google.gson.JsonObject
-import com.project.mobile_university.data.gson.BaseServerResponse
-import com.project.mobile_university.data.gson.Lesson
-import com.project.mobile_university.data.gson.ScheduleDay
-import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.data.gson.*
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -44,6 +41,18 @@ interface UniversityApi {
         @Header("Authorization") loginPassString: String,
         @Path("id") lessonId: Long,
         @Body body: JsonObject
+    ): Observable<Unit>
+
+    @GET("api/v1/check_list_students/")
+    fun getCheckList(
+        @Header("Authorization") loginPassString: String,
+        @Query("check_list") checkListId: Long
+    ): Observable<BaseServerResponse<CheckListRecord>>
+
+    @PUT("api/v1/check_list_students/")
+    fun putCheckList(
+        @Header("Authorization") loginPassString: String,
+        @Body records: List<CheckListRecord>
     ): Observable<Unit>
 
     @GET("api/v1/auth/user/logout")

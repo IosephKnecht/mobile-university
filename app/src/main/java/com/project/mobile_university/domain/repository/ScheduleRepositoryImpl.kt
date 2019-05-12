@@ -3,11 +3,13 @@ package com.project.mobile_university.domain.repository
 import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
+import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.Lesson as PresentationLesson
 import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
 import com.project.mobile_university.data.gson.Lesson as GsonLesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.domain.mappers.CheckListMapper
 import com.project.mobile_university.domain.mappers.LessonMapper
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.shared.ApiService
@@ -113,6 +115,17 @@ class ScheduleRepositoryImpl(
                 addProperty("lesson_status", lessonStatus.identifier)
             })
             .flatMap { body -> apiService.updateLessonStatus(lessonId, body) }
+    }
+
+    override fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>> {
+        return apiService.getCheckList(checkListExtId)
+            .map { CheckListMapper.gsonToPresentation(it) }
+    }
+
+    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
+        return Observable.fromCallable {
+            CheckListMapper.presentationToGson(records)
+        }.flatMap { gsonRecords -> apiService.putCheckList(gsonRecords) }
     }
 
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {

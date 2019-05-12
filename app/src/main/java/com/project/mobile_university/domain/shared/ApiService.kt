@@ -1,10 +1,7 @@
 package com.project.mobile_university.domain.shared
 
 import com.google.gson.JsonObject
-import com.project.mobile_university.data.gson.BaseServerResponse
-import com.project.mobile_university.data.gson.Lesson
-import com.project.mobile_university.data.gson.ScheduleDay
-import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.data.gson.*
 import io.reactivex.Observable
 import java.util.*
 
@@ -29,4 +26,8 @@ interface ApiService {
     fun updateLessonStatus(lessonId: Long, body: JsonObject): Observable<Unit>
 
     fun getLesson(lessonId: Long): Observable<Lesson>
+
+    fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>>
+
+    fun putCheckList(records: List<CheckListRecord>): Observable<Unit>
 }
