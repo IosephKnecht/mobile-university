@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/check_list_swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/small_margin">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/student_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_student_check_list"/>
+    android:layout_height="match_parent">
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/sync_button"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/check_list_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="Sync"/>
+            android:padding="@dimen/small_margin">
 
-        <ProgressBar
-            android:id="@+id/sync_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/student_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_student_check_list"/>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true">
+
+                <Button
+                    android:id="@+id/sync_button"
+                    style="@style/PrimaryText.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_other_selector"
+                    tools:text="Sync"/>
+
+                <ProgressBar
+                    android:id="@+id/sync_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <com.project.mobile_university.presentation.common.ui.PlaceHolderView
+            android:id="@+id/place_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/small_margin"/>
 
     </FrameLayout>
-
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
