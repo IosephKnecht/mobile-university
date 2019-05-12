@@ -26,5 +26,5 @@ object CheckListMapper {
 
     fun gsonToPresentation(list: List<CheckListRecordGson>) = list.map { toPresentation(it) }
 
-    fun presentationToGson(list: List<CheckListRecordPresentation>) = list.map{ toGson(it)}
+    fun presentationToGson(list: List<CheckListRecordPresentation>) = list.map { toGson(it) }
 }

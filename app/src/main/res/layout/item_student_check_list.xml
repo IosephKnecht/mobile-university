@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewState"
+            type="com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter.RecordViewState"/>
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,6 +20,7 @@
             style="@style/HeaderText.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{viewState.record.student.toString()}"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
+            android:text="@{viewState.record.student.toString()}"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subgroup"
@@ -31,6 +40,7 @@
 
         <Spinner
             android:id="@+id/check_list_status"
+            lesson_status_adapter="@{viewState}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

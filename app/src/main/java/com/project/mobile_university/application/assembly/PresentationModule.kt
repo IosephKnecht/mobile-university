@@ -3,6 +3,8 @@ package com.project.mobile_university.application.assembly
 import com.project.mobile_university.application.annotations.PerPresentationLayerScope
 import com.project.mobile_university.presentation.lessonInfo.LessonInfoInputModule
 import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.schedule.check_list.CheckListInputModule
+import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.schedule.host.ScheduleHostInputModule
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInputModule
@@ -45,5 +47,11 @@ class PresentationModule {
     @PerPresentationLayerScope
     fun provideLessonInfoInputModule(): LessonInfoContract.InputModule {
         return LessonInfoInputModule()
+    }
+
+    @Provides
+    @PerPresentationLayerScope
+    fun provideCheckListFragment(): CheckListContract.InputModule {
+        return CheckListInputModule()
     }
 }

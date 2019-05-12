@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.schedule.check_list.assembly.CheckListComponent
 import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_check_list.*
@@ -27,6 +30,7 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
     }
 
     private lateinit var diComponent: CheckListComponent
+    private lateinit var adapter: CheckListAdapter
 
     override fun inject() {
         val checkListId = arguments?.getLong(CHECK_LIST_IDENTIFIER)
@@ -48,8 +52,19 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        check_list_swipe_refresh.setOnRefreshListener {
+        adapter = CheckListAdapter { viewState, status ->
+            presenter.onChangeStatus(viewState, status)
+        }
+
+        check_list_swipe_refresh?.setOnRefreshListener {
             presenter.getCheckList()
+        }
+
+        student_list?.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(false)
+            this.adapter = this@CheckListFragment.adapter
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
 
@@ -83,7 +98,7 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
 
             checkList.observe(viewLifecycleOwner, Observer { checkList ->
                 if (checkList != null) {
-                    // TODO: notify adapter
+                    adapter.reload(checkList)
                 }
             })
         }
