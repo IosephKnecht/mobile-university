@@ -7,7 +7,7 @@
 
         <variable
             name="lessonInfo"
-            type="com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract.ObservableStorage"/>
+            type="com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract.ObservableStorage"/>
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

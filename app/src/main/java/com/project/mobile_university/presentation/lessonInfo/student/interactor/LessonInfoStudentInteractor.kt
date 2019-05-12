@@ -1,13 +1,13 @@
-package com.project.mobile_university.presentation.lessonInfo.interactor
+package com.project.mobile_university.presentation.lessonInfo.student.interactor
 
 import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.domain.shared.ScheduleRepository
-import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import io.reactivex.disposables.CompositeDisposable
 
-class LessonInfoInteractor(private val scheduleRepository: ScheduleRepository) :
-    AbstractInteractor<LessonInfoContract.Listener>(),
-    LessonInfoContract.Interactor {
+class LessonInfoStudentInteractor(private val scheduleRepository: ScheduleRepository) :
+    AbstractInteractor<LessonInfoStudentContract.Listener>(),
+    LessonInfoStudentContract.Interactor {
 
     private val compositeDisposable = CompositeDisposable()
 

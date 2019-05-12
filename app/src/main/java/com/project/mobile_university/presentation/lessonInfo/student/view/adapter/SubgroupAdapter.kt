@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.lessonInfo.view.adapter
+package com.project.mobile_university.presentation.lessonInfo.student.view.adapter
 
 import com.project.mobile_university.BR
 import com.project.mobile_university.R

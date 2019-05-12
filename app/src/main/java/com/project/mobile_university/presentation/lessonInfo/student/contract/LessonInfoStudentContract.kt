@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.lessonInfo.contract
+package com.project.mobile_university.presentation.lessonInfo.student.contract
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -6,7 +6,7 @@ import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.mobile_university.data.presentation.Lesson
 
-interface LessonInfoContract {
+interface LessonInfoStudentContract {
     interface ObservableStorage {
         val lesson: LiveData<Lesson>
         val errorObserver: LiveData<Throwable>

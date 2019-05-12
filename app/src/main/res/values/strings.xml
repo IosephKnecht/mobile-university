@@ -56,6 +56,9 @@
         <string name="human_value_string">Human value: %s</string>
         <string name="lesson_status_string">Lesson\'s status: %s</string>
         <string name="lesson_info_error_string">Failed to get information for lesson.\nTry to refresh page.</string>
+        <string name="lesson_info_check_list_header_string">Check list</string>
+        <string name="lesson_info_check_list_create">Create</string>
+        <string name="lesson_info_check_list_show">Show</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->

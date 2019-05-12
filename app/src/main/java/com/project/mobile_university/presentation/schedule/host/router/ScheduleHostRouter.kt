@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentManager
 import com.project.iosephknecht.viper.router.AbstractRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
-import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
-import com.project.mobile_university.presentation.lessonInfo.view.LessonInfoFragment
+import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
+import com.project.mobile_university.presentation.lessonInfo.student.view.LessonInfoStudentFragment
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
@@ -19,7 +19,7 @@ class ScheduleHostRouter(
     private val subgroupInputModule: ScheduleSubgroupContract.InputModule,
     private val teacherInputModule: TeacherScheduleContract.InputModule,
     private val settingsInputModule: SettingsContract.InputModule,
-    private val lessonInfoInputModule: LessonInfoContract.InputModule
+    private val lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -49,7 +49,7 @@ class ScheduleHostRouter(
     override fun showLessonInfo(androidComponent: AndroidComponent, lessonExtId: Long) {
         androidComponent.fragmentManagerComponent
             ?.beginTransaction()
-            ?.replace(R.id.schedule_fragment_container, lessonInfoInputModule.createFragment(lessonExtId))
+            ?.replace(R.id.schedule_fragment_container, lessonInfoStudentInputModule.createFragment(lessonExtId))
             ?.addToBackStack(null)
             ?.commit()
 
@@ -85,7 +85,7 @@ class ScheduleHostRouter(
             is SettingsFragment -> ScheduleHostContract.CurrentScreenType.SETTINGS
             is TeacherScheduleFragment -> ScheduleHostContract.CurrentScreenType.TEACHER
             is ScheduleSubgroupFragment -> ScheduleHostContract.CurrentScreenType.SUBGROUP
-            is LessonInfoFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
+            is LessonInfoStudentFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
             else -> null
         }
     }

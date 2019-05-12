@@ -1,14 +1,14 @@
-package com.project.mobile_university.presentation.lessonInfo.assembly
+package com.project.mobile_university.presentation.lessonInfo.student.assembly
 
 import androidx.fragment.app.Fragment
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import dagger.BindsInstance
 import dagger.Subcomponent
 
 @PerFeatureLayerScope
 @Subcomponent(modules = [LessonInfoModule::class])
-interface LessonInfoComponent {
+interface LessonInfoStudentComponent {
     @Subcomponent.Builder
     interface Builder {
         @BindsInstance
@@ -17,8 +17,8 @@ interface LessonInfoComponent {
         @BindsInstance
         fun lessonExtId(lessonExtId: Long): Builder
 
-        fun build(): LessonInfoComponent
+        fun build(): LessonInfoStudentComponent
     }
 
-    fun getPresenter(): LessonInfoContract.Presenter
+    fun getPresenter(): LessonInfoStudentContract.Presenter
 }
