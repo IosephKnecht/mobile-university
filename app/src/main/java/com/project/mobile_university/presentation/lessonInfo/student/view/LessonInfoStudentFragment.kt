@@ -23,6 +23,7 @@ import com.project.mobile_university.presentation.visible
 class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Presenter>(), FragmentBackPressed {
 
     companion object {
+        const val TAG = "lesson_info_student_fragment"
         private const val LESSON_EXT_KEY = "lesson_ext_key"
 
         fun createInstance(lessonExtId: Long) = LessonInfoStudentFragment().apply {

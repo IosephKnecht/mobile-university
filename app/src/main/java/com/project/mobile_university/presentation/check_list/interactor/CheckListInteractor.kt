@@ -1,9 +1,9 @@
-package com.project.mobile_university.presentation.schedule.check_list.interactor
+package com.project.mobile_university.presentation.check_list.interactor
 
 import com.project.iosephknecht.viper.interacor.AbstractInteractor
 import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.domain.shared.ScheduleRepository
-import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import io.reactivex.disposables.CompositeDisposable
 
 class CheckListInteractor(private val scheduleRepository: ScheduleRepository) :

@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.check_list.assembly
+package com.project.mobile_university.presentation.check_list.assembly
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
-import com.project.mobile_university.presentation.schedule.check_list.interactor.CheckListInteractor
-import com.project.mobile_university.presentation.schedule.check_list.presenter.CheckListPresenter
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.interactor.CheckListInteractor
+import com.project.mobile_university.presentation.check_list.presenter.CheckListPresenter
 import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides

@@ -18,12 +18,16 @@ import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.lessonInfo.teacher.assembly.LessonInfoTeacherComponent
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.view.adapter.TeacherSubgroupAdapter
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.visible
 
 class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Presenter>(),
     FragmentBackPressed {
 
+    interface Host : ScheduleHostListener
+
     companion object {
+        const val TAG = "lesson_info_teacher_fragment"
         private const val LESSON_EXT_KEY = "lesson_ext_key"
 
         fun createInstance(lessonExtId: Long) = LessonInfoTeacherFragment().apply {
@@ -123,7 +127,7 @@ class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Pre
             View.OnClickListener { presenter.createCheckList() }
         } else {
             View.OnClickListener {
-                // TODO: show check list
+                (parentFragment as? Host)?.showCheckList(checkListExtId)
             }
         }
 

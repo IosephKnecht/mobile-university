@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.check_list.view
+package com.project.mobile_university.presentation.check_list.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
-import com.project.mobile_university.presentation.schedule.check_list.assembly.CheckListComponent
-import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
-import com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter
+import com.project.mobile_university.presentation.check_list.assembly.CheckListComponent
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_check_list.*
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_check_list.*
 class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
 
     companion object {
+        const val TAG = "check_list_fragment"
         private const val CHECK_LIST_IDENTIFIER = "check_list_identifier"
 
         fun createInstance(checkListId: Long) = CheckListFragment().apply {

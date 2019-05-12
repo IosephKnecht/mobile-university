@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.check_list.presenter
+package com.project.mobile_university.presentation.check_list.presenter
 
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
@@ -6,8 +6,8 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.domain.mappers.CheckListStatusMapper
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
-import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
-import com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

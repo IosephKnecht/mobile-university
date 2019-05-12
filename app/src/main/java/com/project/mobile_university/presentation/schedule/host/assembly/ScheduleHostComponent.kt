@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
+import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
 import com.project.mobile_university.presentation.schedule.host.router.ScheduleHostRouter
@@ -57,13 +59,17 @@ class ScheduleHostModule {
         subgroupInputModule: ScheduleSubgroupContract.InputModule,
         teacherInputModule: TeacherScheduleContract.InputModule,
         settingsInputModule: SettingsContract.InputModule,
-        lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule
+        lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule,
+        lessonInfoTeacherInputModule: LessonInfoTeacherContract.InputModule,
+        checkListInputModule: CheckListContract.InputModule
     ): ScheduleHostContract.Router {
         return ScheduleHostRouter(
             subgroupInputModule,
             teacherInputModule,
             settingsInputModule,
-            lessonInfoStudentInputModule
+            lessonInfoStudentInputModule,
+            lessonInfoTeacherInputModule,
+            checkListInputModule
         )
     }
 }

@@ -7,6 +7,10 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.R
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.student.view.LessonInfoStudentFragment
+import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
+import com.project.mobile_university.presentation.lessonInfo.teacher.view.LessonInfoTeacherFragment
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.view.CheckListFragment
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
@@ -19,7 +23,9 @@ class ScheduleHostRouter(
     private val subgroupInputModule: ScheduleSubgroupContract.InputModule,
     private val teacherInputModule: TeacherScheduleContract.InputModule,
     private val settingsInputModule: SettingsContract.InputModule,
-    private val lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule
+    private val lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule,
+    private val lessonInfoTeacherInputModule: LessonInfoTeacherContract.InputModule,
+    private val checkListInputModule: CheckListContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -46,14 +52,28 @@ class ScheduleHostRouter(
         })
     }
 
-    override fun showLessonInfo(androidComponent: AndroidComponent, lessonExtId: Long) {
-        androidComponent.fragmentManagerComponent
-            ?.beginTransaction()
-            ?.replace(R.id.schedule_fragment_container, lessonInfoStudentInputModule.createFragment(lessonExtId))
-            ?.addToBackStack(null)
-            ?.commit()
+    override fun showLessonInfoStudent(androidComponent: AndroidComponent, lessonExtId: Long) {
+        androidComponent.fragmentManagerComponent?.showIfNeed(LessonInfoStudentFragment.TAG, {
+            lessonInfoStudentInputModule.createFragment(lessonExtId)
+        }, {
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
+        })
+    }
 
-        routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
+    override fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long) {
+        androidComponent.fragmentManagerComponent?.showIfNeed(LessonInfoTeacherFragment.TAG, {
+            lessonInfoTeacherInputModule.createFragment(lessonExtId)
+        }, {
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
+        })
+    }
+
+    override fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long) {
+        androidComponent.fragmentManagerComponent?.showIfNeed(CheckListFragment.TAG, {
+            checkListInputModule.createFragment(checkListExtId)
+        }, {
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.CHECK_LIST)
+        })
     }
 
     override fun onBackPressed(androidComponent: AndroidComponent) {
@@ -86,6 +106,7 @@ class ScheduleHostRouter(
             is TeacherScheduleFragment -> ScheduleHostContract.CurrentScreenType.TEACHER
             is ScheduleSubgroupFragment -> ScheduleHostContract.CurrentScreenType.SUBGROUP
             is LessonInfoStudentFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
+            is CheckListFragment -> ScheduleHostContract.CurrentScreenType.CHECK_LIST
             else -> null
         }
     }

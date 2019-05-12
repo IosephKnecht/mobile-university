@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.schedule.check_list.view.adapter
+package com.project.mobile_university.presentation.check_list.view.adapter
 
 import android.view.View
 import android.widget.AdapterView

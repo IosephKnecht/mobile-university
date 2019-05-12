@@ -7,7 +7,7 @@
 
         <variable
             name="viewState"
-            type="com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter.RecordViewState"/>
+            type="com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter.RecordViewState"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

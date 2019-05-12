@@ -1,10 +1,10 @@
-package com.project.mobile_university.presentation.schedule.check_list
+package com.project.mobile_university.presentation.check_list
 
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.project.mobile_university.data.presentation.CheckListStatus
-import com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter
+import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
 
 @BindingAdapter("lesson_status_adapter")
 fun Spinner.setCheckListStatusAdapter(viewState: CheckListAdapter.RecordViewState) {

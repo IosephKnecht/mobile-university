@@ -1,11 +1,11 @@
-package com.project.mobile_university.presentation.schedule.check_list.contract
+package com.project.mobile_university.presentation.check_list.contract
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.mobile_university.data.presentation.CheckListRecord
-import com.project.mobile_university.presentation.schedule.check_list.view.adapter.CheckListAdapter
+import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
 
 interface CheckListContract {
     interface ObservableStorage {

@@ -66,7 +66,18 @@ class ScheduleHostPresenter(
     }
 
     override fun onShowLessonInfo(lessonExtId: Long) {
-        router.showLessonInfo(androidComponent!!, lessonExtId)
+        when (initialScreenType) {
+            InitialScreenType.SUBGROUP -> {
+                router.showLessonInfoStudent(androidComponent!!, lessonExtId)
+            }
+            InitialScreenType.TEACHER -> {
+                router.showLessonInfoTeacher(androidComponent!!, lessonExtId)
+            }
+        }
+    }
+
+    override fun onShowCheckList(checkListExtId: Long) {
+        router.showCheckList(androidComponent!!, checkListExtId)
     }
 
     override fun backPressed() {

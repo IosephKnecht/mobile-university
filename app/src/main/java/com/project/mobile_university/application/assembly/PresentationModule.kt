@@ -5,8 +5,8 @@ import com.project.mobile_university.presentation.lessonInfo.student.LessonInfoS
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.LessonInfoTeacherInputModule
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
-import com.project.mobile_university.presentation.schedule.check_list.CheckListInputModule
-import com.project.mobile_university.presentation.schedule.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.check_list.CheckListInputModule
+import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.schedule.host.ScheduleHostInputModule
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInputModule

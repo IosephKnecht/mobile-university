@@ -4,7 +4,7 @@ import com.project.mobile_university.application.annotations.PerPresentationLaye
 import com.project.mobile_university.presentation.lessonInfo.student.assembly.LessonInfoStudentComponent
 import com.project.mobile_university.presentation.lessonInfo.teacher.assembly.LessonInfoTeacherComponent
 import com.project.mobile_university.presentation.login.assembly.LoginComponent
-import com.project.mobile_university.presentation.schedule.check_list.assembly.CheckListComponent
+import com.project.mobile_university.presentation.check_list.assembly.CheckListComponent
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
