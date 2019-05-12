@@ -55,6 +55,7 @@ class LessonInfoTeacherViewModelFactory @Inject constructor(
     private val lessonExtId: Long,
     private val interactor: LessonInfoTeacherContract.Interactor
 ) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return LessonInfoTeacherPresenter(lessonExtId, interactor) as T
     }

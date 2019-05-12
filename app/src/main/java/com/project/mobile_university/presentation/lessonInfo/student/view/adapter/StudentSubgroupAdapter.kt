@@ -5,8 +5,8 @@ import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.Subgroup
 import com.project.mobile_university.presentation.common.ui.ViewModelAdapter
 
-class SubgroupAdapter : ViewModelAdapter() {
+class StudentSubgroupAdapter : ViewModelAdapter() {
     init {
-        cell<Subgroup>(R.layout.item_subgroup, BR.model)
+        cell<Subgroup>(R.layout.item_subgroup_student, BR.model)
     }
 }

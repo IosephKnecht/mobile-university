@@ -17,7 +17,7 @@ import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.lessonInfo.student.assembly.LessonInfoStudentComponent
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
-import com.project.mobile_university.presentation.lessonInfo.student.view.adapter.SubgroupAdapter
+import com.project.mobile_university.presentation.lessonInfo.student.view.adapter.StudentSubgroupAdapter
 import com.project.mobile_university.presentation.visible
 
 class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Presenter>(), FragmentBackPressed {
@@ -34,7 +34,7 @@ class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Pre
 
     private lateinit var diComponent: LessonInfoStudentComponent
     private lateinit var binding: FragmentLessonInfoStudentBinding
-    private lateinit var adapter: SubgroupAdapter
+    private lateinit var adapter: StudentSubgroupAdapter
 
     override fun inject() {
         val lessonExtId =
@@ -60,7 +60,7 @@ class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Pre
         binding.lessonInfo = presenter
         binding.setLifecycleOwner(viewLifecycleOwner)
 
-        adapter = SubgroupAdapter()
+        adapter = StudentSubgroupAdapter()
 
         binding.subgroupList.apply {
             adapter = this@LessonInfoStudentFragment.adapter

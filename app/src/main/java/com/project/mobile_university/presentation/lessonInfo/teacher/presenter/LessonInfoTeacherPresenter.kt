@@ -17,17 +17,49 @@ class LessonInfoTeacherPresenter(
     override val lesson = MutableLiveData<Lesson>()
     override val errorObserver = SingleLiveData<Throwable>()
 
-    override val loadingState = MutableLiveData<Boolean>()
+    override val loadingStateLesson = MutableLiveData<Boolean>()
+    override val loadingStateCheckList = MutableLiveData<Boolean>()
+
+    init {
+        obtainLessonFromCache()
+    }
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
+        interactor.setListener(this)
     }
 
     override fun detachAndroidComponent() {
+        interactor.setListener(null)
         super.detachAndroidComponent()
     }
 
+
+    override fun obtainLessonFromCache() {
+        loadingStateLesson.value = true
+        interactor.getLessonFromCache(lessonExtId)
+    }
+
+    override fun obtainLessonFromOnline() {
+        loadingStateLesson.value = true
+        interactor.getLessonFromOnline(lessonExtId)
+    }
+
+    override fun onObtainLesson(lesson: Lesson?, throwable: Throwable?) {
+        when {
+            lesson != null -> {
+                this.lesson.value = lesson
+                errorObserver.setValue(null)
+            }
+            throwable != null -> {
+                errorObserver.setValue(throwable)
+            }
+        }
+
+        loadingStateLesson.value = false
+    }
+
     override fun onDestroy() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        interactor.onDestroy()
     }
 }
