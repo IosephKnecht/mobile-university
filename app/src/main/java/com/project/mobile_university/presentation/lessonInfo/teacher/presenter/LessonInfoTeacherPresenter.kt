@@ -45,6 +45,11 @@ class LessonInfoTeacherPresenter(
         interactor.getLessonFromOnline(lessonExtId)
     }
 
+    override fun createCheckList() {
+        loadingStateCheckList.value = true
+        interactor.createCheckList(lessonExtId)
+    }
+
     override fun onObtainLesson(lesson: Lesson?, throwable: Throwable?) {
         when {
             lesson != null -> {
@@ -57,6 +62,20 @@ class LessonInfoTeacherPresenter(
         }
 
         loadingStateLesson.value = false
+    }
+
+    override fun onCreateCheckList(lesson: Lesson?, throwable: Throwable?) {
+        when {
+            lesson != null -> {
+                this.lesson.value = lesson
+                errorObserver.value = null
+            }
+            throwable != null -> {
+                errorObserver.value = throwable
+            }
+        }
+
+        loadingStateCheckList.value = false
     }
 
     override fun onDestroy() {

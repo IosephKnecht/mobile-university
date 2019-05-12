@@ -19,7 +19,8 @@ object LessonMapper {
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.gsonToSql(subgroupList),
-                lessonStatus = lessonStatus
+                lessonStatus = lessonStatus,
+                checkListExtId = checkListExtId
             )
         }
     }
@@ -38,7 +39,8 @@ object LessonMapper {
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.presentationToSql(subgroupList),
-                lessonStatus = LessonStatusMapper.toInt(lessonStatus)
+                lessonStatus = LessonStatusMapper.toInt(lessonStatus),
+                checkListExtId = checkListExtId
             )
         }
     }
@@ -57,7 +59,8 @@ object LessonMapper {
                 dayExtId = lesson.dayExtId,
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.sqlToPresetation(subgroupList),
-                lessonStatus = LessonStatusMapper.toPresentation(lessonStatus)
+                lessonStatus = LessonStatusMapper.toPresentation(lessonStatus),
+                checkListExtId = checkListExtId
             )
         }
     }
@@ -76,7 +79,8 @@ object LessonMapper {
                 lectureHallName = lectureHallName,
                 lessonStatus = LessonStatusMapper.toPresentation(lessonStatus),
                 teacherExtId = teacherExtId,
-                subgroupList = SubgroupMapper.gsonToPresentation(subgroupList)
+                subgroupList = SubgroupMapper.gsonToPresentation(subgroupList),
+                checkListExtId = checkListExtId
             )
         }
     }

@@ -24,6 +24,14 @@ class LessonInfoTeacherInteractor(private val scheduleRepository: ScheduleReposi
         )
     }
 
+    override fun createCheckList(lessonExtId: Long) {
+        compositeDisposable.add(
+            discardResult(scheduleRepository.createCheckList(lessonExtId)) { listener, result ->
+                listener!!.onCreateCheckList(result.data, result.throwable)
+            }
+        )
+    }
+
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()

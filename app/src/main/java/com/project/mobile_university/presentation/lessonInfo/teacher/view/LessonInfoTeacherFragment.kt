@@ -83,6 +83,7 @@ class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Pre
         with(presenter) {
             lesson.observe(viewLifecycleOwner, Observer { lesson ->
                 lesson?.let {
+                    assignClickListenerOnCheckListButton(lesson.checkListExtId)
                     adapter.reload(it.subgroupList)
                 }
             })
@@ -116,6 +117,18 @@ class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Pre
     }
 
     override fun onBackPressed() = true
+
+    private fun assignClickListenerOnCheckListButton(checkListExtId: Long?) {
+        val clickListener = if (checkListExtId == null) {
+            View.OnClickListener { presenter.createCheckList() }
+        } else {
+            View.OnClickListener {
+                // TODO: show check list
+            }
+        }
+
+        binding.checkListButton.setOnClickListener(clickListener)
+    }
 
     private fun showPlaceHolder(state: PlaceHolderView.State) {
         with(binding) {

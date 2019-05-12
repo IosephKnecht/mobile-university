@@ -18,15 +18,18 @@ interface LessonInfoTeacherContract {
     interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainLessonFromCache()
         fun obtainLessonFromOnline()
+        fun createCheckList()
     }
 
     interface Listener : MvpInteractor.Listener {
         fun onObtainLesson(lesson: Lesson?, throwable: Throwable?)
+        fun onCreateCheckList(lesson: Lesson?, throwable: Throwable?)
     }
 
     interface Interactor : MvpInteractor<Listener> {
         fun getLessonFromCache(lessonExtId: Long)
         fun getLessonFromOnline(lessonExtId: Long)
+        fun createCheckList(lessonExtId: Long)
     }
 
     interface InputModule {

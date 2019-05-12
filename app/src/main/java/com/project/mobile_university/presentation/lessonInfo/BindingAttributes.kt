@@ -1,6 +1,7 @@
 package com.project.mobile_university.presentation.lessonInfo
 
 import android.content.Context
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
@@ -45,6 +46,15 @@ fun TextView.setLessonStatus(lessonStatus: LessonStatus?) {
         R.string.lesson_status_string,
         context.getString(lessonStatus.description)
     )
+}
+
+@BindingAdapter("check_list_text")
+fun Button.setCheckListStatus(checkListId: Long?) {
+    text = if (checkListId == null) {
+        context.getString(R.string.lesson_info_check_list_create)
+    } else {
+        context.getString(R.string.lesson_info_check_list_show)
+    }
 }
 
 private fun Context.format(@StringRes stringValue: Int, argument: String?): String {

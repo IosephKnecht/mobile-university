@@ -55,6 +55,12 @@ interface UniversityApi {
         @Body records: List<CheckListRecord>
     ): Observable<Unit>
 
+    @POST("api/v1/check_list/")
+    fun createCheckList(
+        @Header("Authorization") loginPassString: String,
+        @Body lessonOwner: JsonObject
+    ): Observable<Unit>
+
     @GET("api/v1/auth/user/logout")
     fun logout(@Header("Authorization") loginPassString: String): Observable<Nothing>
 }

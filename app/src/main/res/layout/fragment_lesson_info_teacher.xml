@@ -115,6 +115,7 @@
                         <Button
                             android:id="@+id/check_list_button"
                             style="@style/PrimaryText.Medium"
+                            check_list_text="@{lessonInfo.lesson.checkListExtId}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_other_selector"

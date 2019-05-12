@@ -37,5 +37,7 @@ data class Lesson(
     @Ignore
     var subgroupList: List<Subgroup> = listOf(),
     @ColumnInfo(name = "lesson_status")
-    var lessonStatus: Int = -1
+    var lessonStatus: Int = -1,
+    @ColumnInfo(name = "check_list_ext_id")
+    var checkListExtId: Long? = null
 )

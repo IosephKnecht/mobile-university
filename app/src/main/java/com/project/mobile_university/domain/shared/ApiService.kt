@@ -30,4 +30,6 @@ interface ApiService {
     fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>>
 
     fun putCheckList(records: List<CheckListRecord>): Observable<Unit>
+
+    fun createCheckList(lessonId: Long): Observable<Unit>
 }

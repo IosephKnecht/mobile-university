@@ -107,6 +107,17 @@ class ApiServiceImpl(
         }
     }
 
+    override fun createCheckList(lessonId: Long): Observable<Unit> {
+        return Observable.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString ->
+            val lessonOwner = JsonObject().apply {
+                addProperty("schedule_cell", "api/v1/schedule_cell/$lessonId/")
+            }
+            universityApi.createCheckList(loginPassString, lessonOwner)
+        }
+    }
+
     // TODO: will be transited on CalendarUtil
     private fun obtainDateRangeString(
         startWeek: Date,

@@ -60,6 +60,10 @@ class ScheduleRepositoryMock : ScheduleRepository {
         return Observable.error(Throwable())
     }
 
+    override fun createCheckList(lessonExtId: Long): Observable<Lesson> {
+        return Observable.error(Throwable())
+    }
+
     private fun generateScheduleForSubgroup(startDate: Date, endDate: Date, subgroupId: Long): List<ScheduleDay> {
         var current = startDate.clone() as Date
         val fakeDays = mutableListOf<ScheduleDay>()

@@ -128,6 +128,11 @@ class ScheduleRepositoryImpl(
         }.flatMap { gsonRecords -> apiService.putCheckList(gsonRecords) }
     }
 
+    override fun createCheckList(lessonExtId: Long): Observable<PresentationLesson> {
+        return apiService.createCheckList(lessonExtId)
+            .flatMap { syncLesson(lessonExtId) }
+    }
+
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {
         return BiFunction { remoteList, storedList ->
             val insertedDays = remoteList.minus(storedList).toMutableList()
