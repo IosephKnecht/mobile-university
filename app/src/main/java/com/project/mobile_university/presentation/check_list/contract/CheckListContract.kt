@@ -29,7 +29,7 @@ interface CheckListContract {
 
     interface Interactor : MvpInteractor<Listener> {
         fun getCheckList(checkListExtId: Long)
-        fun syncCheckList(records: List<CheckListRecord>)
+        fun syncCheckList(checkListExtId: Long, records: List<CheckListRecord>)
     }
 
     interface InputModule {

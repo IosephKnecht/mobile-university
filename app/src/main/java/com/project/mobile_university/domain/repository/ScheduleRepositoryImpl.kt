@@ -122,10 +122,10 @@ class ScheduleRepositoryImpl(
             .map { CheckListMapper.gsonToPresentation(it) }
     }
 
-    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
+    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
         return Observable.fromCallable {
             CheckListMapper.presentationToGson(records)
-        }.flatMap { gsonRecords -> apiService.putCheckList(gsonRecords) }
+        }.flatMap { gsonRecords -> apiService.putCheckList(checkListExtId, gsonRecords) }
     }
 
     override fun createCheckList(lessonExtId: Long): Observable<PresentationLesson> {

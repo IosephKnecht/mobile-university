@@ -52,6 +52,7 @@ interface UniversityApi {
     @PUT("api/v1/check_list_students/")
     fun putCheckList(
         @Header("Authorization") loginPassString: String,
+        @Query("check_list") checkListId: Long,
         @Body records: List<CheckListRecord>
     ): Observable<Unit>
 

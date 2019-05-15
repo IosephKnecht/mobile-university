@@ -8,7 +8,12 @@ object CheckListMapper {
         return with(checkListRecord) {
             CheckListRecordPresentation(
                 id = id,
-                student = UserMapper.toPresentation(student),
+                subgroupId = subgroupId,
+                checkListId = checkListId,
+                studentFirstName = studentFirstName,
+                studentLastName = studentLastName,
+                studentId = studentId,
+                subgroupName = subgroupName,
                 status = CheckListStatusMapper.toPresentation(status)!!
             )
         }
@@ -18,7 +23,12 @@ object CheckListMapper {
         return with(checkListRecord) {
             CheckListRecordGson(
                 id = id,
-                student = UserMapper.toGson(student),
+                subgroupId = subgroupId,
+                checkListId = checkListId,
+                studentFirstName = studentFirstName,
+                studentLastName = studentLastName,
+                studentId = studentId,
+                subgroupName = subgroupName,
                 status = CheckListStatusMapper.toValue(status)
             )
         }

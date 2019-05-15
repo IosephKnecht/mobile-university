@@ -20,8 +20,8 @@ class CheckListInteractor(private val scheduleRepository: ScheduleRepository) :
         })
     }
 
-    override fun syncCheckList(records: List<CheckListRecord>) {
-        val observable = scheduleRepository.putCheckList(records)
+    override fun syncCheckList(checkListExtId: Long, records: List<CheckListRecord>) {
+        val observable = scheduleRepository.putCheckList(checkListExtId, records)
 
         compositeDisposable.add(discardResult(observable) { listener, result ->
             listener!!.onSyncCheckList(result.throwable)

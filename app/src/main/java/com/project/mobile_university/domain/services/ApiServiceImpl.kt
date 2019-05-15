@@ -99,11 +99,11 @@ class ApiServiceImpl(
         }
     }
 
-    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
+    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
         return Observable.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString ->
-            universityApi.putCheckList(loginPassString, records)
+            universityApi.putCheckList(loginPassString, checkListExtId, records)
         }
     }
 

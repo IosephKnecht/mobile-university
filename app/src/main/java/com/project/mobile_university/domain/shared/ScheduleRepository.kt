@@ -15,6 +15,6 @@ interface ScheduleRepository {
     fun syncLesson(lessonExtId: Long): Observable<Lesson>
     fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Observable<Unit>
     fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>>
-    fun putCheckList(records: List<CheckListRecord>): Observable<Unit>
+    fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit>
     fun createCheckList(lessonExtId: Long): Observable<Lesson>
 }

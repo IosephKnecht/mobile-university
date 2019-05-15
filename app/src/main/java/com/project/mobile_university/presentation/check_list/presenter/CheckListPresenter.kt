@@ -55,7 +55,7 @@ class CheckListPresenter(
             .map { checkList -> checkList.mapToModel() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ records ->
-                interactor.syncCheckList(records)
+                interactor.syncCheckList(checkListId, records)
             }, { throwable ->
                 errorObserver.value = throwable
             })
@@ -101,15 +101,21 @@ class CheckListPresenter(
         val needUpdatedRecords = mutableListOf<CheckListRecord>()
 
         this.forEach { viewState ->
-            viewState.changedStatus?.let { changedStatus ->
-                needUpdatedRecords.add(
-                    CheckListRecord(
-                        id = viewState.record.id,
-                        status = changedStatus,
-                        student = viewState.record.student
-                    )
+            val oldState = viewState.record.status
+            val newState = viewState.changedStatus
+
+            needUpdatedRecords.add(
+                CheckListRecord(
+                    id = viewState.record.id,
+                    studentId = viewState.record.studentId,
+                    subgroupId = viewState.record.subgroupId,
+                    checkListId = viewState.record.checkListId,
+                    studentFirstName = viewState.record.studentFirstName,
+                    studentLastName = viewState.record.studentLastName,
+                    subgroupName = viewState.record.subgroupName,
+                    status = newState ?: oldState
                 )
-            }
+            )
         }
 
         return needUpdatedRecords

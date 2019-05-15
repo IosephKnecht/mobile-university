@@ -56,7 +56,7 @@ class ScheduleRepositoryMock : ScheduleRepository {
         return Observable.error(Throwable())
     }
 
-    override fun putCheckList(records: List<CheckListRecord>): Observable<Unit> {
+    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
         return Observable.error(Throwable())
     }
 
