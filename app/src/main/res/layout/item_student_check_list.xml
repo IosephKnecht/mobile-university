@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/student"
             style="@style/PrimaryText.Medium"
-            student_info="{viewState.record}"
+            student_info="@{viewState.record}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"

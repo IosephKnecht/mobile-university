@@ -79,7 +79,7 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
 
             checkListLoadingState.observe(viewLifecycleOwner, Observer { isLoading ->
                 if (isLoading != null) {
-                    check_list_swipe_refresh.visible(isLoading)
+                    check_list_swipe_refresh.isRefreshing = isLoading
                 }
             })
 
