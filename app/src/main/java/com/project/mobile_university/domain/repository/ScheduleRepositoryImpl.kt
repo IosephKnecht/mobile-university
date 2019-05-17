@@ -1,5 +1,6 @@
 package com.project.mobile_university.domain.repository
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
@@ -9,6 +10,7 @@ import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
 import com.project.mobile_university.data.gson.Lesson as GsonLesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.mappers.CheckListMapper
 import com.project.mobile_university.domain.mappers.LessonMapper
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
@@ -124,7 +126,7 @@ class ScheduleRepositoryImpl(
 
     override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
         return Observable.fromCallable {
-            CheckListMapper.presentationToGson(records)
+            records.toJson()
         }.flatMap { gsonRecords -> apiService.putCheckList(checkListExtId, gsonRecords) }
     }
 
@@ -154,6 +156,23 @@ class ScheduleRepositoryImpl(
                 }
             }
             return@BiFunction Pair(remoteList, updatedDays)
+        }
+    }
+
+    private fun List<CheckListRecord>.toJson(): JsonObject {
+        val jsonRecords = JsonArray()
+
+        this.forEach { record ->
+            jsonRecords.add(JsonObject().apply {
+                addProperty("id", record.id)
+                addProperty("check_list", "${UniversityApi.CHECK_LIST_PATH}${record.checkListId}/")
+                addProperty("status", record.status.value)
+                addProperty("student", "${UniversityApi.STUDENT_PATH}${record.studentId}/")
+            })
+        }
+
+        return JsonObject().apply {
+            add("objects", jsonRecords)
         }
     }
 }

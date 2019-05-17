@@ -41,11 +41,6 @@ class ApiServiceImpl(
             .subscribeOn(Schedulers.io())
     }
 
-    override fun logout(): Observable<Nothing> {
-        val loginPassString = sharedPreferenceService.getLoginPassString()
-        return universityApi.logout(loginPassString)
-    }
-
     override fun getScheduleByDate(
         currentDate: Date,
         subgroupId: Long
@@ -99,7 +94,7 @@ class ApiServiceImpl(
         }
     }
 
-    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
+    override fun putCheckList(checkListExtId: Long, records: JsonObject): Observable<Unit> {
         return Observable.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString ->
@@ -112,7 +107,7 @@ class ApiServiceImpl(
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString ->
             val lessonOwner = JsonObject().apply {
-                addProperty("schedule_cell", "api/v1/schedule_cell/$lessonId/")
+                addProperty("schedule_cell", "${UniversityApi.SCHEDULE_CELL_PATH}$lessonId/")
             }
             universityApi.createCheckList(loginPassString, lessonOwner)
         }

@@ -7,7 +7,6 @@ import java.util.*
 
 interface ApiService {
     fun login(login: String, password: String): Observable<BaseServerResponse<User>>
-    fun logout(): Observable<Nothing>
     fun getScheduleByDate(currentDate: Date, subgroupId: Long): Observable<BaseServerResponse<ScheduleDay>>
 
     fun getScheduleOfWeekForSubgroup(
@@ -29,7 +28,7 @@ interface ApiService {
 
     fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>>
 
-    fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit>
+    fun putCheckList(checkListExtId: Long, records: JsonObject): Observable<Unit>
 
     fun createCheckList(lessonId: Long): Observable<Unit>
 }

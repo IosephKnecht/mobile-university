@@ -67,6 +67,10 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
             this.adapter = this@CheckListFragment.adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
+        sync_button?.setOnClickListener {
+            presenter.syncCheckList()
+        }
     }
 
     override fun onStart() {
