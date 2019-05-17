@@ -69,7 +69,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
             currentScreen.observe(viewLifecycleOwner, Observer { currentScreen ->
                 when (currentScreen) {
                     ScheduleHostContract.CurrentScreenType.SETTINGS,
-                    ScheduleHostContract.CurrentScreenType.LESSON_INFO -> {
+                    ScheduleHostContract.CurrentScreenType.LESSON_INFO,
+                    ScheduleHostContract.CurrentScreenType.CHECK_LIST -> {
                         calendar.calendarView.visibility = View.GONE
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHER,

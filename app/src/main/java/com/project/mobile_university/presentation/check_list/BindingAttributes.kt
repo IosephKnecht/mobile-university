@@ -4,6 +4,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.CheckListStatus
 import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
@@ -16,12 +17,16 @@ fun Spinner.setCheckListStatusAdapter(viewState: CheckListAdapter.RecordViewStat
 
     adapter = ArrayAdapter<String>(
         context,
-        android.R.layout.simple_spinner_item,
+        R.layout.simple_spinner_item,
         statusList
     ).apply {
-        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        setSelection(viewState.record.status.value)
+        setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
     }
+
+    val changedStatus = viewState.changedStatus
+    val oldStatus = viewState.record.status
+
+    setSelection(changedStatus?.value ?: oldStatus.value)
 }
 
 @BindingAdapter("student_info")

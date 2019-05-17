@@ -80,4 +80,15 @@
         <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
         <string name="teacher_schedule_screen_empty_string">There is nothing in schedule for this day, so you can relax.</string>
     <!--Schedule teacher screen-->
+
+    <!--Check list screen-->
+        <string name="sync_check_list_string">Sync</string>
+    <!--Check list screen-->
+
+    <!--Check list status-->
+        <string name="not_come_status_string">Not come</string>
+        <string name="came_late_status_string">Came late</string>
+        <string name="not_come_with_approved_string">Not come with approved</string>
+        <string name="has_come_string">Has come</string>
+    <!--Check list status-->
 </resources>
