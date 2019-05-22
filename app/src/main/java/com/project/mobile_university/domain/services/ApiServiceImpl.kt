@@ -10,8 +10,8 @@ import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.AuthUtil
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.createUniversityApi
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Completable
+import io.reactivex.Single
 import okhttp3.OkHttpClient
 import java.util.*
 
@@ -23,8 +23,8 @@ class ApiServiceImpl(
     private var universityApi: UniversityApi
 ) : ApiService {
 
-    override fun updateServiceUrl(serviceUrl: String): Observable<Unit> {
-        return Observable.fromCallable {
+    override fun updateServiceUrl(serviceUrl: String): Completable {
+        return Completable.fromAction {
             universityApi = createUniversityApi(
                 httpClient = okHttpClient,
                 gson = gson,
@@ -34,17 +34,16 @@ class ApiServiceImpl(
         }
     }
 
-    override fun login(login: String, password: String): Observable<BaseServerResponse<User>> {
+    override fun login(login: String, password: String): Single<BaseServerResponse<User>> {
         val authString = AuthUtil.convertToBase64(login, password)
 
         return universityApi.login(authString)
-            .subscribeOn(Schedulers.io())
     }
 
     override fun getScheduleByDate(
         currentDate: Date,
         subgroupId: Long
-    ): Observable<BaseServerResponse<ScheduleDay>> {
+    ): Single<BaseServerResponse<ScheduleDay>> {
 
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val currentDateString = CalendarUtil.convertToSimpleFormat(currentDate)
@@ -56,7 +55,7 @@ class ApiServiceImpl(
         startWeek: Date,
         endWeek: Date,
         subgroupId: Long
-    ): Observable<BaseServerResponse<ScheduleDay>> {
+    ): Single<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 
@@ -67,26 +66,26 @@ class ApiServiceImpl(
         startWeek: Date,
         endWeek: Date,
         teacherId: Long
-    ): Observable<BaseServerResponse<ScheduleDay>> {
+    ): Single<BaseServerResponse<ScheduleDay>> {
         val loginPassString = sharedPreferenceService.getLoginPassString()
         val dateRangeString = obtainDateRangeString(startWeek, endWeek)
 
         return universityApi.getScheduleWeekForTeacher(loginPassString, dateRangeString, teacherId)
     }
 
-    override fun updateLessonStatus(lessonId: Long, body: JsonObject): Observable<Unit> {
-        return Observable.fromCallable { sharedPreferenceService.getLoginPassString() }
-            .flatMap { loginPassString -> universityApi.patchLessonStatus(loginPassString, lessonId, body) }
+    override fun updateLessonStatus(lessonId: Long, body: JsonObject): Completable {
+        return Single.fromCallable { sharedPreferenceService.getLoginPassString() }
+            .flatMapCompletable { loginPassString -> universityApi.patchLessonStatus(loginPassString, lessonId, body) }
     }
 
-    override fun getLesson(lessonId: Long): Observable<Lesson> {
-        return Observable.fromCallable {
+    override fun getLesson(lessonId: Long): Single<Lesson> {
+        return Single.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString -> universityApi.getLesson(loginPassString, lessonId) }
     }
 
-    override fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>> {
-        return Observable.fromCallable {
+    override fun getCheckList(checkListExtId: Long): Single<List<CheckListRecord>> {
+        return Single.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString ->
             universityApi.getCheckList(loginPassString, checkListExtId)
@@ -94,18 +93,18 @@ class ApiServiceImpl(
         }
     }
 
-    override fun putCheckList(checkListExtId: Long, records: JsonObject): Observable<Unit> {
-        return Observable.fromCallable {
+    override fun putCheckList(checkListExtId: Long, records: JsonObject): Completable {
+        return Single.fromCallable {
             sharedPreferenceService.getLoginPassString()
-        }.flatMap { loginPassString ->
+        }.flatMapCompletable { loginPassString ->
             universityApi.putCheckList(loginPassString, checkListExtId, records)
         }
     }
 
-    override fun createCheckList(lessonId: Long): Observable<Unit> {
-        return Observable.fromCallable {
+    override fun createCheckList(lessonId: Long): Completable {
+        return Single.fromCallable {
             sharedPreferenceService.getLoginPassString()
-        }.flatMap { loginPassString ->
+        }.flatMapCompletable { loginPassString ->
             val lessonOwner = JsonObject().apply {
                 addProperty("schedule_cell", "${UniversityApi.SCHEDULE_CELL_PATH}$lessonId/")
             }

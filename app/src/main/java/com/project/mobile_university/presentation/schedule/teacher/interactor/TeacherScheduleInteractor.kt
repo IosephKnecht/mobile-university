@@ -44,8 +44,8 @@ class TeacherScheduleInteractor(
     override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus) {
         val observable = scheduleRepository.updateLessonStatus(lessonId, lessonStatus)
 
-        compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
-            listener!!.onUpdateLessonStatus(result.throwable)
+        compositeDisposable.add(simpleDiscardResult(observable) { listener, throwable ->
+            listener!!.onUpdateLessonStatus(throwable)
         })
     }
 

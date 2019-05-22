@@ -7,7 +7,9 @@ import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.utils.CalendarUtil
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import java.util.*
 
 class ScheduleRepositoryMock : ScheduleRepository {
@@ -15,8 +17,8 @@ class ScheduleRepositoryMock : ScheduleRepository {
         startDate: Date,
         endDate: Date,
         subgroupId: Long
-    ): Observable<List<ScheduleDay>> {
-        return Observable.fromCallable {
+    ): Single<List<ScheduleDay>> {
+        return Single.fromCallable {
             generateScheduleForSubgroup(startDate, endDate, subgroupId)
         }
     }
@@ -25,43 +27,41 @@ class ScheduleRepositoryMock : ScheduleRepository {
         startDate: Date,
         endDate: Date,
         teacherId: Long
-    ): Observable<List<ScheduleDay>> {
-        return Observable.fromCallable {
+    ): Single<List<ScheduleDay>> {
+        return Single.fromCallable {
             generateScheduleForSubgroup(startDate, endDate, 0L)
         }
     }
 
-    override fun syncSchedule(): Observable<List<ScheduleDay>> {
-        return Observable.fromCallable {
+    override fun syncSchedule(): Single<List<ScheduleDay>> {
+        return Single.fromCallable {
             val (startDate, endDate) = CalendarUtil.obtainMondayAndSunday(Date())
             generateScheduleForSubgroup(startDate, endDate, 0L)
         }
     }
 
-    override fun getLesson(lessonExtId: Long): Observable<Lesson> {
-        return Observable.fromCallable { Beans.getLesson(lessonExtId) }
+    override fun getLesson(lessonExtId: Long): Single<Lesson> {
+        return Single.fromCallable { Beans.getLesson(lessonExtId) }
     }
 
-    override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Observable<Unit> {
-        return Observable.create { emitter ->
-            emitter.onNext(Unit)
-        }
+    override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Completable {
+        return Completable.complete()
     }
 
-    override fun syncLesson(lessonExtId: Long): Observable<Lesson> {
-        return Observable.error(Throwable())
+    override fun syncLesson(lessonExtId: Long): Single<Lesson> {
+        return Single.error(Throwable())
     }
 
-    override fun getCheckList(checkListExtId: Long): Observable<List<CheckListRecord>> {
-        return Observable.error(Throwable())
+    override fun getCheckList(checkListExtId: Long): Single<List<CheckListRecord>> {
+        return Single.error(Throwable())
     }
 
-    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Observable<Unit> {
-        return Observable.error(Throwable())
+    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Completable {
+        return Completable.complete()
     }
 
-    override fun createCheckList(lessonExtId: Long): Observable<Lesson> {
-        return Observable.error(Throwable())
+    override fun createCheckList(lessonExtId: Long): Single<Lesson> {
+        return Single.error(Throwable())
     }
 
     private fun generateScheduleForSubgroup(startDate: Date, endDate: Date, subgroupId: Long): List<ScheduleDay> {
