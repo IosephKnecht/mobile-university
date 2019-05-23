@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -32,6 +33,8 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
 
     private lateinit var diComponent: CheckListComponent
     private lateinit var adapter: CheckListAdapter
+
+    private var syncWarningDialog: MaterialDialog? = null
 
     override fun inject() {
         val checkListId = arguments?.getLong(CHECK_LIST_IDENTIFIER)
@@ -69,7 +72,7 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
         }
 
         sync_button?.setOnClickListener {
-            presenter.syncCheckList()
+            presenter.syncCheckList(false)
         }
     }
 
@@ -106,6 +109,43 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
                     adapter.reload(checkList)
                 }
             })
+
+            attendanceObserver.observe(viewLifecycleOwner, Observer { pair ->
+                if (pair == null) {
+                    dismissSyncWarningDialog()
+                } else {
+                    val (totalCount, hasComeCount) = pair
+                    showSyncWarningDialog(totalCount, hasComeCount)
+                }
+            })
         }
+    }
+
+    private fun showSyncWarningDialog(totalCount: Int, hasComeCount: Int) {
+        if (syncWarningDialog == null) {
+            syncWarningDialog = context?.run {
+                MaterialDialog.Builder(this)
+                    .content(
+                        getString(
+                            R.string.sync_warning_content_string,
+                            totalCount.toString(),
+                            hasComeCount.toString()
+                        )
+                    )
+                    .cancelable(false)
+                    .negativeText(R.string.sync_negative_text)
+                    .positiveText(R.string.sync_positive_text)
+                    .onPositive { _, _ -> presenter.syncCheckList(true) }
+                    .onNegative { _, _ -> presenter.cancelSync() }
+                    .build()
+            }
+        }
+
+        syncWarningDialog?.show()
+    }
+
+    private fun dismissSyncWarningDialog() {
+        syncWarningDialog?.dismiss()
+        syncWarningDialog = null
     }
 }

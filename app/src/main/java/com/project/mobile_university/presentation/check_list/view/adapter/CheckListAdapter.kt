@@ -14,7 +14,15 @@ class CheckListAdapter(private val changeStatusListener: (viewState: RecordViewS
     ViewModelAdapter() {
 
     init {
-        cell<RecordViewState>(R.layout.item_student_check_list, BR.viewState)
+        cell<RecordViewState>(
+            R.layout.item_student_check_list,
+            BR.viewState,
+            areItemsTheSame = { old, new ->
+                old.record.id == new.record.id
+            },
+            areContentsTheSame = { old, new ->
+                old == new
+            })
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

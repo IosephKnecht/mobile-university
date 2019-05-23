@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.CheckListRecord
+import com.project.mobile_university.data.presentation.CheckListStatus
 import com.project.mobile_university.domain.mappers.CheckListStatusMapper
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
@@ -25,6 +26,7 @@ class CheckListPresenter(
     override val checkListSyncLoadingState = MutableLiveData<Boolean>()
     override val emptyState = MutableLiveData<Boolean>()
     override val checkList = MutableLiveData<List<CheckListAdapter.RecordViewState>>()
+    override val attendanceObserver = MutableLiveData<Pair<Int, Int>>()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -47,19 +49,50 @@ class CheckListPresenter(
         interactor.getCheckList(checkListId)
     }
 
-    override fun syncCheckList() {
+    override fun syncCheckList(force: Boolean) {
         checkListSyncLoadingState.value = true
 
-        compositeDisposable.add(Observable.just(checkList.value)
-            .subscribeOn(Schedulers.io())
-            .map { checkList -> checkList.mapToModel() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ records ->
-                interactor.syncCheckList(checkListId, records)
-            }, { throwable ->
-                errorObserver.value = throwable
-            })
-        )
+        if (force) {
+            attendanceObserver.value = null
+
+            compositeDisposable.add(
+                Observable.just(checkList.value)
+                    .subscribeOn(Schedulers.io())
+                    .map { checkList -> checkList.mapToModel() }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ records ->
+                        interactor.syncCheckList(checkListId, records)
+                    }, { throwable ->
+                        checkListSyncLoadingState.value = false
+                        errorObserver.value = throwable
+                    })
+            )
+        } else {
+            compositeDisposable.add(
+                Observable.just(checkList.value)
+                    .subscribeOn(Schedulers.io())
+                    .map { viewStates ->
+                        var hasComeStudents = 0
+                        viewStates.forEach { viewState ->
+                            val status = viewState.changedStatus ?: viewState.record.status
+                            if (status == CheckListStatus.HAS_COME) hasComeStudents++
+                        }
+                        Pair(viewStates.size, hasComeStudents)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ attendancePair ->
+                        attendanceObserver.value = attendancePair
+                    }, { throwable ->
+                        checkListSyncLoadingState.value = false
+                        throwable.printStackTrace()
+                    })
+            )
+        }
+    }
+
+    override fun cancelSync() {
+        attendanceObserver.value = null
+        checkListSyncLoadingState.value = false
     }
 
     override fun onChangeStatus(viewState: CheckListAdapter.RecordViewState, status: Int) {
@@ -89,6 +122,8 @@ class CheckListPresenter(
         } else {
             errorObserver.value = throwable
         }
+
+        checkListSyncLoadingState.value = false
     }
 
     private fun List<CheckListRecord>.mapToViewState(): List<CheckListAdapter.RecordViewState> {

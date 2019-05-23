@@ -14,11 +14,13 @@ interface CheckListContract {
         val checkListSyncLoadingState: LiveData<Boolean>
         val emptyState: LiveData<Boolean>
         val checkList: LiveData<List<CheckListAdapter.RecordViewState>>
+        val attendanceObserver: LiveData<Pair<Int, Int>>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun getCheckList()
-        fun syncCheckList()
+        fun syncCheckList(force: Boolean)
+        fun cancelSync()
         fun onChangeStatus(viewState: CheckListAdapter.RecordViewState, status: Int)
     }
 

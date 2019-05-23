@@ -83,6 +83,9 @@
 
     <!--Check list screen-->
         <string name="sync_check_list_string">Sync</string>
+        <string name="sync_warning_content_string">Do you really want to sync the checklist?\nTotal students in check list %s\nJust came students %s.</string>
+        <string name="sync_negative_text">Recheck</string>
+        <string name="sync_positive_text">Confirm sync</string>
     <!--Check list screen-->
 
     <!--Check list status-->
