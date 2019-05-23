@@ -24,7 +24,7 @@ import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_subgroup_schedule.*
 
-class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Presenter>(), FragmentBackPressed {
+class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Presenter>() {
 
     interface Host : ScheduleHostListener
 
@@ -119,8 +119,6 @@ class ScheduleSubgroupFragment : AbstractFragment<ScheduleSubgroupContract.Prese
             })
         }
     }
-
-    override fun onBackPressed() = true
 
     private fun showPlaceHolder(state: PlaceHolderView.State) {
         lesson_list.visible(false)

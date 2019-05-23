@@ -86,6 +86,7 @@
         <string name="sync_warning_content_string">Do you really want to sync the checklist?\nTotal students in check list %s\nJust came students %s.</string>
         <string name="sync_negative_text">Recheck</string>
         <string name="sync_positive_text">Confirm sync</string>
+        <string name="check_list_empty_string">Checklist does not contain any records.So be it, should not, try to update data.</string>
     <!--Check list screen-->
 
     <!--Check list status-->

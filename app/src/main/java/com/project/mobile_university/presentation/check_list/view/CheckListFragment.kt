@@ -14,6 +14,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.check_list.assembly.CheckListComponent
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.check_list.view.adapter.CheckListAdapter
+import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_check_list.*
@@ -99,8 +100,16 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
 
             emptyState.observe(viewLifecycleOwner, Observer { isEmpty ->
                 if (isEmpty != null) {
-                    place_holder.visible(isEmpty)
-                    check_list_content.visible(!isEmpty)
+                    if (isEmpty) {
+                        showPlaceHolder(
+                            PlaceHolderView.State.Empty(
+                                contentRes = R.string.check_list_empty_string,
+                                iconRes = R.drawable.ic_placeholder_error
+                            )
+                        )
+                    } else {
+                        hidePlaceHolder()
+                    }
                 }
             })
 
@@ -147,5 +156,16 @@ class CheckListFragment : AbstractFragment<CheckListContract.Presenter>() {
     private fun dismissSyncWarningDialog() {
         syncWarningDialog?.dismiss()
         syncWarningDialog = null
+    }
+
+    private fun showPlaceHolder(state: PlaceHolderView.State) {
+        check_list_content.visible(false)
+        place_holder.visible(true)
+        place_holder.setState(state)
+    }
+
+    private fun hidePlaceHolder() {
+        check_list_content.visible(true)
+        place_holder.visible(false)
     }
 }

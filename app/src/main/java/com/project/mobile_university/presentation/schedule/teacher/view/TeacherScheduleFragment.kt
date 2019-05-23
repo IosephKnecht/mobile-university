@@ -29,7 +29,7 @@ import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_teacher_schedule.*
 
-class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Presenter>(), FragmentBackPressed {
+class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Presenter>() {
 
     companion object {
         const val TAG = "teacher_schedule_fragment"
@@ -144,8 +144,6 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
             })
         }
     }
-
-    override fun onBackPressed() = true
 
     private fun showWarningDialog(
         context: Context,

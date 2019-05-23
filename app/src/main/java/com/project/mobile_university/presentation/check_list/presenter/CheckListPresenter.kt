@@ -110,6 +110,10 @@ class CheckListPresenter(
                 }
             }
             throwable != null -> {
+                if (checkList.value == null) {
+                    emptyState.value = true
+                }
+
                 errorObserver.value = throwable
             }
         }

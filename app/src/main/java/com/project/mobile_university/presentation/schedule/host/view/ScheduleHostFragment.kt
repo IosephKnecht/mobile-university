@@ -94,18 +94,12 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     }
 
     override fun onBackPressed(): Boolean {
-        if (childFragmentManager.backStackEntryCount == 0) {
-            return true
+        return if (childFragmentManager.backStackEntryCount == 0) {
+            true
+        } else {
+            presenter.backPressed()
+            false
         }
-
-        childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
-            if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
-                presenter.backPressed()
-                return false
-            }
-        }
-
-        return false
     }
 
     private fun initCalendar() {

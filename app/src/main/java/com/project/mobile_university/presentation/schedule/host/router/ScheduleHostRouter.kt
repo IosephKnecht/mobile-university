@@ -29,7 +29,11 @@ class ScheduleHostRouter(
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(ScheduleSubgroupFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeed(ScheduleSubgroupFragment.TAG, { fragmentManager ->
+            for (i in 0 until fragmentManager.backStackEntryCount) {
+                fragmentManager.popBackStackImmediate()
+            }
+
             subgroupInputModule.createFragment(identifier)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.SUBGROUP)
@@ -37,7 +41,11 @@ class ScheduleHostRouter(
     }
 
     override fun showTeacherScreen(androidComponent: AndroidComponent, identifier: Long) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(TeacherScheduleFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeed(TeacherScheduleFragment.TAG, { fragmentManager ->
+            for (i in 0 until fragmentManager.backStackEntryCount) {
+                fragmentManager.popBackStackImmediate()
+            }
+
             teacherInputModule.createFragment(identifier)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.TEACHER)
@@ -45,7 +53,11 @@ class ScheduleHostRouter(
     }
 
     override fun showSettingsScreen(androidComponent: AndroidComponent) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(SettingsFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeed(SettingsFragment.TAG, { fragmentManager ->
+            for (i in 0 until fragmentManager.backStackEntryCount) {
+                fragmentManager.popBackStackImmediate()
+            }
+
             settingsInputModule.createFragment()
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.SETTINGS)
@@ -53,7 +65,7 @@ class ScheduleHostRouter(
     }
 
     override fun showLessonInfoStudent(androidComponent: AndroidComponent, lessonExtId: Long) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(LessonInfoStudentFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(LessonInfoStudentFragment.TAG, {
             lessonInfoStudentInputModule.createFragment(lessonExtId)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
@@ -61,7 +73,7 @@ class ScheduleHostRouter(
     }
 
     override fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(LessonInfoTeacherFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(LessonInfoTeacherFragment.TAG, {
             lessonInfoTeacherInputModule.createFragment(lessonExtId)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.LESSON_INFO)
@@ -69,7 +81,7 @@ class ScheduleHostRouter(
     }
 
     override fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long) {
-        androidComponent.fragmentManagerComponent?.showIfNeed(CheckListFragment.TAG, {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(CheckListFragment.TAG, {
             checkListInputModule.createFragment(checkListExtId)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.CHECK_LIST)
@@ -87,10 +99,32 @@ class ScheduleHostRouter(
         }
     }
 
-    private fun FragmentManager.showIfNeed(tag: String, block: () -> Fragment, callback: ((Fragment) -> Unit)? = null) {
+    private fun FragmentManager.showIfNeedAndAddToBackStack(
+        tag: String,
+        block: () -> Fragment,
+        callback: ((Fragment) -> Unit)? = null
+    ) {
         val fragment = findFragmentByTag(tag)
         if (fragment == null) {
             val newInstanceFragment = block.invoke()
+
+            beginTransaction()
+                .addToBackStack(tag)
+                .replace(R.id.schedule_fragment_container, newInstanceFragment, tag)
+                .commit()
+
+            callback?.invoke(newInstanceFragment)
+        }
+    }
+
+    private fun FragmentManager.showIfNeed(
+        tag: String,
+        block: (FragmentManager) -> Fragment,
+        callback: ((Fragment) -> Unit)? = null
+    ) {
+        val fragment = findFragmentByTag(tag)
+        if (fragment == null) {
+            val newInstanceFragment = block.invoke(this)
 
             beginTransaction()
                 .replace(R.id.schedule_fragment_container, newInstanceFragment, tag)

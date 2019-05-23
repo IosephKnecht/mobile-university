@@ -20,7 +20,7 @@ import com.project.mobile_university.presentation.lessonInfo.student.contract.Le
 import com.project.mobile_university.presentation.lessonInfo.student.view.adapter.StudentSubgroupAdapter
 import com.project.mobile_university.presentation.visible
 
-class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Presenter>(), FragmentBackPressed {
+class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Presenter>() {
 
     companion object {
         const val TAG = "lesson_info_student_fragment"
@@ -107,10 +107,6 @@ class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Pre
                 }
             })
         }
-    }
-
-    override fun onBackPressed(): Boolean {
-        return true
     }
 
     private fun showPlaceHolder(state: PlaceHolderView.State) {

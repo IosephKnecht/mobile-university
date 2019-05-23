@@ -21,8 +21,7 @@ import com.project.mobile_university.presentation.lessonInfo.teacher.view.adapte
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.visible
 
-class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Presenter>(),
-    FragmentBackPressed {
+class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Presenter>() {
 
     interface Host : ScheduleHostListener
 
@@ -119,8 +118,6 @@ class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Pre
             })
         }
     }
-
-    override fun onBackPressed() = true
 
     private fun assignClickListenerOnCheckListButton(checkListExtId: Long?) {
         val clickListener = if (checkListExtId == null) {
