@@ -1,17 +1,17 @@
-package com.project.mobile_university.presentation.lessonInfo.presenter
+package com.project.mobile_university.presentation.lessonInfo.student.presenter
 
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
-import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
+import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 
-class LessonInfoPresenter(
+class LessonInfoStudentPresenter(
     private val lessonExtId: Long,
-    private val interactor: LessonInfoContract.Interactor
-) : AbstractPresenter(), LessonInfoContract.Presenter,
-    LessonInfoContract.Listener {
+    private val interactor: LessonInfoStudentContract.Interactor
+) : AbstractPresenter(), LessonInfoStudentContract.Presenter,
+    LessonInfoStudentContract.Listener {
 
     override val lesson = MutableLiveData<Lesson>()
     override val errorObserver = SingleLiveData<Throwable>()

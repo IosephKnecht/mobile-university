@@ -7,7 +7,7 @@
 
         <variable
             name="lessonInfo"
-            type="com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract.ObservableStorage"/>
+            type="com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract.ObservableStorage"/>
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -92,6 +92,45 @@
                         tools:text="Lesson's status: Ready"/>
 
                     <TextView
+                        android:id="@+id/check_list_header"
+                        style="@style/PrimaryText.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/small_margin"
+                        android:text="@string/lesson_info_check_list_header_string"
+                        app:layout_constraintEnd_toStartOf="@+id/check_list_button_container"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lesson_status"/>
+
+
+                    <FrameLayout
+                        android:id="@+id/check_list_button_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/check_list_header"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/check_list_header">
+
+                        <Button
+                            android:id="@+id/check_list_button"
+                            style="@style/PrimaryText.Medium"
+                            check_list_text="@{lessonInfo.lesson.checkListExtId}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_other_selector"
+                            tools:text="@string/lesson_info_check_list_create"/>
+
+                        <ProgressBar
+                            android:id="@+id/check_list_progress_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone"/>
+
+                    </FrameLayout>
+
+                    <TextView
                         android:id="@+id/subgroups"
                         style="@style/PrimaryText.Large"
                         android:layout_width="wrap_content"
@@ -100,7 +139,7 @@
                         android:text="@string/subgroups_title"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lesson_status"/>
+                        app:layout_constraintTop_toBottomOf="@id/check_list_header"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/subgroup_list"
@@ -109,7 +148,7 @@
                         android:layout_marginTop="@dimen/small_margin"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/subgroups"
-                        tools:listitem="@layout/item_subgroup"/>
+                        tools:listitem="@layout/item_subgroup_teacher"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>

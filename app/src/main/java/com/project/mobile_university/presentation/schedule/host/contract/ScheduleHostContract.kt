@@ -14,7 +14,7 @@ interface ScheduleHostContract {
     }
 
     enum class CurrentScreenType {
-        SUBGROUP, TEACHER, SETTINGS, LESSON_INFO
+        SUBGROUP, TEACHER, SETTINGS, LESSON_INFO, CHECK_LIST
     }
 
     interface ExternalObservableStorage {
@@ -34,6 +34,7 @@ interface ScheduleHostContract {
         fun onShowSettings()
         fun onDateChange(date: Date)
         fun onShowLessonInfo(lessonExtId: Long)
+        fun onShowCheckList(checkListExtId: Long)
         fun backPressed()
         fun restoreDefaultDate(): Calendar
     }
@@ -50,7 +51,9 @@ interface ScheduleHostContract {
         fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showTeacherScreen(androidComponent: AndroidComponent, identifier: Long)
         fun showSettingsScreen(androidComponent: AndroidComponent)
-        fun showLessonInfo(androidComponent: AndroidComponent, lessonExtId: Long)
+        fun showLessonInfoStudent(androidComponent: AndroidComponent, lessonExtId: Long)
+        fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long)
+        fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long)
         fun onBackPressed(androidComponent: AndroidComponent)
     }
 

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
-import com.project.mobile_university.presentation.lessonInfo.contract.LessonInfoContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "536bcd3cbea0fddb56bf520b167ddb43",
+    "identityHash": "656b56b3ca229455d96f3a2acfb72030",
     "entities": [
       {
         "tableName": "Subgroup",
@@ -55,7 +55,7 @@
       },
       {
         "tableName": "Lesson",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ext_id` INTEGER NOT NULL, `day_ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL, `lecture_hall_name` TEXT NOT NULL, `lecture_type_name` TEXT NOT NULL, `lesson_start` TEXT NOT NULL, `lesson_end` TEXT NOT NULL, `subject_name` TEXT NOT NULL, `teacher_name` TEXT NOT NULL, `teacher_ext_id` INTEGER NOT NULL, `lesson_status` INTEGER NOT NULL, PRIMARY KEY(`ext_id`), FOREIGN KEY(`day_ext_id`) REFERENCES `ScheduleDay`(`ext_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ext_id` INTEGER NOT NULL, `day_ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL, `lecture_hall_name` TEXT NOT NULL, `lecture_type_name` TEXT NOT NULL, `lesson_start` TEXT NOT NULL, `lesson_end` TEXT NOT NULL, `subject_name` TEXT NOT NULL, `teacher_name` TEXT NOT NULL, `teacher_ext_id` INTEGER NOT NULL, `lesson_status` INTEGER NOT NULL, `check_list_ext_id` INTEGER, PRIMARY KEY(`ext_id`), FOREIGN KEY(`day_ext_id`) REFERENCES `ScheduleDay`(`ext_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -122,6 +122,12 @@
             "columnName": "lesson_status",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "checkListExtId",
+            "columnName": "check_list_ext_id",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -268,7 +274,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"536bcd3cbea0fddb56bf520b167ddb43\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"656b56b3ca229455d96f3a2acfb72030\")"
     ]
   }
 }

@@ -7,14 +7,16 @@ import com.project.mobile_university.data.room.entity.Subgroup
 import com.project.mobile_university.data.room.tuple.ScheduleDayWithLessons
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.shared.DatabaseService
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseService {
 
     override fun saveScheduleDay(
         scheduleDayList: List<ScheduleDay>
-    ): Observable<Unit> {
-        return makeReactive {
+    ): Single<List<Long>> {
+        return Single.fromCallable {
             val lessons = mutableListOf<Lesson>()
             val subgroups = mutableListOf<Subgroup>()
             val lessonSubgroupRelations = mutableListOf<LessonSubgroup>()
@@ -48,8 +50,8 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
     override fun getScheduleDayListForSubgroup(
         datesRange: List<String>,
         subgroupId: Long
-    ): Observable<List<ScheduleDayWithLessons>> {
-        return makeReactive {
+    ): Single<List<ScheduleDayWithLessons>> {
+        return Single.fromCallable {
             database.scheduleDayDao().getScheduleDayWithLessonsForSubgroup(datesRange, subgroupId)
         }
     }
@@ -57,21 +59,21 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
     override fun getScheduleDayListForTeacher(
         datesRange: List<String>,
         teacherId: Long
-    ): Observable<List<ScheduleDayWithLessons>> {
-        return makeReactive {
+    ): Single<List<ScheduleDayWithLessons>> {
+        return Single.fromCallable {
             database.scheduleDayDao().getScheduleDayWithLessonsForTeacher(datesRange, teacherId)
         }
 
     }
 
-    override fun getLessonWithSubgroup(lessonExtId: Long): Observable<Lesson> {
-        return makeReactive {
+    override fun getLessonWithSubgroup(lessonExtId: Long): Single<Lesson> {
+        return Single.fromCallable {
             database.scheduleDayDao().getLessonWithSubgroups(lessonExtId)
         }
     }
 
-    override fun saveLessons(lessons: List<Lesson>): Observable<Unit> {
-        return makeReactive {
+    override fun saveLessons(lessons: List<Lesson>): Single<List<Long>> {
+        return Single.fromCallable {
             val insertSubgroups = mutableListOf<Subgroup>()
             val lessonSubgroupRelations = mutableListOf<LessonSubgroup>()
 
@@ -92,9 +94,5 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
                 lessonSubgroupRelations.toTypedArray()
             )
         }
-    }
-
-    private fun <T> makeReactive(block: () -> T): Observable<T> {
-        return Observable.fromCallable { block() }
     }
 }

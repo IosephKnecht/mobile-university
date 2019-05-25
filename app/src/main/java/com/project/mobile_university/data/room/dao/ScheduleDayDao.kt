@@ -37,11 +37,13 @@ abstract class ScheduleDayDao {
         lessons: Array<Lesson>,
         subgroups: Array<Subgroup>,
         lessonSubgroup: Array<LessonSubgroup>
-    ) {
-        insertDays(*scheduleDays)
+    ): List<Long> {
+        val dayIds = insertDays(*scheduleDays)
         insertLessons(*lessons)
         insertSubgroups(*subgroups)
         insertLessonSubgroup(*lessonSubgroup)
+
+        return dayIds
     }
 
     @Transaction
@@ -49,10 +51,11 @@ abstract class ScheduleDayDao {
         lessons: Array<Lesson>,
         subgroups: Array<Subgroup>,
         lessonSubgroup: Array<LessonSubgroup>
-    ) {
-        insertLessons(*lessons)
+    ): List<Long> {
+        val lessonIds = insertLessons(*lessons)
         insertSubgroups(*subgroups)
         insertLessonSubgroup(*lessonSubgroup)
+        return lessonIds
     }
 
     @Transaction

@@ -26,5 +26,7 @@ data class Lesson(
     @SerializedName("teacher_id")
     val teacherExtId: Long,
     @SerializedName("lesson_status")
-    val lessonStatus: Int
+    val lessonStatus: Int,
+    @SerializedName("check_list_id")
+    val checkListExtId: Long?
 )

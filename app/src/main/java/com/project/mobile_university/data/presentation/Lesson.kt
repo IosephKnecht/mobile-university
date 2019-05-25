@@ -3,6 +3,7 @@ package com.project.mobile_university.data.presentation
 data class Lesson(
     val extId: Long,
     val dayExtId: Long,
+    // FIXME: change on val when will be abandonment mock
     var currentDate: String,
     val lectureHallName: String,
     val lectureTypeName: String,
@@ -12,7 +13,8 @@ data class Lesson(
     val subjectName: String,
     val teacherName: String,
     val teacherExtId: Long,
-    val lessonStatus: LessonStatus?
+    val lessonStatus: LessonStatus?,
+    val checkListExtId: Long?
 ) {
 
     fun deepCopy() = Lesson(
@@ -27,6 +29,7 @@ data class Lesson(
         subjectName = subjectName,
         teacherName = teacherName,
         teacherExtId = teacherExtId,
-        lessonStatus = lessonStatus
+        lessonStatus = lessonStatus,
+        checkListExtId = checkListExtId
     )
 }

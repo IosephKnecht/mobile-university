@@ -10,6 +10,7 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.lessonInfo.teacher.view.LessonInfoTeacherFragment
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_common_schedule.*
 import java.util.*
 
 class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed,
-    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host {
+    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host, LessonInfoTeacherFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -68,7 +69,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
             currentScreen.observe(viewLifecycleOwner, Observer { currentScreen ->
                 when (currentScreen) {
                     ScheduleHostContract.CurrentScreenType.SETTINGS,
-                    ScheduleHostContract.CurrentScreenType.LESSON_INFO -> {
+                    ScheduleHostContract.CurrentScreenType.LESSON_INFO,
+                    ScheduleHostContract.CurrentScreenType.CHECK_LIST -> {
                         calendar.calendarView.visibility = View.GONE
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHER,
@@ -87,19 +89,17 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         presenter.onShowLessonInfo(lessonExtId)
     }
 
+    override fun showCheckList(checkListExtId: Long) {
+        presenter.onShowCheckList(checkListExtId)
+    }
+
     override fun onBackPressed(): Boolean {
-        if (childFragmentManager.backStackEntryCount == 0) {
-            return true
+        return if (childFragmentManager.backStackEntryCount == 0) {
+            true
+        } else {
+            presenter.backPressed()
+            false
         }
-
-        childFragmentManager.findFragmentById(R.id.schedule_fragment_container)?.let { fragment ->
-            if (fragment is FragmentBackPressed && fragment.onBackPressed()) {
-                presenter.backPressed()
-                return false
-            }
-        }
-
-        return false
     }
 
     private fun initCalendar() {

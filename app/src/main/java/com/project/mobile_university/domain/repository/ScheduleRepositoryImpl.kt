@@ -1,13 +1,17 @@
 package com.project.mobile_university.domain.repository
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.Teacher
+import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.Lesson as PresentationLesson
 import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
 import com.project.mobile_university.data.gson.Lesson as GsonLesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.domain.UniversityApi
+import com.project.mobile_university.domain.mappers.CheckListMapper
 import com.project.mobile_university.domain.mappers.LessonMapper
 import com.project.mobile_university.domain.mappers.ScheduleDayMapper
 import com.project.mobile_university.domain.shared.ApiService
@@ -15,7 +19,9 @@ import com.project.mobile_university.domain.shared.DatabaseService
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.CalendarUtil
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
 
@@ -24,21 +30,20 @@ class ScheduleRepositoryImpl(
     private val databaseService: DatabaseService,
     private val sharedPreferenceService: SharedPreferenceService
 ) : ScheduleRepository {
+
     override fun syncScheduleDaysForSubgroup(
         startDate: Date,
         endDate: Date,
         subgroupId: Long
-    ): Observable<List<ScheduleDay>> {
-
+    ): Single<List<ScheduleDay>> {
         return apiService.getScheduleOfWeekForSubgroup(startDate, endDate, subgroupId)
             .flatMap {
                 databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
+                    .flatMap {
+                        val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+                        databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
+                    }.map { sqlDays -> ScheduleDayMapper.sqlToPresentation(sqlDays) }
             }
-            .flatMap {
-                val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
-                databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
-            }
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
     }
 
 
@@ -46,7 +51,7 @@ class ScheduleRepositoryImpl(
         startDate: Date,
         endDate: Date,
         teacherId: Long
-    ): Observable<List<ScheduleDay>> {
+    ): Single<List<ScheduleDay>> {
         return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
             .flatMap {
                 databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
@@ -58,10 +63,10 @@ class ScheduleRepositoryImpl(
             .map { ScheduleDayMapper.sqlToPresentation(it) }
     }
 
-    override fun syncSchedule(): Observable<List<ScheduleDay>> {
+    override fun syncSchedule(): Single<List<ScheduleDay>> {
         val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(Date())
 
-        val remoteObservable = Observable
+        val remoteObservable = Single
             .fromCallable { sharedPreferenceService.getUserInfo() }
             .flatMap { user ->
                 return@flatMap when (user) {
@@ -71,7 +76,7 @@ class ScheduleRepositoryImpl(
             }
             .map { ScheduleDayMapper.gsonToPresentation(it.objectList!!) }
 
-        val storedObservable = Observable
+        val storedObservable = Single
             .fromCallable { sharedPreferenceService.getUserInfo() }
             .flatMap { user ->
                 val datesRange = CalendarUtil.buildRangeBetweenDates(monday, sunday)
@@ -83,18 +88,14 @@ class ScheduleRepositoryImpl(
             }
             .map { ScheduleDayMapper.sqlToPresentation(it) }
 
-        val diffObservable = Observable
-            .combineLatest(remoteObservable, storedObservable, diffFunction())
-            .flatMap { diff ->
-                val (insertList, updatedDays) = diff
+        return Single.zip(remoteObservable, storedObservable, diffFunction())
+            .flatMap { (insertList, updatedDays) ->
                 databaseService.saveScheduleDay(ScheduleDayMapper.presentationToSql(insertList))
                     .map { updatedDays }
             }
-
-        return diffObservable
     }
 
-    override fun syncLesson(lessonExtId: Long): Observable<PresentationLesson> {
+    override fun syncLesson(lessonExtId: Long): Single<PresentationLesson> {
         return apiService.getLesson(lessonExtId)
             .flatMap { lesson ->
                 databaseService.saveLessons(listOf(LessonMapper.toDatabase(lesson)))
@@ -102,17 +103,32 @@ class ScheduleRepositoryImpl(
             }
     }
 
-    override fun getLesson(lessonExtId: Long): Observable<PresentationLesson> {
+    override fun getLesson(lessonExtId: Long): Single<PresentationLesson> {
         return databaseService.getLessonWithSubgroup(lessonExtId)
             .map { LessonMapper.toPresentation(it) }
     }
 
-    override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Observable<Unit> {
-        return Observable.just(
+    override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus): Completable {
+        return Single.fromCallable {
             JsonObject().apply {
                 addProperty("lesson_status", lessonStatus.identifier)
-            })
-            .flatMap { body -> apiService.updateLessonStatus(lessonId, body) }
+            }
+        }.flatMapCompletable { body -> apiService.updateLessonStatus(lessonId, body) }
+    }
+
+    override fun getCheckList(checkListExtId: Long): Single<List<CheckListRecord>> {
+        return apiService.getCheckList(checkListExtId)
+            .map { CheckListMapper.gsonToPresentation(it) }
+    }
+
+    override fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Completable {
+        return Single.fromCallable { records.toJson() }
+            .flatMapCompletable { gsonRecords -> apiService.putCheckList(checkListExtId, gsonRecords) }
+    }
+
+    override fun createCheckList(lessonExtId: Long): Single<PresentationLesson> {
+        return apiService.createCheckList(lessonExtId)
+            .andThen(syncLesson(lessonExtId))
     }
 
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {
@@ -136,6 +152,23 @@ class ScheduleRepositoryImpl(
                 }
             }
             return@BiFunction Pair(remoteList, updatedDays)
+        }
+    }
+
+    private fun List<CheckListRecord>.toJson(): JsonObject {
+        val jsonRecords = JsonArray()
+
+        this.forEach { record ->
+            jsonRecords.add(JsonObject().apply {
+                addProperty("id", record.id)
+                addProperty("check_list", "${UniversityApi.CHECK_LIST_PATH}${record.checkListId}/")
+                addProperty("status", record.status.value)
+                addProperty("student", "${UniversityApi.STUDENT_PATH}${record.studentId}/")
+            })
+        }
+
+        return JsonObject().apply {
+            add("objects", jsonRecords)
         }
     }
 }

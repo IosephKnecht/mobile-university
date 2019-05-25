@@ -56,6 +56,9 @@
         <string name="human_value_string">Human value: %s</string>
         <string name="lesson_status_string">Lesson\'s status: %s</string>
         <string name="lesson_info_error_string">Failed to get information for lesson.\nTry to refresh page.</string>
+        <string name="lesson_info_check_list_header_string">Check list</string>
+        <string name="lesson_info_check_list_create">Create</string>
+        <string name="lesson_info_check_list_show">Show</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->
@@ -77,4 +80,19 @@
         <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
         <string name="teacher_schedule_screen_empty_string">There is nothing in schedule for this day, so you can relax.</string>
     <!--Schedule teacher screen-->
+
+    <!--Check list screen-->
+        <string name="sync_check_list_string">Sync</string>
+        <string name="sync_warning_content_string">Do you really want to sync the checklist?\nTotal students in check list %s\nJust came students %s.</string>
+        <string name="sync_negative_text">Recheck</string>
+        <string name="sync_positive_text">Confirm sync</string>
+        <string name="check_list_empty_string">Checklist does not contain any records.So be it, should not, try to update data.</string>
+    <!--Check list screen-->
+
+    <!--Check list status-->
+        <string name="not_come_status_string">Not come</string>
+        <string name="came_late_status_string">Came late</string>
+        <string name="not_come_with_approved_string">Not come with approved</string>
+        <string name="has_come_string">Has come</string>
+    <!--Check list status-->
 </resources>

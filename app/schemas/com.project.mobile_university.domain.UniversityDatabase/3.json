@@ -1,0 +1,280 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "656b56b3ca229455d96f3a2acfb72030",
+    "entities": [
+      {
+        "tableName": "Subgroup",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ext_id` INTEGER NOT NULL, `human_value` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`ext_id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ext_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "humanValue",
+            "columnName": "human_value",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ext_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Subgroup_ext_id",
+            "unique": true,
+            "columnNames": [
+              "ext_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Subgroup_ext_id` ON `${TABLE_NAME}` (`ext_id`)"
+          },
+          {
+            "name": "index_Subgroup_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Subgroup_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Lesson",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ext_id` INTEGER NOT NULL, `day_ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL, `lecture_hall_name` TEXT NOT NULL, `lecture_type_name` TEXT NOT NULL, `lesson_start` TEXT NOT NULL, `lesson_end` TEXT NOT NULL, `subject_name` TEXT NOT NULL, `teacher_name` TEXT NOT NULL, `teacher_ext_id` INTEGER NOT NULL, `lesson_status` INTEGER NOT NULL, `check_list_ext_id` INTEGER, PRIMARY KEY(`ext_id`), FOREIGN KEY(`day_ext_id`) REFERENCES `ScheduleDay`(`ext_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ext_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayExtId",
+            "columnName": "day_ext_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentDate",
+            "columnName": "current_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lectureHallName",
+            "columnName": "lecture_hall_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lectureTypeName",
+            "columnName": "lecture_type_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lessonStart",
+            "columnName": "lesson_start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lessonEnd",
+            "columnName": "lesson_end",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subjectName",
+            "columnName": "subject_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "teacherName",
+            "columnName": "teacher_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "teacherExtId",
+            "columnName": "teacher_ext_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lessonStatus",
+            "columnName": "lesson_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "checkListExtId",
+            "columnName": "check_list_ext_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ext_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Lesson_ext_id",
+            "unique": true,
+            "columnNames": [
+              "ext_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Lesson_ext_id` ON `${TABLE_NAME}` (`ext_id`)"
+          },
+          {
+            "name": "index_Lesson_day_ext_id",
+            "unique": false,
+            "columnNames": [
+              "day_ext_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Lesson_day_ext_id` ON `${TABLE_NAME}` (`day_ext_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "ScheduleDay",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "day_ext_id"
+            ],
+            "referencedColumns": [
+              "ext_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "LessonSubgroup",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER NOT NULL, `subgroup_id` INTEGER NOT NULL, PRIMARY KEY(`lesson_id`, `subgroup_id`), FOREIGN KEY(`lesson_id`) REFERENCES `Lesson`(`ext_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`subgroup_id`) REFERENCES `Subgroup`(`ext_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "lessonId",
+            "columnName": "lesson_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subgroupId",
+            "columnName": "subgroup_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "lesson_id",
+            "subgroup_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_LessonSubgroup_subgroup_id",
+            "unique": false,
+            "columnNames": [
+              "subgroup_id"
+            ],
+            "createSql": "CREATE  INDEX `index_LessonSubgroup_subgroup_id` ON `${TABLE_NAME}` (`subgroup_id`)"
+          },
+          {
+            "name": "index_LessonSubgroup_lesson_id_subgroup_id",
+            "unique": true,
+            "columnNames": [
+              "lesson_id",
+              "subgroup_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_LessonSubgroup_lesson_id_subgroup_id` ON `${TABLE_NAME}` (`lesson_id`, `subgroup_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Lesson",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "lesson_id"
+            ],
+            "referencedColumns": [
+              "ext_id"
+            ]
+          },
+          {
+            "table": "Subgroup",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "subgroup_id"
+            ],
+            "referencedColumns": [
+              "ext_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ScheduleDay",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ext_id` INTEGER NOT NULL, `current_date` TEXT NOT NULL, PRIMARY KEY(`ext_id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ext_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentDate",
+            "columnName": "current_date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ext_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_ScheduleDay_current_date",
+            "unique": true,
+            "columnNames": [
+              "current_date"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_ScheduleDay_current_date` ON `${TABLE_NAME}` (`current_date`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"656b56b3ca229455d96f3a2acfb72030\")"
+    ]
+  }
+}
