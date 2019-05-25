@@ -1,10 +1,7 @@
 package com.project.mobile_university.domain.repository
 
 import com.project.mobile_university.data.Beans
-import com.project.mobile_university.data.presentation.CheckListRecord
-import com.project.mobile_university.data.presentation.Lesson
-import com.project.mobile_university.data.presentation.LessonStatus
-import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.data.presentation.*
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Completable
@@ -61,6 +58,10 @@ class ScheduleRepositoryMock : ScheduleRepository {
     }
 
     override fun createCheckList(lessonExtId: Long): Single<Lesson> {
+        return Single.error(Throwable())
+    }
+
+    override fun getTeachers(limit: Int, offset: Int): Single<List<Teacher>> {
         return Single.error(Throwable())
     }
 

@@ -3,6 +3,8 @@ package com.project.mobile_university.domain.mappers
 import com.project.mobile_university.data.gson.Student as StudentGson
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.Student as StudentPresentation
+import com.project.mobile_university.data.presentation.Teacher as TeacherPresentation
+import com.project.mobile_university.data.gson.Teacher as TeacherGson
 import com.project.mobile_university.data.presentation.UserInfo
 
 object UserMapper {
@@ -23,6 +25,18 @@ object UserMapper {
                 lastName = lastName,
                 subgroupId = subgroupId,
                 groupId = groupId
+            )
+        }
+    }
+
+    fun toPresentation(teacher: TeacherGson): TeacherPresentation {
+        return with(teacher) {
+            TeacherPresentation(
+                email = email,
+                firstName = firstName,
+                lastName = lastName,
+                cathedraId = cathedraId,
+                teacherId = teacherId
             )
         }
     }
