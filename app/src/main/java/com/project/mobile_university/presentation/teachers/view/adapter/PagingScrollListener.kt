@@ -11,10 +11,10 @@ class PagingScrollListener(
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        val visibleItemCount = layoutManager.childCount
-        val totalItemCount = layoutManager.itemCount
+        val lastVisibleItemCount = layoutManager.findLastCompletelyVisibleItemPosition()
+        val totalItemCount = layoutManager.itemCount - 1
 
-        if (visibleItemCount == totalItemCount) {
+        if (lastVisibleItemCount == totalItemCount) {
             loadMoreItems.invoke()
         }
     }

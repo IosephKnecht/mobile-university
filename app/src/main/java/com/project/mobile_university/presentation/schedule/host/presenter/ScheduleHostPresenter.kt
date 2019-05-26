@@ -80,6 +80,10 @@ class ScheduleHostPresenter(
         router.showCheckList(androidComponent!!, checkListExtId)
     }
 
+    override fun onShowTeachersScreen() {
+        router.showTeachersScreen(androidComponent!!)
+    }
+
     override fun backPressed() {
         router.onBackPressed(androidComponent!!)
     }

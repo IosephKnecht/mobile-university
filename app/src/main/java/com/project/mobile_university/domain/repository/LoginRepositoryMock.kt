@@ -20,8 +20,8 @@ class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceS
             Meta(
                 limit = 0,
                 currentPage = 0,
-                nextPage = 0,
-                previousPage = 0,
+                nextPage = "",
+                previousPage = "",
                 size = 0
             ), listOf<User>(
                 Student(

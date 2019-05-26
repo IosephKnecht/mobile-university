@@ -5,6 +5,7 @@ import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Teacher
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
+import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 
 class TeachersPresenter(private val interactor: TeachersContract.Interactor) : AbstractPresenter(),
@@ -34,6 +35,7 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     }
 
     override fun refreshAllPage() {
+        showData.value = null
         interactor.refreshAllPage()
     }
 
@@ -43,29 +45,26 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     }
 
     override fun showEmptyError(show: Boolean, error: Throwable?) {
-        if (show) {
-        }
+        emptyError.value = show
+        refreshProgress.value = false
     }
 
     override fun showEmptyView(show: Boolean) {
         emptyView.value = show
+        refreshProgress.value = false
     }
 
     override fun showData(show: Boolean, data: List<Teacher>) {
         if (show) {
-            val currentData = showData.value?.toMutableList()
-
-            if (currentData == null || currentData.isEmpty()) {
-                showData.value = data
-            } else {
-                currentData.addAll(data)
-                showData.value = currentData
-            }
+            showData.value = data
+        } else {
+            refreshProgress.value = show
         }
     }
 
     override fun showErrorMessage(error: Throwable) {
         errorMessage.value = error
+        refreshProgress.value = false
     }
 
     override fun showRefreshProgress(show: Boolean) {
@@ -74,6 +73,7 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
 
     override fun showPageProgress(show: Boolean) {
         pageProgress.value = show
+        if (!show) showData.renotify()
     }
 
     override fun onDestroy() {

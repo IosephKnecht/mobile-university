@@ -24,12 +24,14 @@ class TeachersInteractor(private val scheduleRepository: ScheduleRepository) :
                 requestFactory = { page ->
                     scheduleRepository.getTeachers(
                         limit = TEACHERS_LIMIT,
-                        offset = TEACHERS_LIMIT * page
+                        offset = TEACHERS_LIMIT * (page - 1)
                     ).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                 },
                 viewController = listener
             )
+
+            paginator?.refresh()
         } else {
             paginator?.release()
             paginator = null

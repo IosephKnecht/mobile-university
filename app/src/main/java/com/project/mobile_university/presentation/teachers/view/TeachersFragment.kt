@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_teachers.*
 class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
 
     companion object {
+        const val TAG = "teachers_screen"
+
         fun createInstance() = TeachersFragment()
     }
 
@@ -55,10 +57,10 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
             layoutManager = linearLayoutManager
             adapter = this@TeachersFragment.adapter
             setHasFixedSize(false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(
                 PagingScrollListener(
-                    linearLayoutManager
+                    layoutManager as LinearLayoutManager
                 ) {
                     presenter.loadNewPage()
                 })
@@ -109,6 +111,7 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
                 if (isShow != null) {
                     content?.visible(!isShow)
                     progress_bar?.visible(isShow)
+                    refresh_layout?.isEnabled = !isShow
                 }
             })
 
@@ -121,6 +124,7 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
             showData.observe(viewLifecycleOwner, Observer { teacherList ->
                 if (teacherList != null) {
                     adapter.reload(teacherList)
+                    refresh_layout?.isEnabled = true
                 }
             })
         }
