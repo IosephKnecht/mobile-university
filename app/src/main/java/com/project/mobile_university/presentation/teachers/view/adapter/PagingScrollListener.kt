@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.teachers.view
+package com.project.mobile_university.presentation.teachers.view.adapter
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
+import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
+import com.project.mobile_university.presentation.teachers.view.adapter.PagingScrollListener
+import com.project.mobile_university.presentation.teachers.view.adapter.TeachersAdapter
+import com.project.mobile_university.presentation.visible
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_teachers.*
 
 class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
@@ -22,6 +26,7 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
     }
 
     private lateinit var diComponent: TeachersComponent
+    private lateinit var adapter: TeachersAdapter
 
     override fun inject() {
         diComponent = AppDelegate.presentationComponent
@@ -39,6 +44,8 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = TeachersAdapter()
+
         refresh_layout?.setOnRefreshListener {
             presenter.refreshAllPage()
         }
@@ -46,12 +53,15 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
         teachers?.apply {
             val linearLayoutManager = LinearLayoutManager(context)
             layoutManager = linearLayoutManager
-            //TODO: set adapter -> adapter = null
+            adapter = this@TeachersFragment.adapter
             setHasFixedSize(false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-            addOnScrollListener(PagingScrollListener(linearLayoutManager) {
-                presenter.loadNewPage()
-            })
+            addOnScrollListener(
+                PagingScrollListener(
+                    linearLayoutManager
+                ) {
+                    presenter.loadNewPage()
+                })
         }
     }
 
@@ -60,7 +70,9 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
 
         with(presenter) {
             pageProgress.observe(viewLifecycleOwner, Observer { isLoading ->
-                // TODO: show page progress
+                if (isLoading == true) {
+                    adapter.showLoadMoreProgress()
+                }
             })
 
             refreshProgress.observe(viewLifecycleOwner, Observer { isLoading ->
@@ -70,34 +82,58 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
             })
 
             emptyError.observe(viewLifecycleOwner, Observer { isShow ->
-                if (isShow != null) {
-                    // TODO: show error placeholder
+                when (isShow) {
+                    true -> showPlaceHolder(
+                        PlaceHolderView.State.Empty(
+                            contentRes = R.string.teachers_empty_error_string,
+                            iconRes = R.drawable.ic_placeholder_empty
+                        )
+                    )
+                    false -> hidePlaceHolder()
                 }
             })
 
             emptyView.observe(viewLifecycleOwner, Observer { isShow ->
-                if (isShow != null) {
-                    // TODO: show empty placeholder
+                when (isShow) {
+                    true -> showPlaceHolder(
+                        PlaceHolderView.State.Empty(
+                            contentRes = R.string.teachers_empty_string,
+                            iconRes = R.drawable.ic_placeholder_empty
+                        )
+                    )
+                    false -> hidePlaceHolder()
                 }
             })
 
             emptyProgress.observe(viewLifecycleOwner, Observer { isShow ->
                 if (isShow != null) {
-                    // TODO: show progress bar
+                    content?.visible(!isShow)
+                    progress_bar?.visible(isShow)
                 }
             })
 
             errorMessage.observe(viewLifecycleOwner, Observer { throwable ->
                 if (throwable != null) {
-                    // TODO: show toast
+                    Toasty.error(context!!, throwable.localizedMessage).show()
                 }
             })
 
             showData.observe(viewLifecycleOwner, Observer { teacherList ->
                 if (teacherList != null) {
-                    // TODO: added teachers to RecyclerView
+                    adapter.reload(teacherList)
                 }
             })
         }
+    }
+
+    private fun showPlaceHolder(state: PlaceHolderView.State) {
+        teachers?.visible(false)
+        place_holder?.visible(true)
+        place_holder?.setState(state)
+    }
+
+    private fun hidePlaceHolder() {
+        teachers?.visible(true)
+        place_holder?.visible(false)
     }
 }

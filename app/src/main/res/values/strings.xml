@@ -95,4 +95,9 @@
         <string name="not_come_with_approved_string">Not come with approved</string>
         <string name="has_come_string">Has come</string>
     <!--Check list status-->
+
+    <!--Teachers screen-->
+        <string name="teachers_empty_string"></string>
+        <string name="teachers_empty_error_string"></string>
+    <!--Teachers screen-->
 </resources>

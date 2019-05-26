@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="teacher"
+            type="com.project.mobile_university.data.presentation.Teacher"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_margin">
+
+        <TextView
+            android:id="@+id/first_name"
+            style="@style/PrimaryText.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{teacher.firstName}"
+            app:layout_constraintEnd_toStartOf="@+id/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="first_name"/>
+
+        <TextView
+            android:id="@+id/last_name"
+            style="@style/PrimaryText.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/first_name"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{teacher.lastName}"
+            app:layout_constraintEnd_toStartOf="@id/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/first_name"
+            tools:text="last_name"/>
+
+        <ImageView
+            android:id="@+id/arrow"
+            style="@style/IconStyle.Medium"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

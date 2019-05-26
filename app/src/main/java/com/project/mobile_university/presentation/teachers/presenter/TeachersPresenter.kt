@@ -53,7 +53,14 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
 
     override fun showData(show: Boolean, data: List<Teacher>) {
         if (show) {
-            showData.value = data
+            val currentData = showData.value?.toMutableList()
+
+            if (currentData == null || currentData.isEmpty()) {
+                showData.value = data
+            } else {
+                currentData.addAll(data)
+                showData.value = currentData
+            }
         }
     }
 

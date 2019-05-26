@@ -1,0 +1,3 @@
+package com.project.mobile_university.data.presentation
+
+object LoadMoreViewState
