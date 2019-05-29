@@ -10,6 +10,7 @@ import com.project.mobile_university.presentation.schedule.subgroup.assembly.Sch
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
+import com.project.mobile_university.presentation.user_info.assembly.UserInfoComponent
 import dagger.Component
 
 @Component(modules = [PresentationModule::class], dependencies = [BusinessComponent::class])
@@ -24,4 +25,5 @@ interface PresentationComponent {
     fun lessonInfoTeacherSubComponent(): LessonInfoTeacherComponent.Builder
     fun checkListSubComponent(): CheckListComponent.Builder
     fun teachersSubComponent(): TeachersComponent.Builder
+    fun userInfoSubComponent(): UserInfoComponent.Builder
 }
