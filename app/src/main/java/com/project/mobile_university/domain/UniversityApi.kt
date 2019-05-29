@@ -17,6 +17,7 @@ interface UniversityApi {
         const val CHECK_LIST_STUDENTS_PATH = "api/v1/check_list_students/"
         const val STUDENT_PATH = "api/v1/student/"
         const val TEACHER = "api/v1/teacher"
+        const val USER_INFO = "api/v1/user_info"
     }
 
 
@@ -82,4 +83,10 @@ interface UniversityApi {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): Single<BaseServerResponse<Teacher>>
+
+    @GET("$USER_INFO/{id}/")
+    fun getUserInfo(
+        @Header("Authorization") loginPassString: String,
+        @Path("id") userId: Long
+    ): Single<User>
 }

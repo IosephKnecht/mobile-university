@@ -120,6 +120,12 @@ class ApiServiceImpl(
         }
     }
 
+    override fun getUserInfo(userId: Long): Single<User> {
+        return Single.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString -> universityApi.getUserInfo(loginPassString, userId) }
+    }
+
     // TODO: will be transited on CalendarUtil
     private fun obtainDateRangeString(
         startWeek: Date,

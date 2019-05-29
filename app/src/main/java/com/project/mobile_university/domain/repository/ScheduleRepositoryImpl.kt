@@ -142,6 +142,16 @@ class ScheduleRepositoryImpl(
             }
     }
 
+    override fun getUserInfo(userId: Long): Single<Any> {
+        return apiService.getUserInfo(userId)
+            .map { user ->
+                when (user) {
+                    is GsonTeacher -> UserMapper.toPresentation(user)
+                    is GsonStudent -> UserMapper.toPresentation(user)
+                }
+            }
+    }
+
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {
         return BiFunction { remoteList, storedList ->
             val insertedDays = remoteList.minus(storedList).toMutableList()

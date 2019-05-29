@@ -16,4 +16,5 @@ interface ScheduleRepository {
     fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Completable
     fun createCheckList(lessonExtId: Long): Single<Lesson>
     fun getTeachers(limit: Int, offset: Int): Single<List<Teacher>>
+    fun getUserInfo(userId: Long): Single<Any>
 }
