@@ -52,10 +52,13 @@ class UserInfoModule {
 }
 
 @PerFeatureLayerScope
-class UserInfoViewModelFactory @Inject constructor(private val interactor: UserInfoContract.Interactor) :
+class UserInfoViewModelFactory @Inject constructor(
+    private val interactor: UserInfoContract.Interactor,
+    private val userId: Long
+) :
     ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return UserInfoPresenter(interactor) as T
+        return UserInfoPresenter(interactor, userId) as T
     }
 }
