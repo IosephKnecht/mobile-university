@@ -25,6 +25,7 @@ class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceS
                 size = 0
             ), listOf<User>(
                 Student(
+                    userId = 1L,
                     email = "",
                     firstName = "test_student",
                     groupId = 1,

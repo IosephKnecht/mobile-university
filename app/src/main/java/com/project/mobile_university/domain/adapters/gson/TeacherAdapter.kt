@@ -12,6 +12,7 @@ class TeacherAdapter : JsonDeserializer<Teacher> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Teacher {
         val teacher = json as JsonObject
 
+        val userId = teacher.getAsJsonPrimitive("id").asLong
         val email = teacher.getAsJsonPrimitive("email").asString
         val firstName = teacher.getAsJsonPrimitive("first_name").asString
         val lastName = teacher.getAsJsonPrimitive("last_name").asString
@@ -19,6 +20,7 @@ class TeacherAdapter : JsonDeserializer<Teacher> {
         val teacherId = teacher.getAsJsonPrimitive("teacher_id").asLong
 
         return Teacher(
+            userId = userId,
             email = email,
             teacherId = teacherId,
             cathedraId = cathedraId,

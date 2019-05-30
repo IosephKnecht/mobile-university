@@ -120,7 +120,7 @@ class ApiServiceImpl(
         }
     }
 
-    override fun getUserInfo(userId: Long): Single<User> {
+    override fun getUserInfo(userId: Long): Single<UserInformation> {
         return Single.fromCallable {
             sharedPreferenceService.getLoginPassString()
         }.flatMap { loginPassString -> universityApi.getUserInfo(loginPassString, userId) }

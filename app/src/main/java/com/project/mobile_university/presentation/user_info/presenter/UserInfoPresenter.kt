@@ -3,6 +3,7 @@ package com.project.mobile_university.presentation.user_info.presenter
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.presentation.UserInformation
 import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
 
 class UserInfoPresenter(
@@ -11,7 +12,7 @@ class UserInfoPresenter(
 ) : AbstractPresenter(),
     UserInfoContract.Presenter, UserInfoContract.Listener {
 
-    override val userInfo = MutableLiveData<Any>()
+    override val userInfo = MutableLiveData<UserInformation>()
     override val throwable = MutableLiveData<Throwable>()
     override val loading = MutableLiveData<Boolean>()
 
@@ -34,7 +35,7 @@ class UserInfoPresenter(
         interactor.getUserInfo(userId)
     }
 
-    override fun onObtainUserInfo(user: Any?, throwable: Throwable?) {
+    override fun onObtainUserInfo(user: UserInformation?, throwable: Throwable?) {
         when {
             throwable != null -> {
                 this.throwable.value = throwable

@@ -88,5 +88,5 @@ interface UniversityApi {
     fun getUserInfo(
         @Header("Authorization") loginPassString: String,
         @Path("id") userId: Long
-    ): Single<User>
+    ): Single<UserInformation>
 }

@@ -1,6 +1,7 @@
 package com.project.mobile_university.data.presentation
 
 data class Student(
+    val userId: Long,
     val email: String?,
     val firstName: String?,
     val lastName: String?,

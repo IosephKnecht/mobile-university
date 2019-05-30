@@ -65,7 +65,7 @@ class ScheduleRepositoryMock : ScheduleRepository {
         return Single.error(Throwable())
     }
 
-    override fun getUserInfo(userId: Long): Single<Any> {
+    override fun getUserInfo(userId: Long): Single<UserInformation> {
         return Single.error(Throwable())
     }
 

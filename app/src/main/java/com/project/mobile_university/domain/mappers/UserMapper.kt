@@ -20,6 +20,7 @@ object UserMapper {
     fun toPresentation(student: StudentGson): StudentPresentation {
         return with(student) {
             StudentPresentation(
+                userId = userId,
                 email = email,
                 firstName = firstName,
                 lastName = lastName,
@@ -44,6 +45,7 @@ object UserMapper {
     fun toGson(student: StudentPresentation): StudentGson {
         return with(student) {
             StudentGson(
+                userId = userId,
                 email = email,
                 firstName = firstName,
                 lastName = lastName,

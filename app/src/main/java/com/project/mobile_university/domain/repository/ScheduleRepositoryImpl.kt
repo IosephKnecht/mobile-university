@@ -8,11 +8,9 @@ import com.project.mobile_university.data.presentation.Teacher as PresentationTe
 import com.project.mobile_university.data.presentation.CheckListRecord
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.data.presentation.UserInformation
 import com.project.mobile_university.domain.UniversityApi
-import com.project.mobile_university.domain.mappers.CheckListMapper
-import com.project.mobile_university.domain.mappers.LessonMapper
-import com.project.mobile_university.domain.mappers.ScheduleDayMapper
-import com.project.mobile_university.domain.mappers.UserMapper
+import com.project.mobile_university.domain.mappers.*
 import com.project.mobile_university.domain.shared.ApiService
 import com.project.mobile_university.domain.shared.DatabaseService
 import com.project.mobile_university.domain.shared.ScheduleRepository
@@ -142,13 +140,10 @@ class ScheduleRepositoryImpl(
             }
     }
 
-    override fun getUserInfo(userId: Long): Single<Any> {
+    override fun getUserInfo(userId: Long): Single<UserInformation> {
         return apiService.getUserInfo(userId)
-            .map { user ->
-                when (user) {
-                    is GsonTeacher -> UserMapper.toPresentation(user)
-                    is GsonStudent -> UserMapper.toPresentation(user)
-                }
+            .map { userInformation ->
+                UserInformationMapper.toPresentation(userInformation)
             }
     }
 

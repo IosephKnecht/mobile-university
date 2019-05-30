@@ -15,6 +15,7 @@ import com.project.mobile_university.domain.adapters.exception.ExceptionConverte
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
 import com.project.mobile_university.domain.adapters.gson.TeacherAdapter
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
+import com.project.mobile_university.domain.adapters.gson.UserInformationAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
 import com.project.mobile_university.domain.repository.LoginRepositoryImpl
 import com.project.mobile_university.domain.repository.LoginRepositoryMock
@@ -75,6 +76,7 @@ class BusinessModule {
         return GsonBuilder()
             .registerTypeAdapter(User::class.java, UserAdapter())
             .registerTypeAdapter(Teacher::class.java, TeacherAdapter())
+            .registerTypeAdapter(UserInformationAdapter::class.java, UserInformationAdapter())
             .create()
     }
 
