@@ -8,6 +8,7 @@
     <dimen name="medium_icon_height">58dp</dimen>
     <dimen name="small_icon_height">38dp</dimen>
 
+    <dimen name="extra_small_margin">4dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="medium_margin">14dp</dimen>
     <dimen name="large_margin">20dp</dimen>

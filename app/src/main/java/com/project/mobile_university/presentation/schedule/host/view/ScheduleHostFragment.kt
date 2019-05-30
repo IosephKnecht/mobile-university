@@ -18,6 +18,7 @@ import com.project.mobile_university.presentation.schedule.host.contract.Schedul
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.teachers.view.TeachersFragment
 import com.project.mobile_university.presentation.visible
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
@@ -28,7 +29,10 @@ import java.util.*
 
 class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed,
     NavigationView.OnNavigationItemSelectedListener,
-    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host, LessonInfoTeacherFragment.Host {
+    ScheduleSubgroupFragment.Host,
+    TeacherScheduleFragment.Host,
+    LessonInfoTeacherFragment.Host,
+    TeachersFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -87,7 +91,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                         calendar.calendarView.visibility = View.VISIBLE
                         bottom_navigation?.visible(true)
                     }
-                    ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN -> {
+                    ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN,
+                    ScheduleHostContract.CurrentScreenType.USER_INFO -> {
                         calendar.calendarView?.visible(false)
                         bottom_navigation?.visible(false)
                     }
@@ -105,6 +110,10 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
 
     override fun showCheckList(checkListExtId: Long) {
         presenter.onShowCheckList(checkListExtId)
+    }
+
+    override fun showUserInfo(userId: Long) {
+        presenter.onShowUserInfo(userId)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

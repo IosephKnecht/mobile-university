@@ -75,7 +75,7 @@ class PresentationModule {
     }
 
     @Provides
-    @PerFeatureLayerScope
+    @PerPresentationLayerScope
     fun provideUserInfoModule(): UserInfoContract.InputModule {
         return UserInfoInputModule()
     }

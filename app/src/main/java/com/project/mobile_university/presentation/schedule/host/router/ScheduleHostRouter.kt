@@ -20,6 +20,8 @@ import com.project.mobile_university.presentation.settings.contract.SettingsCont
 import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 import com.project.mobile_university.presentation.teachers.view.TeachersFragment
+import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
+import com.project.mobile_university.presentation.user_info.view.UserInfoFragment
 
 class ScheduleHostRouter(
     private val subgroupInputModule: ScheduleSubgroupContract.InputModule,
@@ -28,7 +30,8 @@ class ScheduleHostRouter(
     private val lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule,
     private val lessonInfoTeacherInputModule: LessonInfoTeacherContract.InputModule,
     private val checkListInputModule: CheckListContract.InputModule,
-    private val teachersInputModule: TeachersContract.InputModule
+    private val teachersInputModule: TeachersContract.InputModule,
+    private val userInfoInputModule: UserInfoContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -99,6 +102,14 @@ class ScheduleHostRouter(
         })
     }
 
+    override fun showUserInfo(androidComponent: AndroidComponent, userId: Long) {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(UserInfoFragment.TAG, {
+            userInfoInputModule.createFragment(userId)
+        }, {
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.USER_INFO)
+        })
+    }
+
     override fun onBackPressed(androidComponent: AndroidComponent) {
         val currentScreenType = androidComponent.fragmentManagerComponent?.run {
             popBackStackImmediate()
@@ -153,6 +164,7 @@ class ScheduleHostRouter(
             is LessonInfoStudentFragment -> ScheduleHostContract.CurrentScreenType.LESSON_INFO
             is CheckListFragment -> ScheduleHostContract.CurrentScreenType.CHECK_LIST
             is TeachersFragment -> ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN
+            is UserInfoFragment -> ScheduleHostContract.CurrentScreenType.USER_INFO
             else -> null
         }
     }

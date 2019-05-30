@@ -1,5 +1,9 @@
 package com.project.mobile_university.domain.mappers
 
+import com.project.mobile_university.data.presentation.AdditionalEnum
+import com.project.mobile_university.data.presentation.AdditionalModel
+import com.project.mobile_university.data.presentation.ContactsEnum
+import com.project.mobile_university.data.presentation.UserContactModel
 import com.project.mobile_university.data.presentation.UserInformation as UserInformationPresentation
 import com.project.mobile_university.data.gson.UserInformation as UserInformationGson
 
@@ -37,6 +41,23 @@ object UserInformationMapper {
                 }
             }
 
+            val additionalList = mutableListOf<AdditionalModel>().apply {
+                subgroupName?.let { add(AdditionalModel(AdditionalEnum.SUBGROUP, it)) }
+                cathedraName?.let { add(AdditionalModel(AdditionalEnum.CATHEDRA, it)) }
+            }
+
+            val userContacts = mutableListOf<UserContactModel>().apply {
+                email.takeIf { it.isNotBlank() }
+                    ?.let {
+                        add(
+                            UserContactModel(
+                                contactType = ContactsEnum.EMAIL,
+                                value = it
+                            )
+                        )
+                    }
+            }
+
             UserInformationPresentation(
                 isUndefined = isUndefined,
                 isStudent = isStudent,
@@ -44,10 +65,10 @@ object UserInformationMapper {
                 email = email,
                 firstName = firstName,
                 lastName = lastName,
-                subgroupName = subgroupName,
+                additionalList = additionalList,
                 subgroupId = subgroupId,
                 gender = gender,
-                cathedraName = cathedraName,
+                userContacts = userContacts,
                 cathedraId = cathedraId,
                 userId = userId
             )

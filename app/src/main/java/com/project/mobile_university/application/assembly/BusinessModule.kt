@@ -8,6 +8,7 @@ import com.project.mobile_university.BuildConfig
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.data.gson.Teacher
 import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.data.gson.UserInformation
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
@@ -76,7 +77,7 @@ class BusinessModule {
         return GsonBuilder()
             .registerTypeAdapter(User::class.java, UserAdapter())
             .registerTypeAdapter(Teacher::class.java, TeacherAdapter())
-            .registerTypeAdapter(UserInformationAdapter::class.java, UserInformationAdapter())
+            .registerTypeAdapter(UserInformation::class.java, UserInformationAdapter())
             .create()
     }
 

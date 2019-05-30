@@ -84,6 +84,10 @@ class ScheduleHostPresenter(
         router.showTeachersScreen(androidComponent!!)
     }
 
+    override fun onShowUserInfo(userId: Long) {
+        router.showUserInfo(androidComponent!!, userId)
+    }
+
     override fun backPressed() {
         router.onBackPressed(androidComponent!!)
     }

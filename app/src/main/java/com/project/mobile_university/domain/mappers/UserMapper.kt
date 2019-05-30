@@ -33,6 +33,7 @@ object UserMapper {
     fun toPresentation(teacher: TeacherGson): TeacherPresentation {
         return with(teacher) {
             TeacherPresentation(
+                id = userId,
                 email = email,
                 firstName = firstName,
                 lastName = lastName,

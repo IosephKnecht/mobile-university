@@ -15,6 +15,7 @@ import com.project.mobile_university.presentation.schedule.subgroup.contract.Sch
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
+import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
 import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
@@ -63,7 +64,8 @@ class ScheduleHostModule {
         lessonInfoStudentInputModule: LessonInfoStudentContract.InputModule,
         lessonInfoTeacherInputModule: LessonInfoTeacherContract.InputModule,
         checkListInputModule: CheckListContract.InputModule,
-        teachersInputModule: TeachersContract.InputModule
+        teachersInputModule: TeachersContract.InputModule,
+        userInfoInputModule: UserInfoContract.InputModule
     ): ScheduleHostContract.Router {
         return ScheduleHostRouter(
             subgroupInputModule,
@@ -72,7 +74,8 @@ class ScheduleHostModule {
             lessonInfoStudentInputModule,
             lessonInfoTeacherInputModule,
             checkListInputModule,
-            teachersInputModule
+            teachersInputModule,
+            userInfoInputModule
         )
     }
 }

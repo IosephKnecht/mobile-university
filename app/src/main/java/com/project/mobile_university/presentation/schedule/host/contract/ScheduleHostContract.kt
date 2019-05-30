@@ -19,7 +19,8 @@ interface ScheduleHostContract {
         SETTINGS,
         LESSON_INFO,
         CHECK_LIST,
-        TEACHERS_SCREEN
+        TEACHERS_SCREEN,
+        USER_INFO
     }
 
     interface ExternalObservableStorage {
@@ -41,6 +42,7 @@ interface ScheduleHostContract {
         fun onShowLessonInfo(lessonExtId: Long)
         fun onShowCheckList(checkListExtId: Long)
         fun onShowTeachersScreen()
+        fun onShowUserInfo(userId: Long)
         fun backPressed()
         fun restoreDefaultDate(): Calendar
     }
@@ -61,6 +63,7 @@ interface ScheduleHostContract {
         fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long)
         fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long)
         fun showTeachersScreen(androidComponent: AndroidComponent)
+        fun showUserInfo(androidComponent: AndroidComponent, userId: Long)
         fun onBackPressed(androidComponent: AndroidComponent)
     }
 

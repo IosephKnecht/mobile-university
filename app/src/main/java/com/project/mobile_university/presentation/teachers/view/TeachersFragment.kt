@@ -11,6 +11,7 @@ import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.ui.PlaceHolderView
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 import com.project.mobile_university.presentation.teachers.view.adapter.PagingScrollListener
@@ -26,6 +27,8 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
 
         fun createInstance() = TeachersFragment()
     }
+
+    interface Host : ScheduleHostListener
 
     private lateinit var diComponent: TeachersComponent
     private lateinit var adapter: TeachersAdapter
@@ -46,7 +49,9 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TeachersAdapter()
+        adapter = TeachersAdapter { userId ->
+            (parentFragment as? Host)?.showUserInfo(userId)
+        }
 
         refresh_layout?.setOnRefreshListener {
             presenter.refreshAllPage()
