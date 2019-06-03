@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.project.mobile_university.BR
+import com.project.mobile_university.R
+import com.project.mobile_university.data.presentation.LoadMoreViewState
 import java.util.*
 
 open class ViewModelAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -83,6 +85,14 @@ open class ViewModelAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     protected fun getViewModel(position: Int) = items[position]
+
+    open fun showLoadMoreProgress() {
+        if (items.lastOrNull() !is LoadMoreViewState) {
+            cell<LoadMoreViewState>(R.layout.item_load_more)
+            items.add(LoadMoreViewState)
+            notifyItemInserted(itemCount - 1)
+        }
+    }
 
     private fun getCellInfo(viewModel: Any): CellInfo {
         cellMap.entries

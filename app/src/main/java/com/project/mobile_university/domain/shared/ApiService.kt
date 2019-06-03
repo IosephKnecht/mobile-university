@@ -35,4 +35,8 @@ interface ApiService {
     fun putCheckList(checkListExtId: Long, records: JsonObject): Completable
 
     fun createCheckList(lessonId: Long): Completable
+
+    fun getTeachers(limit: Int, offset: Int): Single<BaseServerResponse<Teacher>>
+
+    fun getUserInfo(userId: Long): Single<UserInformation>
 }

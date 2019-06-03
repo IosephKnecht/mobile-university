@@ -112,6 +112,20 @@ class ApiServiceImpl(
         }
     }
 
+    override fun getTeachers(limit: Int, offset: Int): Single<BaseServerResponse<Teacher>> {
+        return Single.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString ->
+            universityApi.getTeachers(loginPassString, limit, offset)
+        }
+    }
+
+    override fun getUserInfo(userId: Long): Single<UserInformation> {
+        return Single.fromCallable {
+            sharedPreferenceService.getLoginPassString()
+        }.flatMap { loginPassString -> universityApi.getUserInfo(loginPassString, userId) }
+    }
+
     // TODO: will be transited on CalendarUtil
     private fun obtainDateRangeString(
         startWeek: Date,

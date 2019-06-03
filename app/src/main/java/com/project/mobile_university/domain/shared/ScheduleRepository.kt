@@ -1,9 +1,6 @@
 package com.project.mobile_university.domain.shared
 
-import com.project.mobile_university.data.presentation.CheckListRecord
-import com.project.mobile_university.data.presentation.Lesson
-import com.project.mobile_university.data.presentation.LessonStatus
-import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.data.presentation.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.util.*
@@ -18,4 +15,6 @@ interface ScheduleRepository {
     fun getCheckList(checkListExtId: Long): Single<List<CheckListRecord>>
     fun putCheckList(checkListExtId: Long, records: List<CheckListRecord>): Completable
     fun createCheckList(lessonExtId: Long): Single<Lesson>
+    fun getTeachers(limit: Int, offset: Int): Single<List<Teacher>>
+    fun getUserInfo(userId: Long): Single<UserInformation>
 }

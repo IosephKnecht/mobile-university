@@ -42,6 +42,7 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): User {
         val user = json as JsonObject
 
+        val userId = user.getAsJsonPrimitive("id").asLong
         val email = user.getAsJsonPrimitive("email").asString
         val firstName = user.getAsJsonPrimitive("first_name").asString
         val lastName = user.getAsJsonPrimitive("last_name").asString
@@ -53,12 +54,12 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
             isStudent -> {
                 val groupId = user.getAsJsonPrimitive("group_id").asLong
                 val subgroupId = user.getAsJsonPrimitive("subgroup_id").asLong
-                Student(email, firstName, lastName, isStudent, groupId, subgroupId)
+                Student(userId, email, firstName, lastName, isStudent, groupId, subgroupId)
             }
             isTeacher -> {
                 val cathedraId = user.getAsJsonPrimitive("cathedra_id").asLong
                 val teacherId = user.getAsJsonPrimitive("teacher_id").asLong
-                Teacher(email, firstName, lastName, teacherId, isTeacher, cathedraId)
+                Teacher(userId, email, firstName, lastName, teacherId, isTeacher, cathedraId)
             }
             else -> {
                 throw UnknownUserTypeException()
@@ -67,13 +68,16 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
     }
 
     private fun createDefaultParams(userGson: JsonObject, src: User) {
+        userGson.addProperty("id", src.userId)
         userGson.addProperty("email", src.email)
         userGson.addProperty("first_name", src.lastName)
         userGson.addProperty("last_name", src.lastName)
     }
 
-    private fun <T> JsonObject.getAsJsonPrimitiveSafe(key: String, defaultValue: T,
-                                                      convertBlock: (primitive: JsonPrimitive) -> T): T {
+    private fun <T> JsonObject.getAsJsonPrimitiveSafe(
+        key: String, defaultValue: T,
+        convertBlock: (primitive: JsonPrimitive) -> T
+    ): T {
         val primitive = getAsJsonPrimitive(key)
         return if (primitive == null)
             defaultValue

@@ -2,28 +2,27 @@ package com.project.mobile_university.domain.repository
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.project.mobile_university.data.gson.Student
-import com.project.mobile_university.data.gson.Teacher
+import com.project.mobile_university.data.gson.Student as GsonStudent
+import com.project.mobile_university.data.gson.Teacher as GsonTeacher
+import com.project.mobile_university.data.presentation.Teacher as PresentationTeacher
 import com.project.mobile_university.data.presentation.CheckListRecord
-import com.project.mobile_university.data.presentation.Lesson as PresentationLesson
-import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
-import com.project.mobile_university.data.gson.Lesson as GsonLesson
 import com.project.mobile_university.data.presentation.LessonStatus
 import com.project.mobile_university.data.presentation.ScheduleDay
+import com.project.mobile_university.data.presentation.UserInformation
 import com.project.mobile_university.domain.UniversityApi
-import com.project.mobile_university.domain.mappers.CheckListMapper
-import com.project.mobile_university.domain.mappers.LessonMapper
-import com.project.mobile_university.domain.mappers.ScheduleDayMapper
+import com.project.mobile_university.domain.mappers.*
 import com.project.mobile_university.domain.shared.ApiService
 import com.project.mobile_university.domain.shared.DatabaseService
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.domain.utils.CalendarUtil
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
+import com.project.mobile_university.data.gson.Lesson as GsonLesson
+import com.project.mobile_university.data.presentation.Lesson as PresentationLesson
+import com.project.mobile_university.data.room.entity.Lesson as SqlLesson
 
 class ScheduleRepositoryImpl(
     private val apiService: ApiService,
@@ -70,8 +69,8 @@ class ScheduleRepositoryImpl(
             .fromCallable { sharedPreferenceService.getUserInfo() }
             .flatMap { user ->
                 return@flatMap when (user) {
-                    is Student -> apiService.getScheduleOfWeekForSubgroup(monday, sunday, user.subgroupId)
-                    is Teacher -> apiService.getScheduleOfWeekForTeacher(monday, sunday, user.teacherId)
+                    is GsonStudent -> apiService.getScheduleOfWeekForSubgroup(monday, sunday, user.subgroupId)
+                    is GsonTeacher -> apiService.getScheduleOfWeekForTeacher(monday, sunday, user.teacherId)
                 }
             }
             .map { ScheduleDayMapper.gsonToPresentation(it.objectList!!) }
@@ -82,8 +81,8 @@ class ScheduleRepositoryImpl(
                 val datesRange = CalendarUtil.buildRangeBetweenDates(monday, sunday)
 
                 return@flatMap when (user) {
-                    is Student -> databaseService.getScheduleDayListForSubgroup(datesRange, user.subgroupId)
-                    is Teacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
+                    is GsonStudent -> databaseService.getScheduleDayListForSubgroup(datesRange, user.subgroupId)
+                    is GsonTeacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
                 }
             }
             .map { ScheduleDayMapper.sqlToPresentation(it) }
@@ -129,6 +128,23 @@ class ScheduleRepositoryImpl(
     override fun createCheckList(lessonExtId: Long): Single<PresentationLesson> {
         return apiService.createCheckList(lessonExtId)
             .andThen(syncLesson(lessonExtId))
+    }
+
+    override fun getTeachers(
+        limit: Int,
+        offset: Int
+    ): Single<List<PresentationTeacher>> {
+        return apiService.getTeachers(limit, offset)
+            .map { teachers ->
+                teachers.objectList!!.map { UserMapper.toPresentation(it) }
+            }
+    }
+
+    override fun getUserInfo(userId: Long): Single<UserInformation> {
+        return apiService.getUserInfo(userId)
+            .map { userInformation ->
+                UserInformationMapper.toPresentation(userInformation)
+            }
     }
 
     private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {

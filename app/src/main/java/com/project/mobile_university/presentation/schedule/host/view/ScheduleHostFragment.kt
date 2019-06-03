@@ -2,10 +2,12 @@ package com.project.mobile_university.presentation.schedule.host.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
+import com.google.android.material.navigation.NavigationView
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
@@ -16,13 +18,21 @@ import com.project.mobile_university.presentation.schedule.host.contract.Schedul
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.teachers.view.TeachersFragment
+import com.project.mobile_university.presentation.visible
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.activity_common_schedule.*
+import kotlinx.android.synthetic.main.activity_common_schedule.bottom_navigation
+import kotlinx.android.synthetic.main.fragment_schedule_host.*
 import java.util.*
 
 class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(), FragmentBackPressed,
-    ScheduleSubgroupFragment.Host, TeacherScheduleFragment.Host, LessonInfoTeacherFragment.Host {
+    NavigationView.OnNavigationItemSelectedListener,
+    ScheduleSubgroupFragment.Host,
+    TeacherScheduleFragment.Host,
+    LessonInfoTeacherFragment.Host,
+    TeachersFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -65,6 +75,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         initCalendar()
         initBottomNavigationPanel()
 
+        navigation_view?.setNavigationItemSelectedListener(this)
+
         with(presenter) {
             currentScreen.observe(viewLifecycleOwner, Observer { currentScreen ->
                 when (currentScreen) {
@@ -72,10 +84,17 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                     ScheduleHostContract.CurrentScreenType.LESSON_INFO,
                     ScheduleHostContract.CurrentScreenType.CHECK_LIST -> {
                         calendar.calendarView.visibility = View.GONE
+                        bottom_navigation?.visible(true)
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHER,
                     ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
                         calendar.calendarView.visibility = View.VISIBLE
+                        bottom_navigation?.visible(true)
+                    }
+                    ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN,
+                    ScheduleHostContract.CurrentScreenType.USER_INFO -> {
+                        calendar.calendarView?.visible(false)
+                        bottom_navigation?.visible(false)
                     }
                     else -> {
 
@@ -91,6 +110,25 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
 
     override fun showCheckList(checkListExtId: Long) {
         presenter.onShowCheckList(checkListExtId)
+    }
+
+    override fun showUserInfo(userId: Long) {
+        presenter.onShowUserInfo(userId)
+    }
+
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.teacher_schedule -> {
+                presenter.onShowTeachersScreen()
+            }
+            else -> {
+
+            }
+        }
+
+        drawer?.closeDrawers()
+
+        return false
     }
 
     override fun onBackPressed(): Boolean {

@@ -6,13 +6,17 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.project.mobile_university.BuildConfig
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
+import com.project.mobile_university.data.gson.Teacher
 import com.project.mobile_university.data.gson.User
+import com.project.mobile_university.data.gson.UserInformation
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.UniversityDatabase
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.adapters.exception.RetrofitExceptionMatcher
+import com.project.mobile_university.domain.adapters.gson.TeacherAdapter
 import com.project.mobile_university.domain.adapters.gson.UserAdapter
+import com.project.mobile_university.domain.adapters.gson.UserInformationAdapter
 import com.project.mobile_university.domain.interceptors.LogJsonInterceptor
 import com.project.mobile_university.domain.repository.LoginRepositoryImpl
 import com.project.mobile_university.domain.repository.LoginRepositoryMock
@@ -72,6 +76,8 @@ class BusinessModule {
     fun provideGson(): Gson {
         return GsonBuilder()
             .registerTypeAdapter(User::class.java, UserAdapter())
+            .registerTypeAdapter(Teacher::class.java, TeacherAdapter())
+            .registerTypeAdapter(UserInformation::class.java, UserInformationAdapter())
             .create()
     }
 

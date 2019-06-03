@@ -63,7 +63,7 @@
 
     <!--Navigation view-->
         <string name="navigation_profile">Profile (not implemented)</string>
-        <string name="navigation_teacher_schedule">Teacher\'s schedule (not implemented)</string>
+        <string name="navigation_teacher_schedule">Teacher\'s schedule</string>
         <string name="navigation_home_works">Home works (not implemented)</string>
         <string name="navigation_logout">Logout (not implemented)</string>
     <!--Navigation view-->
@@ -95,4 +95,16 @@
         <string name="not_come_with_approved_string">Not come with approved</string>
         <string name="has_come_string">Has come</string>
     <!--Check list status-->
+
+    <!--Teachers screen-->
+        <string name="teachers_empty_string">It seems there is no teacher in the list.</string>
+        <string name="teachers_empty_error_string">An error occurred while loading the list of teachers.</string>
+    <!--Teachers screen-->
+
+    <!--User information screen-->
+        <string name="user_info_blank_first_name">first name missing</string>
+        <string name="user_info_blank_last_name">last name missing</string>
+        <string name="user_info_contacts_description">User contacts</string>
+        <string name="user_info_additional_description">Additional info</string>
+    <!--User information screen-->
 </resources>
