@@ -5,12 +5,17 @@ import com.project.mobile_university.data.gson.Meta
 import com.project.mobile_university.data.gson.Student
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
+import com.project.mobile_university.data.presentation.UserInfo
 import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceService) : LoginRepository {
+
+    override val loginState = Observable.empty<Boolean>()
+
     override fun login(login: String, password: String): Single<User> {
         if (login != "test_student" && password != "test_student") {
             return Single.error(Throwable("Authorization error"))
@@ -57,5 +62,13 @@ class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceS
 
     override fun setServiceUrl(serviceUrl: String): Completable {
         return Completable.complete()
+    }
+
+    override fun logout(): Completable {
+        return Completable.complete()
+    }
+
+    override fun getUserInfo(): Single<UserInfo> {
+        return Single.error(Throwable())
     }
 }

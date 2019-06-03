@@ -71,9 +71,8 @@ class ScheduleRepositoryImpl(
                 return@flatMap when (user) {
                     is GsonStudent -> apiService.getScheduleOfWeekForSubgroup(monday, sunday, user.subgroupId)
                     is GsonTeacher -> apiService.getScheduleOfWeekForTeacher(monday, sunday, user.teacherId)
-                }
+                }.map { gsonDays -> gsonDays.objectList!!.map { gsonDay -> ScheduleDayMapper.toPresentation(gsonDay) } }
             }
-            .map { gsonDays -> gsonDays.objectList!!.map { gsonDay -> ScheduleDayMapper.toPresentation(gsonDay) } }
 
         val storedObservable = Single
             .fromCallable { sharedPreferenceService.getUserInfo() }
@@ -83,9 +82,8 @@ class ScheduleRepositoryImpl(
                 return@flatMap when (user) {
                     is GsonStudent -> databaseService.getScheduleDayListForSubgroup(datesRange, user.subgroupId)
                     is GsonTeacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
-                }
+                }.map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
             }
-            .map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
 
         return Single.zip(remoteObservable, storedObservable, diffFunction())
             .flatMap { (insertList, updatedDays) ->

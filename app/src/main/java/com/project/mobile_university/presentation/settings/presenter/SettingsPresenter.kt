@@ -42,7 +42,7 @@ class SettingsPresenter(
     }
 
     override fun clearCache() {
-        throwableObserver.setValue("The functionality is in development.")
+        throwableObserver.value = "The functionality is in development."
     }
 
     override fun exit() {
@@ -64,7 +64,7 @@ class SettingsPresenter(
         if (throwable != null) {
             throwableObserver.postValue(throwable.localizedMessage)
         } else {
-            successLogout.postValue(true)
+            successLogout.value = true
             router.goToAuthScreen(androidComponent!!)
         }
     }
