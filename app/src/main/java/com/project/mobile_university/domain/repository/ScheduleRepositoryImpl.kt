@@ -37,11 +37,11 @@ class ScheduleRepositoryImpl(
     ): Single<List<ScheduleDay>> {
         return apiService.getScheduleOfWeekForSubgroup(startDate, endDate, subgroupId)
             .flatMap {
-                databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
+                databaseService.saveScheduleDay(it.objectList!!.map { gsonDay -> ScheduleDayMapper.toDatabase(gsonDay) })
                     .flatMap {
                         val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
                         databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
-                    }.map { sqlDays -> ScheduleDayMapper.sqlToPresentation(sqlDays) }
+                    }.map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
             }
     }
 
@@ -53,13 +53,13 @@ class ScheduleRepositoryImpl(
     ): Single<List<ScheduleDay>> {
         return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
             .flatMap {
-                databaseService.saveScheduleDay(ScheduleDayMapper.gsonToSql(it.objectList!!))
+                databaseService.saveScheduleDay(it.objectList!!.map { sqlDay -> ScheduleDayMapper.toDatabase(sqlDay) })
             }
             .flatMap {
                 val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
                 databaseService.getScheduleDayListForTeacher(datesRange, teacherId)
             }
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
     }
 
     override fun syncSchedule(): Single<List<ScheduleDay>> {
@@ -73,7 +73,7 @@ class ScheduleRepositoryImpl(
                     is GsonTeacher -> apiService.getScheduleOfWeekForTeacher(monday, sunday, user.teacherId)
                 }
             }
-            .map { ScheduleDayMapper.gsonToPresentation(it.objectList!!) }
+            .map { gsonDays -> gsonDays.objectList!!.map { gsonDay -> ScheduleDayMapper.toPresentation(gsonDay) } }
 
         val storedObservable = Single
             .fromCallable { sharedPreferenceService.getUserInfo() }
@@ -85,11 +85,15 @@ class ScheduleRepositoryImpl(
                     is GsonTeacher -> databaseService.getScheduleDayListForTeacher(datesRange, user.teacherId)
                 }
             }
-            .map { ScheduleDayMapper.sqlToPresentation(it) }
+            .map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
 
         return Single.zip(remoteObservable, storedObservable, diffFunction())
             .flatMap { (insertList, updatedDays) ->
-                databaseService.saveScheduleDay(ScheduleDayMapper.presentationToSql(insertList))
+                databaseService.saveScheduleDay(insertList.map { presentationDay ->
+                    ScheduleDayMapper.toDatabase(
+                        presentationDay
+                    )
+                })
                     .map { updatedDays }
             }
     }

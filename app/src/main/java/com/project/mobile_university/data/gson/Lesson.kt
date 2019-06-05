@@ -12,7 +12,7 @@ data class Lesson(
     @SerializedName("lecture_hall")
     val lectureHallName: String,
     @SerializedName("lesson_type")
-    val lectureTypeName: String,
+    val lectureTypeName: Int,
     @SerializedName("lesson_start")
     val lessonStart: String,
     @SerializedName("lesson_end")

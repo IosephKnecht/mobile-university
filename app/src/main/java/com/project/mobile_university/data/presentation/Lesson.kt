@@ -6,7 +6,7 @@ data class Lesson(
     // FIXME: change on val when will be abandonment mock
     var currentDate: String,
     val lectureHallName: String,
-    val lectureTypeName: String,
+    val lessonType: LessonType?,
     val lessonStart: String,
     val lessonEnd: String,
     val subgroupList: List<Subgroup>,
@@ -22,7 +22,7 @@ data class Lesson(
         dayExtId = dayExtId,
         currentDate = currentDate,
         lectureHallName = lectureHallName,
-        lectureTypeName = lectureTypeName,
+        lessonType = lessonType,
         lessonStart = lessonStart,
         lessonEnd = lessonEnd,
         subgroupList = subgroupList,

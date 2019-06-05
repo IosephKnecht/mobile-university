@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.project.mobile_university.data.presentation.Lesson
 import com.project.mobile_university.data.presentation.LessonStatus
+import com.project.mobile_university.data.presentation.LessonType
 
 @BindingAdapter("schedule_enum")
 fun TextView.scheduleEnum(lesson: Lesson?) {
@@ -20,4 +21,11 @@ fun View.setLessonStatusBackground(lessonStatus: LessonStatus?) {
     val backgroundColor = lessonStatus?.itemColor ?: return
 
     setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
+}
+
+@BindingAdapter("lesson_type")
+fun TextView.setLessonType(lessonType: LessonType?) {
+    lessonType?.let {
+        text = context.getString(it.description)
+    }
 }

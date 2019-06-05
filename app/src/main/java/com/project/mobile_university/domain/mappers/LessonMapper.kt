@@ -1,5 +1,6 @@
 package com.project.mobile_university.domain.mappers
 
+import com.project.mobile_university.data.presentation.LessonType
 import com.project.mobile_university.data.gson.Lesson as LessonGson
 import com.project.mobile_university.data.presentation.Lesson as LessonPresentation
 import com.project.mobile_university.data.room.entity.Lesson as LessonSql
@@ -14,7 +15,7 @@ object LessonMapper {
                 lectureHallName = lectureHallName,
                 lessonStart = lessonStart,
                 lessonEnd = lessonEnd,
-                lectureTypeName = lectureTypeName,
+                lessonType = lectureTypeName,
                 subjectName = subjectName,
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
@@ -34,7 +35,7 @@ object LessonMapper {
                 lectureHallName = lectureHallName,
                 lessonStart = lessonStart,
                 lessonEnd = lessonEnd,
-                lectureTypeName = lectureTypeName,
+                lessonType = lessonType?.value,
                 subjectName = subjectName,
                 teacherName = teacherName,
                 teacherExtId = teacherExtId,
@@ -51,7 +52,7 @@ object LessonMapper {
                 extId = id,
                 teacherName = teacherName,
                 subjectName = subjectName,
-                lectureTypeName = lectureTypeName,
+                lessonType = toLessonType(lessonType),
                 lessonEnd = lessonEnd,
                 lessonStart = lessonStart,
                 lectureHallName = lectureHallName,
@@ -71,7 +72,7 @@ object LessonMapper {
                 extId = extId,
                 teacherName = teacherName,
                 subjectName = subjectName,
-                lectureTypeName = lectureTypeName,
+                lessonType = toLessonType(lectureTypeName),
                 lessonStart = lessonStart,
                 lessonEnd = lessonEnd,
                 currentDate = currentDate,
@@ -85,11 +86,6 @@ object LessonMapper {
         }
     }
 
-    fun gsonToDatabase(list: List<LessonGson>) = list.map { LessonMapper.toDatabase(it) }
+    private fun toLessonType(value: Int?) = LessonType.values().find { it.value == value }
 
-    fun presentationToDatabase(list: List<LessonPresentation>) = list.map { LessonMapper.toDatabase(it) }
-
-    fun sqlToPresentation(list: List<LessonSql>) = list.map { LessonMapper.toPresentation(it) }
-
-    fun gsonToPresentation(list: List<LessonGson>) = list.map { LessonMapper.toPresentation(it) }
 }
