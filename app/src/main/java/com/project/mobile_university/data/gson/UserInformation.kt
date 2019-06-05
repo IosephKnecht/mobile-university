@@ -33,7 +33,7 @@ sealed class UserInformation(
         @SerializedName("subgroup_name")
         val subgroupName: String,
         @SerializedName("gender")
-        val gender: Boolean
+        val gender: Int
     ) : UserInformation(id, firstName, lastName, email, userType)
 
     data class Teacher(
@@ -47,6 +47,6 @@ sealed class UserInformation(
         @SerializedName("cathedra_name")
         val cathedraName: String,
         @SerializedName("gender")
-        val gender: Boolean
+        val gender: Int
     ) : UserInformation(id, firstName, lastName, email, userType)
 }
