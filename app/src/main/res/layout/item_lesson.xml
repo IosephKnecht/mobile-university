@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_margin"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <View
             android:id="@+id/lesson_status_divider"
             lesson_status_background="@{lesson.lessonStatus}"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_lesson_status_height"
+            android:layout_width="@dimen/divider_lesson_status_height"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/lesson_status_ready_color"/>
 
@@ -35,9 +35,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="@{lesson.lectureTypeName}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:lesson_type="@{lesson.lessonType}"
+                app:visibleOrGone="@{lesson.lessonType != null}"
                 tools:text="lecture"/>
 
             <TextView

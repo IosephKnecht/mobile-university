@@ -7,10 +7,13 @@ import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.LessonStatus
+import com.project.mobile_university.data.presentation.LessonType
 
 @BindingAdapter("setLessonType")
-fun TextView.convertLessonType(lessonType: String?) {
-    text = context.format(R.string.lesson_type_string, lessonType)
+fun TextView.convertLessonType(lessonType: LessonType?) {
+    lessonType?.let {
+        text = context.format(R.string.lesson_type_string, context.getString(it.description))
+    }
 }
 
 @BindingAdapter("setSubject")

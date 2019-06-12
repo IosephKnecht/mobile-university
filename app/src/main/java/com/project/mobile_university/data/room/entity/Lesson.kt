@@ -23,7 +23,7 @@ data class Lesson(
     @ColumnInfo(name = "lecture_hall_name")
     var lectureHallName: String = "",
     @ColumnInfo(name = "lecture_type_name")
-    var lectureTypeName: String = "",
+    var lessonType: Int? = null,
     @ColumnInfo(name = "lesson_start")
     var lessonStart: String = "",
     @ColumnInfo(name = "lesson_end")

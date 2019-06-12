@@ -18,7 +18,7 @@ data class UserInformation(
     val email: String,
     val subgroupId: Long? = null,
     val cathedraId: Long? = null,
-    val gender: Boolean? = null,
+    val gender: Gender? = null,
     val additionalList: List<AdditionalModel>,
     val userContacts: List<UserContactModel>
 )

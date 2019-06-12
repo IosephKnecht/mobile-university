@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.mobile_university.R
+import com.project.mobile_university.data.presentation.Gender
 import com.project.mobile_university.data.presentation.UserInformation
 import com.project.mobile_university.presentation.common.ui.ViewModelAdapter
 
@@ -33,22 +34,22 @@ fun ImageView.setUserPhoto(userInformation: UserInformation?) {
         val icon = when {
             it.isStudent -> {
                 when (userInformation.gender) {
-                    true -> R.drawable.student_male
-                    false -> R.drawable.student_female
+                    Gender.MALE -> R.drawable.student_male
+                    Gender.FEMALE -> R.drawable.student_female
                     else -> null
                 }
             }
             it.isTeacher -> {
                 when (userInformation.gender) {
-                    true -> R.drawable.student_male
-                    false -> R.drawable.student_female
+                    Gender.MALE -> R.drawable.student_male
+                    Gender.FEMALE  -> R.drawable.student_female
                     else -> null
                 }
             }
             it.isUndefined -> {
                 when (userInformation.gender) {
-                    true -> R.drawable.student_male
-                    false -> R.drawable.student_female
+                    Gender.MALE -> R.drawable.student_male
+                    Gender.FEMALE -> R.drawable.student_female
                     else -> null
                 }
             }

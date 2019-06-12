@@ -1,9 +1,6 @@
 package com.project.mobile_university.data
 
-import com.project.mobile_university.data.presentation.Lesson
-import com.project.mobile_university.data.presentation.LessonStatus
-import com.project.mobile_university.data.presentation.ScheduleDay
-import com.project.mobile_university.data.presentation.Subgroup
+import com.project.mobile_university.data.presentation.*
 import com.project.mobile_university.domain.utils.CalendarUtil
 import java.util.*
 
@@ -16,8 +13,6 @@ object Beans {
     )
 
     private val lectureHallNames = listOf("E323", "E523", "E319")
-
-    private val lectureTypeNames = listOf("lecture", "practice")
 
     private val subjects = listOf(
         "Math", "Biology", "Data science"
@@ -61,7 +56,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[0].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -76,7 +71,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[1].second,
             subjectName = subjects[1],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
@@ -91,7 +86,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[1].second,
             subjectName = subjects[2],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
@@ -110,7 +105,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[3].second,
             subjectName = subjects[1],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -125,7 +120,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[0].second,
             subjectName = subjects[1],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
@@ -143,7 +138,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[2].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -158,7 +153,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[3].second,
             subjectName = subjects[2],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
@@ -173,7 +168,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[1].second,
             subjectName = subjects[1],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,
@@ -191,7 +186,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[0].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -209,7 +204,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[3].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -224,7 +219,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[1].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
@@ -242,7 +237,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[0].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[1],
             lessonStart = lessonTime[0].first,
             lessonEnd = lessonTime[0].second,
@@ -257,7 +252,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[2].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[2],
             lessonStart = lessonTime[1].first,
             lessonEnd = lessonTime[1].second,
@@ -272,7 +267,7 @@ object Beans {
             currentDate = dates[0],
             teacherName = teachers[3].second,
             subjectName = subjects[0],
-            lectureTypeName = lectureTypeNames[0],
+            lessonType = LessonType.LECTURE_LESSON,
             lectureHallName = lectureHallNames[0],
             lessonStart = lessonTime[2].first,
             lessonEnd = lessonTime[2].second,

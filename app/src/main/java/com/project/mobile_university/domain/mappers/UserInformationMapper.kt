@@ -1,9 +1,6 @@
 package com.project.mobile_university.domain.mappers
 
-import com.project.mobile_university.data.presentation.AdditionalEnum
-import com.project.mobile_university.data.presentation.AdditionalModel
-import com.project.mobile_university.data.presentation.ContactsEnum
-import com.project.mobile_university.data.presentation.UserContactModel
+import com.project.mobile_university.data.presentation.*
 import com.project.mobile_university.data.presentation.UserInformation as UserInformationPresentation
 import com.project.mobile_university.data.gson.UserInformation as UserInformationGson
 
@@ -21,7 +18,7 @@ object UserInformationMapper {
             var subgroupName: String? = null
             var cathedraId: Long? = null
             var cathedraName: String? = null
-            var gender: Boolean? = null
+            var gender: Int? = null
 
             when (userInformation) {
                 is UserInformationGson.Undefined -> {
@@ -67,11 +64,13 @@ object UserInformationMapper {
                 lastName = lastName,
                 additionalList = additionalList,
                 subgroupId = subgroupId,
-                gender = gender,
+                gender = toGender(gender),
                 userContacts = userContacts,
                 cathedraId = cathedraId,
                 userId = userId
             )
         }
     }
+
+    private fun toGender(value: Int?) = Gender.values().find { it.value == value }
 }

@@ -107,4 +107,11 @@
         <string name="user_info_contacts_description">User contacts</string>
         <string name="user_info_additional_description">Additional info</string>
     <!--User information screen-->
+
+    <!--Lesson type descriptions-->
+        <string name="lesson_type_lecture_description">Lecture</string>
+        <string name="lesson_type_practice_description">Practice</string>
+        <string name="lesson_seminar_description">Seminar</string>
+        <string name="lesson_type_colloquium">Colloquium</string>
+    <!--Lesson type descriptions-->
 </resources>

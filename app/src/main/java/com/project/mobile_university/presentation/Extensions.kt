@@ -1,6 +1,5 @@
 package com.project.mobile_university.presentation
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,10 +43,6 @@ fun createUniversityApi(
         .baseUrl(serviceUrl)
         .build()
         .create(UniversityApi::class.java)
-}
-
-fun View.visible(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
 fun <T> MutableLiveData<T>.renotify() {

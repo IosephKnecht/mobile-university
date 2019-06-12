@@ -11,7 +11,7 @@ object ScheduleDayMapper {
             ScheduleDaySql(
                 id = extId,
                 currentDate = currentDate,
-                lessons = LessonMapper.gsonToDatabase(lessons)
+                lessons = lessons.map { LessonMapper.toDatabase(it) }
             )
         }
     }
@@ -21,7 +21,7 @@ object ScheduleDayMapper {
             ScheduleDaySql(
                 id = extId,
                 currentDate = currentDate,
-                lessons = LessonMapper.presentationToDatabase(lessons)
+                lessons = lessons.map { LessonMapper.toDatabase(it) }
             )
         }
     }
@@ -31,7 +31,7 @@ object ScheduleDayMapper {
             ScheduleDayPresentation(
                 extId = scheduleDay!!.id,
                 currentDate = scheduleDay!!.currentDate,
-                lessons = LessonMapper.sqlToPresentation(lessons)
+                lessons = lessons.map { LessonMapper.toPresentation(it) }
             )
         }
     }
@@ -41,16 +41,8 @@ object ScheduleDayMapper {
             ScheduleDayPresentation(
                 extId = extId,
                 currentDate = currentDate,
-                lessons = LessonMapper.gsonToPresentation(lessons)
+                lessons = lessons.map { LessonMapper.toPresentation(it) }
             )
         }
     }
-
-    fun gsonToSql(list: List<ScheduleDayGson>) = list.map { ScheduleDayMapper.toDatabase(it) }
-
-    fun presentationToSql(list: List<ScheduleDayPresentation>) = list.map { ScheduleDayMapper.toDatabase(it) }
-
-    fun sqlToPresentation(list: List<ScheduleDayWithLessons>) = list.map { ScheduleDayMapper.toPresentation(it) }
-
-    fun gsonToPresentation(list: List<ScheduleDayGson>) = list.map { ScheduleDayMapper.toPresentation(it) }
 }

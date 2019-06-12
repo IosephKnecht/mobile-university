@@ -23,7 +23,7 @@ class UserInformationAdapter : JsonDeserializer<UserInformation>, JsonSerializer
 
             return when (userType) {
                 "teacher" -> {
-                    val gender = getAsJsonPrimitive("gender").asBoolean
+                    val gender = getAsJsonPrimitive("gender").asInt
                     val cathedraId = getAsJsonPrimitive("cathedra_id").asLong
                     val cathedraName = getAsJsonPrimitive("cathedra_name").asString
 
@@ -39,7 +39,7 @@ class UserInformationAdapter : JsonDeserializer<UserInformation>, JsonSerializer
                     )
                 }
                 "student" -> {
-                    val gender = getAsJsonPrimitive("gender").asBoolean
+                    val gender = getAsJsonPrimitive("gender").asInt
                     val subgroupId = getAsJsonPrimitive("subgroup_id").asLong
                     val subgroupName = getAsJsonPrimitive("subgroup_name").asString
 
