@@ -8,6 +8,8 @@ import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.SerialDisposable
 import java.util.*
 
 class TeacherScheduleInteractor(
@@ -18,6 +20,7 @@ class TeacherScheduleInteractor(
     TeacherScheduleContract.Interactor {
 
     private val compositeDisposable = CompositeDisposable()
+    private var syncScheduleDayListSubscription: Disposable? = null
 
     override fun getScheduleDayList(startWeekDay: Date, endWeekDay: Date, teacherId: Long) {
         val observable = scheduleRepository.syncScheduleDaysForTeacher(startWeekDay, endWeekDay, teacherId)
@@ -29,27 +32,25 @@ class TeacherScheduleInteractor(
                 daysMap
             }
 
-        compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
-            when {
-                result.data != null -> {
-                    listener!!.onObtainScheduleDayList(result.data, null)
-                }
-                result.throwable != null -> {
-                    listener!!.onObtainScheduleDayList(null, result.throwable)
-                }
-            }
-        })
+        syncScheduleDayListSubscription?.let { disposable ->
+            if (!disposable.isDisposed) disposable.dispose()
+        }
+
+        syncScheduleDayListSubscription = simpleDiscardResult(observable) { listener, result ->
+            listener?.onObtainScheduleDayList(result.data, result.throwable)
+        }
     }
 
     override fun updateLessonStatus(lessonId: Long, lessonStatus: LessonStatus) {
         val observable = scheduleRepository.updateLessonStatus(lessonId, lessonStatus)
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, throwable ->
-            listener!!.onUpdateLessonStatus(throwable)
+            listener?.onUpdateLessonStatus(throwable)
         })
     }
 
     override fun onDestroy() {
+        syncScheduleDayListSubscription?.dispose()
         compositeDisposable.clear()
         super.onDestroy()
     }

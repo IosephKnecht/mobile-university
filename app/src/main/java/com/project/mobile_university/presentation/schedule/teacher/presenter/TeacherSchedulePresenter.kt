@@ -52,6 +52,9 @@ class TeacherSchedulePresenter(
 
     override fun detachAndroidComponent() {
         hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
+
+        loadingState.value = false
+
         interactor.setListener(null)
         super.detachAndroidComponent()
     }
@@ -86,7 +89,7 @@ class TeacherSchedulePresenter(
 
     override fun cancelUpdateLessonStatus() {
         showWarningDialog.value = null
-        cancelWarningDialog.setValue(true)
+        cancelWarningDialog.value = true
     }
 
     override fun onObtainScheduleDayList(scheduleDayList: Map<String, ScheduleDay>?, throwable: Throwable?) {
@@ -97,7 +100,7 @@ class TeacherSchedulePresenter(
                 setLessonsForToday(scheduleDayList[currentDate]?.lessons)
             }
             throwable != null -> {
-                errorObserver.setValue(throwable.localizedMessage)
+                errorObserver.value = throwable.localizedMessage
                 setLessonsForToday(listOf())
             }
         }
@@ -113,7 +116,7 @@ class TeacherSchedulePresenter(
         }
 
         showWarningDialog.value = null
-        cancelWarningDialog.setValue(true)
+        cancelWarningDialog.value = true
         loadingState.value = false
     }
 

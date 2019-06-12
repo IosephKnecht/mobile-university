@@ -11,7 +11,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceService) : LoginRepository {
-    override fun login(login: String, password: String): Single<BaseServerResponse<User>> {
+    override fun login(login: String, password: String): Single<User> {
         if (login != "test_student" && password != "test_student") {
             return Single.error(Throwable("Authorization error"))
         }
@@ -36,8 +36,11 @@ class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceS
             )
         )
 
-        return Single.fromCallable { sharedPreferenceService.saveUserInfo(fakeResponse.objectList!![0]) }
-            .map { fakeResponse }
+        return Single.fromCallable {
+            val user = fakeResponse.objectList!![0]
+            sharedPreferenceService.saveUserInfo(user)
+            return@fromCallable user
+        }
     }
 
     override fun saveServerConfig(serverConfig: ServerConfig): Single<ServerConfig> {
@@ -48,8 +51,8 @@ class LoginRepositoryMock(private val sharedPreferenceService: SharedPreferenceS
         return Single.just(ServerConfig())
     }
 
-    override fun saveLoginPass(login: String, pass: String): Single<Unit> {
-        return Single.just(Unit)
+    override fun saveLoginPass(login: String, pass: String): Completable {
+        return Completable.complete()
     }
 
     override fun setServiceUrl(serviceUrl: String): Completable {

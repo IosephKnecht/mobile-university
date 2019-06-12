@@ -46,6 +46,9 @@ class ScheduleSubgroupPresenter(
 
     override fun detachAndroidComponent() {
         hostObservableStorage.dateChange.removeObserver(dateChangeObserver)
+
+        loadingState.value = false
+
         interactor.setListener(null)
         super.detachAndroidComponent()
     }
@@ -63,11 +66,11 @@ class ScheduleSubgroupPresenter(
     override fun onObtainLessonList(lessonList: Map<String, ScheduleDay>?, throwable: Throwable?) {
         when {
             throwable != null -> {
-                errorObserver.postValue(throwable.localizedMessage)
+                errorObserver.value = throwable.localizedMessage
             }
             lessonList != null -> {
                 this.daysMap = lessonList
-                this.lessonsObserver.value = lessonList[currentDate]?.lessons ?: listOf()
+                setLessonToDay(lessonList[currentDate]?.lessons)
             }
         }
     }

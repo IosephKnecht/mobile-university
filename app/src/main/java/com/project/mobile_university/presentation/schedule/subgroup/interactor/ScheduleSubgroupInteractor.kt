@@ -6,6 +6,8 @@ import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.SerialDisposable
 import java.util.*
 
 class ScheduleSubgroupInteractor(
@@ -14,7 +16,7 @@ class ScheduleSubgroupInteractor(
 ) : InteractorWithErrorHandler<ScheduleSubgroupContract.Listener>(errorHandler),
     ScheduleSubgroupContract.Interactor {
 
-    private val compositeDisposable = CompositeDisposable()
+    private var syncScheduleDayDisposable: Disposable? = null
 
     override fun getLessonList(startWeek: Date, endWeek: Date, subgroupId: Long) {
 
@@ -27,24 +29,17 @@ class ScheduleSubgroupInteractor(
                 dayWithDate
             }
 
-        compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
-            with(result) {
-                when {
-                    throwable != null -> {
-                        listener?.onObtainLessonList(null, throwable)
-                    }
-                    data != null -> {
-                        listener?.onObtainLessonList(data, null)
-                    }
-                    else -> {
-                    }
-                }
-            }
-        })
+        syncScheduleDayDisposable?.let { disposable ->
+            if (!disposable.isDisposed) disposable.dispose()
+        }
+
+        syncScheduleDayDisposable = simpleDiscardResult(observable) { listener, result ->
+            listener?.onObtainLessonList(result.data, result.throwable)
+        }
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear()
+        syncScheduleDayDisposable?.dispose()
         super.onDestroy()
     }
 }

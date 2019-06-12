@@ -16,7 +16,7 @@ class CheckListInteractor(private val scheduleRepository: ScheduleRepository) :
         val observable = scheduleRepository.getCheckList(checkListExtId)
 
         compositeDisposable.add(discardResult(observable) { listener, result ->
-            listener!!.onObtainCheckList(result.data, result.throwable)
+            listener?.onObtainCheckList(result.data, result.throwable)
         })
     }
 
@@ -24,7 +24,7 @@ class CheckListInteractor(private val scheduleRepository: ScheduleRepository) :
         val observable = scheduleRepository.putCheckList(checkListExtId, records)
 
         compositeDisposable.add(discardResult(observable) { listener, throwable ->
-            listener!!.onSyncCheckList(throwable)
+            listener?.onSyncCheckList(throwable)
         })
     }
 
