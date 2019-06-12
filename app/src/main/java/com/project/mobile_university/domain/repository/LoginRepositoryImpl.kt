@@ -1,6 +1,5 @@
 package com.project.mobile_university.domain.repository
 
-import com.project.mobile_university.data.gson.BaseServerResponse
 import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.data.presentation.ServerConfig
 import com.project.mobile_university.domain.shared.ApiService
@@ -14,12 +13,12 @@ class LoginRepositoryImpl(
     private val apiService: ApiService,
     private val sharedPreferenceService: SharedPreferenceService
 ) : LoginRepository {
-    override fun login(login: String, password: String): Single<BaseServerResponse<User>> {
+    override fun login(login: String, password: String): Single<User> {
         return apiService.login(login, password)
             .map { serverResponse ->
-                serverResponse.objectList?.takeIf { it.isNotEmpty() }
-                    ?.let { sharedPreferenceService.saveUserInfo(it[0]) }
-                serverResponse
+                val user = serverResponse.objectList!![0]
+                sharedPreferenceService.saveUserInfo(user)
+                return@map user
             }
     }
 
@@ -37,8 +36,8 @@ class LoginRepositoryImpl(
         }
     }
 
-    override fun saveLoginPass(login: String, pass: String): Single<Unit> {
-        return Single.fromCallable {
+    override fun saveLoginPass(login: String, pass: String): Completable {
+        return Completable.fromCallable {
             sharedPreferenceService.saveLoginPassString(AuthUtil.convertToBase64(login, pass))
         }
     }

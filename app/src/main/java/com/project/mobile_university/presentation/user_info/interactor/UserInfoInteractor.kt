@@ -13,7 +13,7 @@ class UserInfoInteractor(private val scheduleRepository: ScheduleRepository) :
 
     override fun getUserInfo(userId: Long) {
         compositeDisposable.add(discardResult(scheduleRepository.getUserInfo(userId)) { listener, result ->
-            listener!!.onObtainUserInfo(result.data, result.throwable)
+            listener?.onObtainUserInfo(result.data, result.throwable)
         })
     }
 

@@ -13,14 +13,14 @@ class LessonInfoStudentInteractor(private val scheduleRepository: ScheduleReposi
 
     override fun getLessonFromCache(lessonExtId: Long) {
         compositeDisposable.add(discardResult(scheduleRepository.getLesson(lessonExtId)) { listener, result ->
-            listener!!.onObtainLesson(result.data, result.throwable)
+            listener?.onObtainLesson(result.data, result.throwable)
         })
     }
 
     override fun getLessonFromOnline(lessonExtId: Long) {
         compositeDisposable.add(
             discardResult(scheduleRepository.syncLesson(lessonExtId)) { listener, result ->
-                listener!!.onObtainLesson(result.data, result.throwable)
+                listener?.onObtainLesson(result.data, result.throwable)
             }
         )
     }

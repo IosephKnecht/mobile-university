@@ -59,7 +59,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
                 length > 3
             } ?: false
 
-            enterEnabled.postValue(
+            enterEnabled.value = (
                 serviceCondition &&
                     loginCondition &&
                     passwordCondition
@@ -77,7 +77,7 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
     }
 
     override fun tryLogin() {
-        state.postValue(LoginContract.State.PROCESSING_AUTHORIZE)
+        state.value = LoginContract.State.PROCESSING_AUTHORIZE
         interactor.login(login.value!!, password.value!!)
     }
 
@@ -92,11 +92,11 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
     override fun onLogin(user: User?, throwable: Throwable?) {
         when {
             throwable != null -> {
-                errorObserver.postValue(throwable.localizedMessage)
-                state.postValue(LoginContract.State.ERROR_AUTHORIZE)
+                errorObserver.value = (throwable.localizedMessage)
+                state.value = LoginContract.State.ERROR_AUTHORIZE
             }
             user != null -> {
-                state.postValue(LoginContract.State.SUCCESS_AUTHORIZE)
+                state.value = (LoginContract.State.SUCCESS_AUTHORIZE)
                 interactor.saveLoginPassString(login.value!!, password.value!!)
 
                 when (user) {
@@ -108,16 +108,16 @@ class LoginPresenter(private val interactor: LoginContract.Interactor,
                     }
                 }
             }
-            else -> state.postValue(LoginContract.State.NOT_AUTHORIZE)
+            else -> state.value = LoginContract.State.NOT_AUTHORIZE
         }
     }
 
     override fun onObtainServerConfig(serverConfig: ServerConfig?, throwable: Throwable?) {
         if (throwable == null && serverConfig != null) {
             val serverConfigString = serverConfig.toString()
-            this.serviceUrl.postValue(serverConfigString)
+            this.serviceUrl.value = serverConfigString
             interactor.setServiceUrl(serverConfigString)
         }
-        state.postValue(LoginContract.State.NOT_AUTHORIZE)
+        state.value = LoginContract.State.NOT_AUTHORIZE
     }
 }

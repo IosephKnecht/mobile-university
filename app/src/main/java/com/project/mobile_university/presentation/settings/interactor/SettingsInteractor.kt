@@ -19,7 +19,7 @@ class SettingsInteractor(private val sharedPreferenceService: SharedPreferenceSe
             .map { UserMapper.toPresentation(it) }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
-            listener!!.onObtainUserInfo(result.data, result.throwable)
+            listener?.onObtainUserInfo(result.data, result.throwable)
         })
     }
 
@@ -28,7 +28,7 @@ class SettingsInteractor(private val sharedPreferenceService: SharedPreferenceSe
             .map { sharedPreferenceService.removeUserInfo() }
 
         compositeDisposable.add(simpleDiscardResult(observable) { listener, result ->
-            listener!!.onExit(result.throwable)
+            listener?.onExit(result.throwable)
         })
     }
 

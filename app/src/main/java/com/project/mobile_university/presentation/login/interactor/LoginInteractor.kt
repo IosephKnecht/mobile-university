@@ -13,39 +13,33 @@ class LoginInteractor(
 
     override fun login(login: String, password: String) {
         simpleDiscardResult(loginRepository.login(login, password)) { listener, result ->
-            result.apply {
-                when {
-                    data != null -> {
-                        if (data!!.objectList != null && data!!.objectList!!.isNotEmpty()) {
-                            val user = data!!.objectList!![0]
-                            listener!!.onLogin(user, null)
-                        }
-                    }
-                    throwable != null -> listener!!.onLogin(null, throwable)
-                }
-            }
+            listener?.onLogin(result.data, result.throwable)
         }
     }
 
     override fun setServiceUrl(serviceUrl: String) {
-        simpleDiscardResult(loginRepository.setServiceUrl(serviceUrl)){ _, _->}
+        discardResult(loginRepository.setServiceUrl(serviceUrl)) { _, throwable ->
+            throwable?.printStackTrace()
+        }
     }
 
     override fun saveServerConfig(serverConfig: ServerConfig) {
-        simpleDiscardResult(loginRepository.saveServerConfig(serverConfig)) { listener, result ->
+        discardResult(loginRepository.saveServerConfig(serverConfig)) { listener, result ->
             result.apply {
-                listener!!.onObtainServerConfig(data, throwable)
+                listener?.onObtainServerConfig(data, throwable)
             }
         }
     }
 
     override fun getServerConfig() {
         simpleDiscardResult(loginRepository.getServerConfig()) { listener, result ->
-            listener!!.onObtainServerConfig(result.data, result.throwable)
+            listener?.onObtainServerConfig(result.data, result.throwable)
         }
     }
 
     override fun saveLoginPassString(login: String, pass: String) {
-        simpleDiscardResult(loginRepository.saveLoginPass(login, pass)) { _, _ -> }
+        discardResult(loginRepository.saveLoginPass(login, pass)) { _, throwable ->
+            throwable?.printStackTrace()
+        }
     }
 }
