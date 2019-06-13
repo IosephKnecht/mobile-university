@@ -30,7 +30,7 @@ android {
             buildConfigField "boolean", "MOCK_SETTINGS", "false"
         }
         debug {
-            buildConfigField "boolean", "MOCK_SETTINGS", "false"
+            buildConfigField "boolean", "MOCK_SETTINGS", "true"
         }
     }
     dataBinding {
