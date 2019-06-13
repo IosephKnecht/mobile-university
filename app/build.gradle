@@ -22,6 +22,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +34,11 @@ android {
             buildConfigField "boolean", "MOCK_SETTINGS", "true"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     dataBinding {
         enabled true
     }
