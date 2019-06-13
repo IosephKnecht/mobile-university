@@ -22,6 +22,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,8 +34,24 @@ android {
             buildConfigField "boolean", "MOCK_SETTINGS", "true"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     dataBinding {
         enabled true
+    }
+}
+
+subprojects {
+    afterEvaluate {
+        if (getPlugins().hasPlugin('android') ||
+                getPlugins().hasPlugin('android-library')) {
+            configure(android.lintOptions) {
+                tasks.lint.enabled = false
+            }
+        }
     }
 }
 
