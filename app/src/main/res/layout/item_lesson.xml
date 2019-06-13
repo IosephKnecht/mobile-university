@@ -78,6 +78,7 @@
                     android:layout_alignBaseline="@id/subject_desc"
                     android:layout_marginStart="@dimen/divider_desc"
                     android:layout_toEndOf="@id/subject_desc"
+                    android:singleLine="true"
                     android:text="@{lesson.subjectName}"
                     tools:text="Math"/>
 
@@ -99,6 +100,7 @@
                     android:layout_alignBaseline="@id/teacher_desc"
                     android:layout_marginStart="@dimen/divider_desc"
                     android:layout_toEndOf="@+id/teacher_desc"
+                    android:singleLine="true"
                     android:text="@{lesson.teacherName}"
                     tools:text="teacher name"/>
 
@@ -119,6 +121,7 @@
                     android:layout_alignBaseline="@id/lecture_hall_desc"
                     android:layout_marginStart="@dimen/divider_desc"
                     android:layout_toEndOf="@id/lecture_hall_desc"
+                    android:singleLine="true"
                     android:text="@{lesson.lectureHallName}"
                     tools:text="E323"/>
             </RelativeLayout>

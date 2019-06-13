@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.project.mobile_university.presentation.login.contract.LoginContract.State" />
+        <import type="com.project.mobile_university.presentation.login.contract.LoginContract.State"/>
 
         <variable
             name="viewModel"
-            type="com.project.mobile_university.presentation.login.contract.LoginContract.ObservableStorage" />
+            type="com.project.mobile_university.presentation.login.contract.LoginContract.ObservableStorage"/>
     </data>
 
     <ScrollView
@@ -35,18 +35,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@{viewModel.serviceUrl}"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:layout_toStartOf="@+id/btn_choose"
+                    android:singleLine="true"
+                    android:text="@{viewModel.serviceUrl}"
                     tools:text="http://10.0.2.2:8000"/>
 
                 <Button
                     android:id="@+id/btn_choose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/login_other_button"
+                    android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_other_selector"
-                    android:layout_alignParentEnd="true"/>
+                    android:text="@string/login_other_button"/>
 
             </RelativeLayout>
 
@@ -60,7 +63,7 @@
                 android:gravity="center"
                 android:hint="@string/login_hint"
                 android:inputType="text"
-                app:layout_constraintTop_toBottomOf="@+id/server_url" />
+                app:layout_constraintTop_toBottomOf="@+id/server_url"/>
 
             <EditText
                 android:id="@+id/password"
@@ -72,7 +75,7 @@
                 android:gravity="center"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@+id/login" />
+                app:layout_constraintTop_toBottomOf="@+id/login"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -91,14 +94,14 @@
                     android:text="@string/login_button"
                     android:textSize="@dimen/small_text_size"
                     android:visibility="@{!viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
-                    tools:enabled="false" />
+                    tools:enabled="false"/>
 
                 <ProgressBar
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:visibility="@{viewModel.state.equals(State.PROCESSING_AUTHORIZE)}"
-                    tools:visibility="gone" />
+                    tools:visibility="gone"/>
             </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

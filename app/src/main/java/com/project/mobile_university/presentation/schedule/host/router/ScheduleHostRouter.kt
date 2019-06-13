@@ -131,6 +131,7 @@ class ScheduleHostRouter(
             val newInstanceFragment = block.invoke()
 
             beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
                 .addToBackStack(tag)
                 .replace(R.id.schedule_fragment_container, newInstanceFragment, tag)
                 .commit()

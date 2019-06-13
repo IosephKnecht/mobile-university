@@ -41,8 +41,10 @@
         <Spinner
             android:id="@+id/check_list_status"
             lesson_status_adapter="@{viewState}"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/extra_small_margin"
+            android:layout_marginEnd="@dimen/extra_small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline"
