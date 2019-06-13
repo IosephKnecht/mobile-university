@@ -46,9 +46,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-wrapper {
-    gradleVersion = '5.4.1'
-    distributionUrl = distributionUrl.replace("bin", "all")
-}
-
