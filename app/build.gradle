@@ -31,7 +31,7 @@ android {
             buildConfigField "boolean", "MOCK_SETTINGS", "false"
         }
         debug {
-            buildConfigField "boolean", "MOCK_SETTINGS", "true"
+            buildConfigField "boolean", "MOCK_SETTINGS", "false"
         }
     }
 
