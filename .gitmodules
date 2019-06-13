@@ -1,3 +1,4 @@
 [submodule "dependencies/viper"]
 	path = dependencies/viper
 	url = https://github.com/IosephKnecht/viper.git
+	branch = dev/feature/migrate_androidx
