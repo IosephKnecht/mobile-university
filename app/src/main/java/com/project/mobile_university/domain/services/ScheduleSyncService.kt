@@ -12,9 +12,9 @@ import androidx.core.content.ContextCompat
 import com.project.mobile_university.BuildConfig
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.project.mobile_university.data.presentation.ScheduleDay
+import android.app.NotificationManager
+
 
 class ScheduleSyncService : IntentService(TAG) {
     companion object {
@@ -22,6 +22,7 @@ class ScheduleSyncService : IntentService(TAG) {
         private const val FOREGROUND_ID = 79128
         private const val notificationChannelId = BuildConfig.APPLICATION_ID
         private const val notificationChannelName = "schedule_sync_service"
+        private const val NOTIFICATION_DIFFERENCE_ID = 16513
 
         fun startService(context: Context) {
             ContextCompat.startForegroundService(context, createIntent(context))
@@ -36,7 +37,7 @@ class ScheduleSyncService : IntentService(TAG) {
     }
 
     // 10 minutes
-    private val SYNC_INTERVAL = 60 * 1000
+    private val SYNC_INTERVAL = 60 * 1000 * 10
 
     override fun onCreate() {
         startForeground()
@@ -52,7 +53,7 @@ class ScheduleSyncService : IntentService(TAG) {
                 .blockingGet()
 
             if (difference.isNotEmpty()) {
-                // TODO: send notification
+                notifyOfDifference(difference)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -88,10 +89,11 @@ class ScheduleSyncService : IntentService(TAG) {
         }
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+
         val notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_schedule)
             .setPriority(PRIORITY_MIN)
-            .setCategory(Notification.CATEGORY_SERVICE)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
 
         startForeground(FOREGROUND_ID, notification)
@@ -99,14 +101,47 @@ class ScheduleSyncService : IntentService(TAG) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
-        val chan = NotificationChannel(
+        val channel = NotificationChannel(
             channelId,
             channelName, NotificationManager.IMPORTANCE_NONE
         )
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        channel.lightColor = Color.BLUE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
+        service.createNotificationChannel(channel)
         return channelId
+    }
+
+    private fun notifyOfDifference(scheduleDays: List<ScheduleDay>) {
+        val channelId = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                createNotificationChannel(notificationChannelId, notificationChannelName)
+            }
+            else -> {
+                ""
+            }
+        }
+
+        val differenceString = scheduleDays.joinToString { scheduleDay -> "${scheduleDay.currentDate} " }
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setOngoing(false)
+            .setSmallIcon(R.drawable.ic_schedule)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setContentTitle(getString(R.string.schedule_sync_service_title_difference))
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    getString(
+                        R.string.schedule_sync_service_content_difference,
+                        differenceString
+                    )
+                )
+            )
+            .build()
+
+        (getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager)?.apply {
+            cancel(NOTIFICATION_DIFFERENCE_ID)
+            notify(NOTIFICATION_DIFFERENCE_ID, notification)
+        }
     }
 }

@@ -85,14 +85,18 @@ class ScheduleRepositoryImpl(
                 }.map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
             }
 
-        return Single.zip(remoteObservable, storedObservable, diffFunction())
-            .flatMap { (insertList, updatedDays) ->
-                databaseService.saveScheduleDay(insertList.map { presentationDay ->
+        return Single.zip(remoteObservable, storedObservable,
+            BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> { remoteList, storedList ->
+                val difference = remoteList.minus(storedList)
+
+                Pair(difference, remoteList)
+            })
+            .flatMap { (difference, remoteList) ->
+                databaseService.saveScheduleDay(remoteList.map { presentationDay ->
                     ScheduleDayMapper.toDatabase(
                         presentationDay
                     )
-                })
-                    .map { updatedDays }
+                }).map { difference }
             }
     }
 
@@ -164,30 +168,6 @@ class ScheduleRepositoryImpl(
             offset
         ).map { scheduleDaysGson ->
             scheduleDaysGson.objectList?.map { ScheduleDayMapper.toPresentation(it) }
-        }
-    }
-
-    private fun diffFunction(): BiFunction<List<ScheduleDay>, List<ScheduleDay>, Pair<List<ScheduleDay>, List<ScheduleDay>>> {
-        return BiFunction { remoteList, storedList ->
-            val insertedDays = remoteList.minus(storedList).toMutableList()
-            val commonElements = remoteList.intersect(storedList)
-
-            val updatedDays = mutableListOf<ScheduleDay>()
-
-            val insertIterator = insertedDays.iterator()
-
-            commonElements.forEach { commonElement ->
-                while (insertIterator.hasNext()) {
-                    val insertElement = insertIterator.next()
-
-                    if (insertElement.extId == commonElement.extId) {
-                        updatedDays.add(insertElement)
-                        insertIterator.remove()
-                        break
-                    }
-                }
-            }
-            return@BiFunction Pair(remoteList, updatedDays)
         }
     }
 
