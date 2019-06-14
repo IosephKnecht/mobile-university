@@ -14,6 +14,7 @@ import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.data.presentation.ScheduleDay
 import android.app.NotificationManager
+import com.project.mobile_university.presentation.MainActivity
 
 
 class ScheduleSyncService : IntentService(TAG) {
@@ -23,6 +24,7 @@ class ScheduleSyncService : IntentService(TAG) {
         private const val notificationChannelId = BuildConfig.APPLICATION_ID
         private const val notificationChannelName = "schedule_sync_service"
         private const val NOTIFICATION_DIFFERENCE_ID = 16513
+        private const val NOTIFICATION_DIFFERENCE_MAIN_ACTIVITY_REQUEST_CODE = 5053
 
         fun startService(context: Context) {
             ContextCompat.startForegroundService(context, createIntent(context))
@@ -52,8 +54,12 @@ class ScheduleSyncService : IntentService(TAG) {
                 .syncSchedule()
                 .blockingGet()
 
+            val notificationManager = (getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager)
+
+            notificationManager?.cancel(NOTIFICATION_DIFFERENCE_ID)
+
             if (difference.isNotEmpty()) {
-                notifyOfDifference(difference)
+                notificationManager?.let { notifyOfDifference(it, difference) }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -79,21 +85,17 @@ class ScheduleSyncService : IntentService(TAG) {
     }
 
     private fun startForeground() {
-        val channelId = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-                createNotificationChannel(notificationChannelId, notificationChannelName)
-            }
-            else -> {
-                ""
-            }
-        }
+        val channelId = buildNotificationChannelId()
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
 
         val notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_schedule)
+            .setColor(ContextCompat.getColor(this, R.color.primary_dark))
             .setPriority(PRIORITY_MIN)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setContentTitle(getString(R.string.schedule_sync_foreground_title))
+            .setProgress(100, 0, true)
             .build()
 
         startForeground(FOREGROUND_ID, notification)
@@ -112,8 +114,8 @@ class ScheduleSyncService : IntentService(TAG) {
         return channelId
     }
 
-    private fun notifyOfDifference(scheduleDays: List<ScheduleDay>) {
-        val channelId = when {
+    private fun buildNotificationChannelId(): String {
+        return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
                 createNotificationChannel(notificationChannelId, notificationChannelName)
             }
@@ -121,14 +123,31 @@ class ScheduleSyncService : IntentService(TAG) {
                 ""
             }
         }
+    }
+
+    private fun notifyOfDifference(notificationManager: NotificationManager, scheduleDays: List<ScheduleDay>) {
+        val channelId = buildNotificationChannelId()
 
         val differenceString = scheduleDays.joinToString { scheduleDay -> "${scheduleDay.currentDate} " }
 
         val notification = NotificationCompat.Builder(this, channelId)
             .setOngoing(false)
             .setSmallIcon(R.drawable.ic_schedule)
+            .setColor(ContextCompat.getColor(this, R.color.accent))
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setContentTitle(getString(R.string.schedule_sync_service_title_difference))
+            .setAutoCancel(true)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    this,
+                    NOTIFICATION_DIFFERENCE_MAIN_ACTIVITY_REQUEST_CODE,
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     getString(
@@ -139,9 +158,6 @@ class ScheduleSyncService : IntentService(TAG) {
             )
             .build()
 
-        (getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager)?.apply {
-            cancel(NOTIFICATION_DIFFERENCE_ID)
-            notify(NOTIFICATION_DIFFERENCE_ID, notification)
-        }
+        notificationManager.notify(NOTIFICATION_DIFFERENCE_ID, notification)
     }
 }

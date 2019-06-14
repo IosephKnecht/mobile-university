@@ -121,6 +121,7 @@
     <!--Schedule range screen-->
     
     <!--ScheduleSyncService-->
+        <string name="schedule_sync_foreground_title">Schedule synchronization</string>
         <string name="schedule_sync_service_title_difference">Schedule changes detected</string>
         <string name="schedule_sync_service_content_difference">For the next days there are changes in the schedule: %s</string>
     <!--ScheduleSyncService-->
