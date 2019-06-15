@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ScheduleDay
-import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
+import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
 import com.project.mobile_university.presentation.schedule_range.view.adapter.ScheduleDayViewState
@@ -45,6 +45,9 @@ class ScheduleRangePresenter(
     override val errorMessage = SingleLiveData<Throwable>()
     override val showData = MutableLiveData<List<ScheduleDayViewState>>()
 
+    override val editLessonInfo = SingleLiveData<Long>()
+    override val showLessonInfo = SingleLiveData<Long>()
+
     init {
         paginator.refresh()
     }
@@ -70,6 +73,23 @@ class ScheduleRangePresenter(
     override fun refreshAllPage() {
         showData.value = null
         paginator.restart()
+    }
+
+    override fun onCheckUser(pair: Pair<Long, Boolean>?, throwable: Throwable?) {
+        when {
+            pair != null -> {
+                val (lessonId, isOwner) = pair
+
+                if (isOwner) {
+                    editLessonInfo.value = lessonId
+                } else {
+                    showLessonInfo.value = lessonId
+                }
+            }
+            throwable != null -> {
+                errorMessage.value = throwable
+            }
+        }
     }
 
     // region ViewController callbacks
@@ -122,7 +142,12 @@ class ScheduleRangePresenter(
                 viewStates.add(
                     ScheduleDayViewState.Lesson(
                         lesson = lesson,
-                        clickListener = {}
+                        clickListener = {
+                            interactor.checkUser(
+                                lessonId = lesson.extId,
+                                teacherId = lesson.teacherExtId
+                            )
+                        }
                     )
                 )
             }

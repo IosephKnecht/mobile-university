@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.shared.ScheduleRepository
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
 import com.project.mobile_university.presentation.schedule_range.interactor.ScheduleRangeInteractor
@@ -52,8 +53,11 @@ class ScheduleRangeModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(scheduleRepository: ScheduleRepository): ScheduleRangeContract.Interactor {
-        return ScheduleRangeInteractor(scheduleRepository)
+    fun provideInteractor(
+        scheduleRepository: ScheduleRepository,
+        sharedPreferenceService: SharedPreferenceService
+    ): ScheduleRangeContract.Interactor {
+        return ScheduleRangeInteractor(scheduleRepository, sharedPreferenceService)
     }
 
     @Provides

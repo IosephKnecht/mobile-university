@@ -41,6 +41,7 @@ interface ScheduleHostContract {
         fun onShowSettings()
         fun onDateChange(date: Date)
         fun onShowLessonInfo(lessonExtId: Long)
+        fun onEditLessonInfo(lessonExtId: Long)
         fun onShowCheckList(checkListExtId: Long)
         fun onShowTeachersScreen()
         fun onShowUserInfo(userId: Long)

@@ -24,6 +24,6 @@ sealed class ScheduleDayViewState {
 
     data class Lesson(
         val lesson: PresentationLesson,
-        val clickListener: (lessonId: Long) -> Unit
+        val clickListener: () -> Unit
     ) : ScheduleDayViewState()
 }

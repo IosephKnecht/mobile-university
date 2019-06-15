@@ -16,6 +16,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="@{() -> viewState.clickListener.invoke()}"
         android:orientation="vertical"
         android:padding="@dimen/extra_small_margin">
 

@@ -78,7 +78,7 @@ class TeacherScheduleFragment : AbstractFragment<TeacherScheduleContract.Present
         }
 
         adapter = TeacherScheduleAdapter { lessonExtId ->
-            (parentFragment as Host).showLessonInfo(lessonExtId)
+            (parentFragment as Host).editLessonInfo(lessonExtId)
         }
 
         lesson_list.apply {

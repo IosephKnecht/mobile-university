@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.mobile_university.presentation.common.helpers.pagination.PagingScrollListener
 import com.project.mobile_university.presentation.common.ui.PlaceHolderView
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import java.util.*
@@ -41,6 +42,8 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
             }
         }
     }
+
+    interface Host : ScheduleHostListener
 
     private lateinit var diComponent: ScheduleRangeComponent
     private lateinit var binding: FragmentScheduleRangeBinding
@@ -163,6 +166,18 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
                 if (viewStates != null) {
                     adapter.reload(viewStates)
                     binding.refreshLayout.isEnabled = true
+                }
+            })
+
+            showLessonInfo.observe(viewLifecycleOwner, Observer { lessonId ->
+                lessonId?.let {
+                    (parentFragment as? Host)?.showLessonInfo(it)
+                }
+            })
+
+            editLessonInfo.observe(viewLifecycleOwner, Observer { lessonId ->
+                lessonId?.let {
+                    (parentFragment as? Host)?.editLessonInfo(it)
                 }
             })
         }

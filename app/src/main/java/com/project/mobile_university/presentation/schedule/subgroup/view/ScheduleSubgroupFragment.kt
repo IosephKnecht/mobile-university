@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
-import com.project.mobile_university.domain.utils.CalendarUtil
-import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.common.ui.PlaceHolderView
-import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract

@@ -20,6 +20,9 @@ interface ScheduleRangeContract {
         val emptyProgress: LiveData<Boolean>
         val errorMessage: LiveData<Throwable>
         val showData: LiveData<List<ScheduleDayViewState>>
+
+        val editLessonInfo: LiveData<Long>
+        val showLessonInfo: LiveData<Long>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
@@ -27,10 +30,13 @@ interface ScheduleRangeContract {
         fun refreshAllPage()
     }
 
-    interface Listener : MvpInteractor.Listener
+    interface Listener : MvpInteractor.Listener {
+        fun onCheckUser(pair: Pair<Long, Boolean>?, throwable: Throwable?)
+    }
 
     interface Interactor : MvpInteractor<Listener> {
         fun obtainScheduleList(startDate: Date, endDate: Date, teacherId: Long, page: Int): Single<List<ScheduleDay>>
+        fun checkUser(lessonId: Long, teacherId: Long)
     }
 
     interface RouterListener : MvpRouter.Listener
