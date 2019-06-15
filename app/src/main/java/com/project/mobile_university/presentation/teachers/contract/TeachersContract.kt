@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.mobile_university.data.presentation.Teacher
-import com.project.mobile_university.presentation.common.helpers.Paginator
+import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 
 interface TeachersContract {
     interface ObservableStorage {

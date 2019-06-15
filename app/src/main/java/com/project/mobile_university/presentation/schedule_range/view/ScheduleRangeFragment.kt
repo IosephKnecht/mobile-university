@@ -11,6 +11,14 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentScheduleRangeBinding
 import com.project.mobile_university.presentation.schedule_range.assembly.ScheduleRangeComponent
 import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
+import com.project.mobile_university.presentation.schedule_range.view.adapter.ScheduleRangeAdapter
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.mobile_university.presentation.common.helpers.pagination.PagingScrollListener
+import com.project.mobile_university.presentation.common.ui.PlaceHolderView
+import com.project.mobile_university.presentation.visible
+import es.dmoral.toasty.Toasty
 import java.util.*
 
 class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>() {
@@ -34,6 +42,7 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
 
     private lateinit var diComponent: ScheduleRangeComponent
     private lateinit var binding: FragmentScheduleRangeBinding
+    private lateinit var adapter: ScheduleRangeAdapter
 
     override fun inject() {
         val startDate = arguments?.getSerializable(START_DATE_KEY) as? Date
@@ -65,5 +74,106 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
         )
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = ScheduleRangeAdapter()
+
+        with(binding) {
+            lessons.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(false)
+                adapter = this@ScheduleRangeFragment.adapter
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                addOnScrollListener(
+                    PagingScrollListener(
+                        layoutManager = layoutManager as LinearLayoutManager,
+                        loadMoreItems = { presenter.loadNewPage() }
+                    )
+                )
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        with(presenter) {
+            pageProgress.observe(viewLifecycleOwner, Observer { isLoading ->
+                if (isLoading == true) {
+                    adapter.showLoadMoreProgress()
+                }
+            })
+
+            refreshProgress.observe(viewLifecycleOwner, Observer { isLoading ->
+                isLoading?.let {
+                    binding.refreshLayout.isRefreshing = it
+                }
+            })
+
+            emptyError.observe(viewLifecycleOwner, Observer { isShow ->
+                when (isShow) {
+                    true -> showPlaceHolder(
+                        PlaceHolderView.State.Empty(
+                            contentRes = R.string.schedule_range_empty_error_string,
+                            iconRes = R.drawable.ic_placeholder_error
+                        )
+                    )
+                    false -> hidePlaceHolder()
+                }
+            })
+
+            emptyView.observe(viewLifecycleOwner, Observer { isShow ->
+                when (isShow) {
+                    true -> showPlaceHolder(
+                        PlaceHolderView.State.Empty(
+                            contentRes = R.string.schedule_range_empty_string,
+                            iconRes = R.drawable.ic_placeholder_empty
+                        )
+                    )
+                    false -> hidePlaceHolder()
+                }
+            })
+
+            emptyProgress.observe(viewLifecycleOwner, Observer { isShow ->
+                if (isShow != null) {
+                    with(binding) {
+                        content.visible(!isShow)
+                        progressBar.visible(isShow)
+                        refreshLayout.isEnabled = !isShow
+                    }
+                }
+            })
+
+            errorMessage.observe(viewLifecycleOwner, Observer { throwable ->
+                if (throwable != null) {
+                    Toasty.error(context!!, throwable.localizedMessage).show()
+                }
+            })
+
+            showData.observe(viewLifecycleOwner, Observer { viewStates ->
+                if (viewStates != null) {
+                    adapter.reload(viewStates)
+                    binding.refreshLayout.isEnabled = true
+                }
+            })
+        }
+    }
+
+    private fun showPlaceHolder(state: PlaceHolderView.State) {
+        with(binding) {
+            lessons.visible(false)
+            placeHolder.visible(true)
+            placeHolder.setState(state)
+        }
+    }
+
+    private fun hidePlaceHolder() {
+        with(binding) {
+            lessons.visible(true)
+            placeHolder.visible(false)
+        }
     }
 }

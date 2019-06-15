@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.ScheduleDay
-import com.project.mobile_university.presentation.common.helpers.Paginator
+import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract

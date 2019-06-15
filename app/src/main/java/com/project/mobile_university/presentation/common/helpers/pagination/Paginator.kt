@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.common.helpers
+package com.project.mobile_university.presentation.common.helpers.pagination
 
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable

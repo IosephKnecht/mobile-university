@@ -14,7 +14,7 @@ import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
-import com.project.mobile_university.presentation.teachers.view.adapter.PagingScrollListener
+import com.project.mobile_university.presentation.common.helpers.pagination.PagingScrollListener
 import com.project.mobile_university.presentation.teachers.view.adapter.TeachersAdapter
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
