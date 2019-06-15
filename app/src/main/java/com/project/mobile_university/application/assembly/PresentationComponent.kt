@@ -8,6 +8,7 @@ import com.project.mobile_university.presentation.check_list.assembly.CheckListC
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.subgroup.assembly.ScheduleSubgroupComponent
 import com.project.mobile_university.presentation.schedule.teacher.assembly.TeacherScheduleComponent
+import com.project.mobile_university.presentation.schedule_range.assembly.ScheduleRangeComponent
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
 import com.project.mobile_university.presentation.user_info.assembly.UserInfoComponent
@@ -26,4 +27,5 @@ interface PresentationComponent {
     fun checkListSubComponent(): CheckListComponent.Builder
     fun teachersSubComponent(): TeachersComponent.Builder
     fun userInfoSubComponent(): UserInfoComponent.Builder
+    fun scheduleRangeSubComponent(): ScheduleRangeComponent.Builder
 }
