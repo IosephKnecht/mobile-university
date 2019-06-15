@@ -5,6 +5,8 @@ import com.project.mobile_university.data.presentation.ScheduleDay
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class ScheduleRangeInteractor(private val scheduleRepository: ScheduleRepository) :
@@ -28,5 +30,7 @@ class ScheduleRangeInteractor(private val scheduleRepository: ScheduleRepository
             limit = PAGE_LIMIT,
             offset = PAGE_LIMIT * (page - 1)
         )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

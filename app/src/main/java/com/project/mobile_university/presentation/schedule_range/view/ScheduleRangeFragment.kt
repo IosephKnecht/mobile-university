@@ -24,6 +24,8 @@ import java.util.*
 class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>() {
 
     companion object {
+        const val TAG = "schedule_range_fragment"
+
         private const val START_DATE_KEY = "start_date_key"
         private const val END_DATE_KEY = "end_date_key"
         private const val TEACHER_ID_KEY = "teacher_id_key"
@@ -66,7 +68,7 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
     override fun providePresenter() = diComponent.getPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentScheduleRangeBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_schedule_range,
             container,
@@ -93,6 +95,10 @@ class ScheduleRangeFragment : AbstractFragment<ScheduleRangeContract.Presenter>(
                         loadMoreItems = { presenter.loadNewPage() }
                     )
                 )
+            }
+
+            refreshLayout.setOnRefreshListener {
+                presenter.refreshAllPage()
             }
         }
     }

@@ -7,6 +7,8 @@ import com.project.mobile_university.data.presentation.Teacher
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
+import com.project.mobile_university.presentation.teachers.view.adapter.SwipeAction
+import java.util.*
 
 class TeachersPresenter(private val interactor: TeachersContract.Interactor) : AbstractPresenter(),
     TeachersContract.Presenter,
@@ -19,6 +21,10 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     override val emptyProgress = MutableLiveData<Boolean>()
     override val errorMessage = SingleLiveData<Throwable>()
     override val showData = MutableLiveData<List<Teacher>>()
+
+
+    override val showProfile = SingleLiveData<Long>()
+    override val showScheduleRange = SingleLiveData<Triple<Long, Date, Date>>()
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
@@ -37,6 +43,21 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     override fun refreshAllPage() {
         showData.value = null
         interactor.refreshAllPage()
+    }
+
+    override fun handleSwipeAction(position: Int, swipeAction: SwipeAction) {
+        when (swipeAction) {
+            SwipeAction.PROFILE -> {
+                showData.value?.get(position)?.let {
+                    showProfile.value = it.id
+                }
+            }
+            SwipeAction.SCHEDULE_RANGE -> {
+                showData.value?.get(position)?.let { teacher ->
+                    showScheduleRange.value = Triple(teacher.teacherId, Date(), Date())
+                }
+            }
+        }
     }
 
     // region ViewController callbacks

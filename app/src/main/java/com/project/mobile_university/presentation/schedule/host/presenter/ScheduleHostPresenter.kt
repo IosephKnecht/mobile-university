@@ -11,7 +11,7 @@ import java.util.*
 
 class ScheduleHostPresenter(
     override val identifier: Long,
-    override val initialScreenType: ScheduleHostContract.InitialScreenType,
+    override val initialScreenType: InitialScreenType,
     private val router: ScheduleHostContract.Router
 ) : AbstractPresenter(), ScheduleHostContract.Presenter, ScheduleHostContract.Listener,
     ScheduleHostContract.RouterListener {
@@ -86,6 +86,10 @@ class ScheduleHostPresenter(
 
     override fun onShowUserInfo(userId: Long) {
         router.showUserInfo(androidComponent!!, userId)
+    }
+
+    override fun onShowScheduleRange(teacherId: Long, startDate: Date, endDate: Date) {
+        router.showScheduleRange(androidComponent!!, teacherId, startDate, endDate)
     }
 
     override fun backPressed() {

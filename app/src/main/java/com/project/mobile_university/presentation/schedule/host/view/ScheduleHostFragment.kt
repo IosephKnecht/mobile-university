@@ -88,11 +88,12 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHER,
                     ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
-                        calendar.calendarView.visibility = View.VISIBLE
+                        calendar.calendarView.visible(true)
                         bottom_navigation?.visible(true)
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN,
-                    ScheduleHostContract.CurrentScreenType.USER_INFO -> {
+                    ScheduleHostContract.CurrentScreenType.USER_INFO,
+                    ScheduleHostContract.CurrentScreenType.SCHEDULE_RANGE -> {
                         calendar.calendarView?.visible(false)
                         bottom_navigation?.visible(false)
                     }
@@ -114,6 +115,10 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
 
     override fun showUserInfo(userId: Long) {
         presenter.onShowUserInfo(userId)
+    }
+
+    override fun showScheduleRange(teacherId: Long, startDate: Date, endDate: Date) {
+        presenter.onShowScheduleRange(teacherId, startDate, endDate)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

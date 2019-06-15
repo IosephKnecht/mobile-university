@@ -45,6 +45,10 @@ class ScheduleRangePresenter(
     override val errorMessage = SingleLiveData<Throwable>()
     override val showData = MutableLiveData<List<ScheduleDayViewState>>()
 
+    init {
+        paginator.refresh()
+    }
+
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
 
@@ -104,6 +108,7 @@ class ScheduleRangePresenter(
         pageProgress.value = show
         if (!show) showData.renotify()
     }
+    // endregion
 
     private fun mapToViewState(scheduleDays: List<ScheduleDay>): List<ScheduleDayViewState> {
         val viewStates = mutableListOf<ScheduleDayViewState>()
@@ -125,7 +130,6 @@ class ScheduleRangePresenter(
 
         return viewStates
     }
-    // endregion
 
     override fun onDestroy() {
         paginator.release()
