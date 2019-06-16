@@ -18,11 +18,11 @@ import com.project.mobile_university.presentation.schedule.host.contract.Schedul
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.schedule_range.view.ScheduleRangeFragment
 import com.project.mobile_university.presentation.teachers.view.TeachersFragment
 import com.project.mobile_university.presentation.visible
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-import kotlinx.android.synthetic.main.activity_common_schedule.*
 import kotlinx.android.synthetic.main.activity_common_schedule.bottom_navigation
 import kotlinx.android.synthetic.main.fragment_schedule_host.*
 import java.util.*
@@ -32,7 +32,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     ScheduleSubgroupFragment.Host,
     TeacherScheduleFragment.Host,
     LessonInfoTeacherFragment.Host,
-    TeachersFragment.Host {
+    TeachersFragment.Host,
+    ScheduleRangeFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
@@ -88,11 +89,12 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHER,
                     ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
-                        calendar.calendarView.visibility = View.VISIBLE
+                        calendar.calendarView.visible(true)
                         bottom_navigation?.visible(true)
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN,
-                    ScheduleHostContract.CurrentScreenType.USER_INFO -> {
+                    ScheduleHostContract.CurrentScreenType.USER_INFO,
+                    ScheduleHostContract.CurrentScreenType.SCHEDULE_RANGE -> {
                         calendar.calendarView?.visible(false)
                         bottom_navigation?.visible(false)
                     }
@@ -108,12 +110,20 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         presenter.onShowLessonInfo(lessonExtId)
     }
 
+    override fun editLessonInfo(lessonExtId: Long) {
+        presenter.onEditLessonInfo(lessonExtId)
+    }
+
     override fun showCheckList(checkListExtId: Long) {
         presenter.onShowCheckList(checkListExtId)
     }
 
     override fun showUserInfo(userId: Long) {
         presenter.onShowUserInfo(userId)
+    }
+
+    override fun showScheduleRange(teacherId: Long, startDate: Date, endDate: Date) {
+        presenter.onShowScheduleRange(teacherId, startDate, endDate)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

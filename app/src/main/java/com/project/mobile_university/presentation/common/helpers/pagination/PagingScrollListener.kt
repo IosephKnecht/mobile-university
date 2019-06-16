@@ -1,4 +1,4 @@
-package com.project.mobile_university.presentation.teachers.view.adapter
+package com.project.mobile_university.presentation.common.helpers.pagination
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

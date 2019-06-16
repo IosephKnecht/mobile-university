@@ -89,4 +89,13 @@ interface UniversityApi {
         @Header("Authorization") loginPassString: String,
         @Path("id") userId: Long
     ): Single<UserInformation>
+
+    @GET(SCHEDULE_DAY_PATH)
+    fun getScheduleWeekForTeacher(
+        @Header("Authorization") loginPassString: String,
+        @Query("range") dateRangeString: String,
+        @Query("teacher_id") teacherId: Long,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): Single<BaseServerResponse<ScheduleDay>>
 }

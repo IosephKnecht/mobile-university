@@ -39,4 +39,12 @@ interface ApiService {
     fun getTeachers(limit: Int, offset: Int): Single<BaseServerResponse<Teacher>>
 
     fun getUserInfo(userId: Long): Single<UserInformation>
+
+    fun getScheduleOfWeekForTeacher(
+        startWeek: Date,
+        endWeek: Date,
+        teacherId: Long,
+        limit: Int,
+        offset: Int
+    ): Single<BaseServerResponse<ScheduleDay>>
 }

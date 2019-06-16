@@ -4,8 +4,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
+import com.project.iosephknecht.viper.router.MvpRouter
+import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Teacher
-import com.project.mobile_university.presentation.common.helpers.Paginator
+import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
+import com.project.mobile_university.presentation.teachers.view.adapter.SwipeAction
+import io.reactivex.Single
+import java.util.*
 
 interface TeachersContract {
     interface ObservableStorage {
@@ -16,18 +21,21 @@ interface TeachersContract {
         val emptyProgress: LiveData<Boolean>
         val errorMessage: LiveData<Throwable>
         val showData: LiveData<List<Teacher>>
+
+        val showProfile: LiveData<Long>
+        val showScheduleRange: LiveData<Triple<Long, Date, Date>>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun loadNewPage()
         fun refreshAllPage()
+        fun handleSwipeAction(position: Int, swipeAction: SwipeAction)
     }
 
-    interface Listener : MvpInteractor.Listener, Paginator.ViewController<Teacher>
+    interface Listener : MvpInteractor.Listener
 
     interface Interactor : MvpInteractor<Listener> {
-        fun loadPage()
-        fun refreshAllPage()
+        fun getRequestFactory(page: Int): Single<List<Teacher>>
     }
 
     interface InputModule {

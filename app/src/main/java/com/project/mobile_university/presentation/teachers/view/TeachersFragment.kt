@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
@@ -14,8 +15,9 @@ import com.project.mobile_university.presentation.common.ui.PlaceHolderView
 import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.teachers.assembly.TeachersComponent
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
-import com.project.mobile_university.presentation.teachers.view.adapter.PagingScrollListener
+import com.project.mobile_university.presentation.common.helpers.pagination.PagingScrollListener
 import com.project.mobile_university.presentation.teachers.view.adapter.TeachersAdapter
+import com.project.mobile_university.presentation.teachers.view.adapter.TeachersSwipeHelper
 import com.project.mobile_university.presentation.visible
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_teachers.*
@@ -49,8 +51,15 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TeachersAdapter { userId ->
-            (parentFragment as? Host)?.showUserInfo(userId)
+        adapter = TeachersAdapter()
+
+        TeachersSwipeHelper(
+            context = view.context,
+            swipeDirection = ItemTouchHelper.LEFT,
+            recyclerView = teachers,
+            itemWidth = 100
+        ) { position, swipeAction ->
+            presenter.handleSwipeAction(position, swipeAction)
         }
 
         refresh_layout?.setOnRefreshListener {
@@ -131,6 +140,17 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
                     adapter.reload(teacherList)
                     refresh_layout?.isEnabled = true
                 }
+            })
+
+            showScheduleRange.observe(viewLifecycleOwner, Observer { triple ->
+                triple?.let {
+                    val (teacherId, startDate, endDate) = it
+                    (parentFragment as? Host)?.showScheduleRange(teacherId, startDate, endDate)
+                }
+            })
+
+            showProfile.observe(viewLifecycleOwner, Observer { userId ->
+                userId?.let { (parentFragment as? Host)?.showUserInfo(it) }
             })
         }
     }

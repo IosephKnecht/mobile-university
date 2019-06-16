@@ -114,4 +114,9 @@
         <string name="lesson_seminar_description">Seminar</string>
         <string name="lesson_type_colloquium">Colloquium</string>
     <!--Lesson type descriptions-->
+
+    <!--Schedule range screen-->
+        <string name="schedule_range_empty_error_string">An error occurred while loading the list of schedule days.</string>
+        <string name="schedule_range_empty_string">It seems there is no schedule days in the list.</string>
+    <!--Schedule range screen-->
 </resources>

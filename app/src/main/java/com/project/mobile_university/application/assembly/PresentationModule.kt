@@ -14,6 +14,8 @@ import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInpu
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.teacher.TeacherScheduleModuleInput
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
+import com.project.mobile_university.presentation.schedule_range.ScheduleRangeInputModule
+import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
 import com.project.mobile_university.presentation.settings.SettingsInputModule
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.teachers.TeachersInputModule
@@ -78,5 +80,11 @@ class PresentationModule {
     @PerPresentationLayerScope
     fun provideUserInfoModule(): UserInfoContract.InputModule {
         return UserInfoInputModule()
+    }
+
+    @Provides
+    @PerPresentationLayerScope
+    fun provideScheduleRangeInputModule(): ScheduleRangeContract.InputModule {
+        return ScheduleRangeInputModule()
     }
 }

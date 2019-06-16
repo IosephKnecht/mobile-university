@@ -16,12 +16,15 @@ import com.project.mobile_university.presentation.schedule.subgroup.contract.Sch
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.contract.TeacherScheduleContract
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
+import com.project.mobile_university.presentation.schedule_range.contract.ScheduleRangeContract
+import com.project.mobile_university.presentation.schedule_range.view.ScheduleRangeFragment
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 import com.project.mobile_university.presentation.teachers.view.TeachersFragment
 import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
 import com.project.mobile_university.presentation.user_info.view.UserInfoFragment
+import java.util.*
 
 class ScheduleHostRouter(
     private val subgroupInputModule: ScheduleSubgroupContract.InputModule,
@@ -31,7 +34,8 @@ class ScheduleHostRouter(
     private val lessonInfoTeacherInputModule: LessonInfoTeacherContract.InputModule,
     private val checkListInputModule: CheckListContract.InputModule,
     private val teachersInputModule: TeachersContract.InputModule,
-    private val userInfoInputModule: UserInfoContract.InputModule
+    private val userInfoInputModule: UserInfoContract.InputModule,
+    private val scheduleRangeInputModule: ScheduleRangeContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -107,6 +111,23 @@ class ScheduleHostRouter(
             userInfoInputModule.createFragment(userId)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.USER_INFO)
+        })
+    }
+
+    override fun showScheduleRange(
+        androidComponent: AndroidComponent,
+        teacherId: Long,
+        startDate: Date,
+        endDate: Date
+    ) {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(ScheduleRangeFragment.TAG, {
+            scheduleRangeInputModule.createFragment(
+                teacherId = teacherId,
+                startDate = startDate,
+                endDate = endDate
+            )
+        }, {
+            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.SCHEDULE_RANGE)
         })
     }
 

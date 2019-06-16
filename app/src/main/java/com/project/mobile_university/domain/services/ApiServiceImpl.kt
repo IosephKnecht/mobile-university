@@ -126,6 +126,23 @@ class ApiServiceImpl(
         }.flatMap { loginPassString -> universityApi.getUserInfo(loginPassString, userId) }
     }
 
+    override fun getScheduleOfWeekForTeacher(
+        startWeek: Date,
+        endWeek: Date,
+        teacherId: Long,
+        limit: Int,
+        offset: Int
+    ): Single<BaseServerResponse<ScheduleDay>> {
+        return Single.fromCallable {
+            val loginPassString = sharedPreferenceService.getLoginPassString()
+            val dateRangeString = obtainDateRangeString(startWeek, endWeek)
+
+            Pair(loginPassString, dateRangeString)
+        }.flatMap { (loginPassString, dateRangeString) ->
+            universityApi.getScheduleWeekForTeacher(loginPassString, dateRangeString, teacherId, limit, offset)
+        }
+    }
+
     // TODO: will be transited on CalendarUtil
     private fun obtainDateRangeString(
         startWeek: Date,

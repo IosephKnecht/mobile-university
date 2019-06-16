@@ -69,6 +69,16 @@ class ScheduleRepositoryMock : ScheduleRepository {
         return Single.error(Throwable())
     }
 
+    override fun getScheduleDaysForTeacher(
+        startDate: Date,
+        endDate: Date,
+        teacherId: Long,
+        limit: Int,
+        offset: Int
+    ): Single<List<ScheduleDay>> {
+        return Single.error(Throwable())
+    }
+
     private fun generateScheduleForSubgroup(startDate: Date, endDate: Date, subgroupId: Long): List<ScheduleDay> {
         var current = startDate.clone() as Date
         val fakeDays = mutableListOf<ScheduleDay>()
