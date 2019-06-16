@@ -92,6 +92,7 @@ class ScheduleSyncService : IntentService(TAG) {
         val notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_schedule)
             .setColor(ContextCompat.getColor(this, R.color.primary_dark))
+            .setColorized(true)
             .setPriority(PRIORITY_MIN)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setContentTitle(getString(R.string.schedule_sync_foreground_title))
@@ -133,9 +134,11 @@ class ScheduleSyncService : IntentService(TAG) {
         val notification = NotificationCompat.Builder(this, channelId)
             .setOngoing(false)
             .setSmallIcon(R.drawable.ic_schedule)
+            .setColorized(true)
             .setColor(ContextCompat.getColor(this, R.color.accent))
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setContentTitle(getString(R.string.schedule_sync_service_title_difference))
+            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setAutoCancel(true)
             .setContentIntent(
                 PendingIntent.getActivity(
