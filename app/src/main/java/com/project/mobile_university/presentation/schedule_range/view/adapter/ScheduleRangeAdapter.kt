@@ -9,12 +9,24 @@ class ScheduleRangeAdapter : ViewModelAdapter() {
     init {
         cell<ScheduleDayViewState.Header>(
             layoutId = R.layout.item_range_header,
-            bindingId = BR.viewState
+            bindingId = BR.viewState,
+            areItemsTheSame = { oldItem, newItem ->
+                oldItem.date == newItem.date
+            },
+            areContentsTheSame = { oldItem, newItem ->
+                oldItem == newItem
+            }
         )
 
         cell<ScheduleDayViewState.Lesson>(
             layoutId = R.layout.item_range_lesson,
-            bindingId = BR.viewState
+            bindingId = BR.viewState,
+            areItemsTheSame = { oldItem, newItem ->
+                oldItem.lesson.extId == newItem.lesson.extId
+            },
+            areContentsTheSame = { oldItem, newItem ->
+                oldItem == newItem
+            }
         )
     }
 }

@@ -18,7 +18,10 @@
         android:focusable="true"
         android:onClick="@{() -> viewState.clickListener.invoke()}"
         android:orientation="vertical"
-        android:padding="@dimen/extra_small_margin">
+        android:paddingStart="@dimen/small_margin"
+        android:paddingTop="@dimen/extra_small_margin"
+        android:paddingEnd="@dimen/small_margin"
+        android:paddingBottom="@dimen/extra_small_margin">
 
         <TextView
             android:id="@+id/time"

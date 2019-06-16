@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Teacher
+import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
 import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.renotify
@@ -65,10 +66,22 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
             }
             SwipeAction.SCHEDULE_RANGE -> {
                 showData.value?.get(position)?.let { teacher ->
-                    showScheduleRange.value = Triple(teacher.teacherId, Date(), Date())
+                    val (startDate, endDate) = buildDateRange(7)
+                    showScheduleRange.value = Triple(teacher.teacherId, startDate, endDate)
                 }
             }
         }
+    }
+
+    private fun buildDateRange(offset: Int): Pair<Date, Date> {
+        val (monday, sunday) = CalendarUtil.obtainMondayAndSunday(Date())
+        val sundayWithOffset = Calendar.getInstance().run {
+            time = sunday
+            add(Calendar.DATE, offset)
+            this.time
+        }
+
+        return Pair(monday, sundayWithOffset)
     }
 
     // region ViewController callbacks
