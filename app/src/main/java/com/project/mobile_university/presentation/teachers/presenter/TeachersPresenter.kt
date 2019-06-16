@@ -5,6 +5,7 @@ import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Teacher
 import com.project.mobile_university.presentation.common.helpers.SingleLiveData
+import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.renotify
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 import com.project.mobile_university.presentation.teachers.view.adapter.SwipeAction
@@ -12,7 +13,8 @@ import java.util.*
 
 class TeachersPresenter(private val interactor: TeachersContract.Interactor) : AbstractPresenter(),
     TeachersContract.Presenter,
-    TeachersContract.Listener {
+    TeachersContract.Listener,
+    Paginator.ViewController<Teacher> {
 
     override val pageProgress = MutableLiveData<Boolean>()
     override val refreshProgress = MutableLiveData<Boolean>()
@@ -26,6 +28,15 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     override val showProfile = SingleLiveData<Long>()
     override val showScheduleRange = SingleLiveData<Triple<Long, Date, Date>>()
 
+    private val paginator = Paginator(
+        requestFactory = { page -> interactor.getRequestFactory(page) },
+        viewController = this
+    )
+
+    init {
+        paginator.refresh()
+    }
+
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
         interactor.setListener(this)
@@ -37,12 +48,12 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     }
 
     override fun loadNewPage() {
-        interactor.loadPage()
+        paginator.loadNewPage()
     }
 
     override fun refreshAllPage() {
         showData.value = null
-        interactor.refreshAllPage()
+        paginator.restart()
     }
 
     override fun handleSwipeAction(position: Int, swipeAction: SwipeAction) {
@@ -96,10 +107,10 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
         pageProgress.value = show
         if (!show) showData.renotify()
     }
+    // endregion
 
     override fun onDestroy() {
+        paginator.release()
         interactor.onDestroy()
     }
-
-    // endregion
 }

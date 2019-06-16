@@ -9,6 +9,7 @@ import com.project.iosephknecht.viper.view.AndroidComponent
 import com.project.mobile_university.data.presentation.Teacher
 import com.project.mobile_university.presentation.common.helpers.pagination.Paginator
 import com.project.mobile_university.presentation.teachers.view.adapter.SwipeAction
+import io.reactivex.Single
 import java.util.*
 
 interface TeachersContract {
@@ -31,11 +32,10 @@ interface TeachersContract {
         fun handleSwipeAction(position: Int, swipeAction: SwipeAction)
     }
 
-    interface Listener : MvpInteractor.Listener, Paginator.ViewController<Teacher>
+    interface Listener : MvpInteractor.Listener
 
     interface Interactor : MvpInteractor<Listener> {
-        fun loadPage()
-        fun refreshAllPage()
+        fun getRequestFactory(page: Int): Single<List<Teacher>>
     }
 
     interface InputModule {
