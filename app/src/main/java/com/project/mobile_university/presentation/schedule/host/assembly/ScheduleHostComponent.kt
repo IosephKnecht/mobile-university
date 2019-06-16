@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
@@ -87,7 +88,8 @@ class ScheduleHostModule {
 class ScheduleHostViewModelFactory @Inject constructor(
     private val identifier: Long,
     private val initialScreenType: ScheduleHostContract.InitialScreenType,
-    private val router: ScheduleHostContract.Router
+    private val router: ScheduleHostContract.Router,
+    private val loginRepository: LoginRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -95,7 +97,8 @@ class ScheduleHostViewModelFactory @Inject constructor(
         return ScheduleHostPresenter(
             identifier,
             initialScreenType,
-            router
+            router,
+            loginRepository
         ) as T
     }
 }

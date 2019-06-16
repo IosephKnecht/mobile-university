@@ -119,4 +119,10 @@
         <string name="schedule_range_empty_error_string">An error occurred while loading the list of schedule days.</string>
         <string name="schedule_range_empty_string">It seems there is no schedule days in the list.</string>
     <!--Schedule range screen-->
+    
+    <!--ScheduleSyncService-->
+        <string name="schedule_sync_foreground_title">Schedule synchronization</string>
+        <string name="schedule_sync_service_title_difference">Schedule changes detected</string>
+        <string name="schedule_sync_service_content_difference">For the next days there are changes in the schedule: %s</string>
+    <!--ScheduleSyncService-->
 </resources>

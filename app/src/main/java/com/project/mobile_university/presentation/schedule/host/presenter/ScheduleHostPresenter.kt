@@ -3,21 +3,29 @@ package com.project.mobile_university.presentation.schedule.host.presenter
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.domain.services.ScheduleSyncService
+import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.domain.utils.CalendarUtil
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.CurrentScreenType
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.SerialDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class ScheduleHostPresenter(
     override val identifier: Long,
-    override val initialScreenType: InitialScreenType,
-    private val router: ScheduleHostContract.Router
+    override val initialScreenType: ScheduleHostContract.InitialScreenType,
+    private val router: ScheduleHostContract.Router,
+    private val loginRepository: LoginRepository
 ) : AbstractPresenter(), ScheduleHostContract.Presenter, ScheduleHostContract.Listener,
     ScheduleHostContract.RouterListener {
 
     override val dateChange = MutableLiveData<String>()
     override val currentScreen = MutableLiveData<CurrentScreenType>()
+
+    private val loginDisposable = SerialDisposable()
 
     init {
         dateChange.value = CalendarUtil.convertToSimpleFormat(Date())
@@ -37,6 +45,22 @@ class ScheduleHostPresenter(
                 }
             }
         }
+
+        loginDisposable.set(
+            loginRepository.loginState
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ isLogin ->
+                    if (isLogin) {
+                        ScheduleSyncService.startService(androidComponent.activityComponent!!.applicationContext)
+                    } else {
+                        ScheduleSyncService.stopService(androidComponent.activityComponent!!.applicationContext)
+                    }
+                }, { throwable ->
+                    throwable.printStackTrace()
+                })
+        )
     }
 
     override fun detachAndroidComponent() {
@@ -102,6 +126,6 @@ class ScheduleHostPresenter(
     }
 
     override fun onDestroy() {
-        // not implemented
+        loginDisposable.dispose()
     }
 }
