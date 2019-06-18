@@ -63,18 +63,24 @@ class LessonInfoStudentFragment : AbstractFragment<LessonInfoStudentContract.Pre
 
         adapter = StudentSubgroupAdapter()
 
-        binding.subgroupList.apply {
-            adapter = this@LessonInfoStudentFragment.adapter
-            setHasFixedSize(false)
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
-            })
-        }
+        with(binding) {
+            subgroupList.apply {
+                adapter = this@LessonInfoStudentFragment.adapter
+                setHasFixedSize(false)
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                    this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+                })
+            }
 
 
-        binding.lessonInfoRefresh.setOnRefreshListener {
-            presenter.obtainLessonFromOnline()
+            lessonInfoRefresh.setOnRefreshListener {
+                presenter.obtainLessonFromOnline()
+            }
+
+            geoTag.setOnClickListener {
+                presenter.showLocation()
+            }
         }
     }
 

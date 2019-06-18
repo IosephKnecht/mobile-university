@@ -69,11 +69,14 @@
                         android:id="@+id/geo_tag"
                         android:layout_width="@dimen/small_icon_height"
                         android:layout_height="@dimen/small_icon_height"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:src="@drawable/ic_location"
                         android:tint="@color/accent"
-                        app:layout_constraintTop_toTopOf="@+id/hall"
                         app:layout_constraintBottom_toBottomOf="@+id/hall"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/hall"
                         app:visibleOrGone="@{lessonInfo.lesson.coordinates != null}"/>
 
                     <TextView
