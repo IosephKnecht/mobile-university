@@ -58,8 +58,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_margin"
+                        android:singleLine="true"
+                        app:layout_constraintEnd_toStartOf="@+id/geo_tag"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/subject"
                         tools:text="Hall: E323"/>
+
+                    <ImageView
+                        android:id="@+id/geo_tag"
+                        android:layout_width="@dimen/small_icon_height"
+                        android:layout_height="@dimen/small_icon_height"
+                        android:src="@drawable/ic_location"
+                        android:tint="@color/accent"
+                        app:layout_constraintTop_toTopOf="@+id/hall"
+                        app:layout_constraintBottom_toBottomOf="@+id/hall"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:visibleOrGone="@{lessonInfo.lesson.coordinates != null}"/>
 
                     <TextView
                         android:id="@+id/lecture_type"

@@ -9,10 +9,12 @@ import com.project.mobile_university.presentation.lessonInfo.teacher.contract.Le
 
 class LessonInfoTeacherPresenter(
     private val lessonExtId: Long,
-    private val interactor: LessonInfoTeacherContract.Interactor
+    private val interactor: LessonInfoTeacherContract.Interactor,
+    private val router: LessonInfoTeacherContract.Router
 ) : AbstractPresenter(),
     LessonInfoTeacherContract.Presenter,
-    LessonInfoTeacherContract.Listener {
+    LessonInfoTeacherContract.Listener,
+    LessonInfoTeacherContract.RouterListener {
 
     override val lesson = MutableLiveData<Lesson>()
     override val errorObserver = SingleLiveData<Throwable>()
@@ -50,6 +52,15 @@ class LessonInfoTeacherPresenter(
         interactor.createCheckList(lessonExtId)
     }
 
+    override fun showLocation() {
+        androidComponent?.let {
+            val coordinates = lesson.value?.coordinates
+            if (coordinates != null && coordinates.size == 2) {
+                router.showGeoTag(it, coordinates, 12)
+            }
+        }
+    }
+
     override fun onObtainLesson(lesson: Lesson?, throwable: Throwable?) {
         when {
             lesson != null -> {
@@ -76,6 +87,10 @@ class LessonInfoTeacherPresenter(
         }
 
         loadingStateCheckList.value = false
+    }
+
+    override fun onShowGeoTag(throwable: Throwable) {
+        this.errorObserver.value = throwable
     }
 
     override fun onDestroy() {

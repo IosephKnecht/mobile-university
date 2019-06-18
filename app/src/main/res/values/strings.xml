@@ -59,6 +59,8 @@
         <string name="lesson_info_check_list_header_string">Check list</string>
         <string name="lesson_info_check_list_create">Create</string>
         <string name="lesson_info_check_list_show">Show</string>
+        <string name="show_location_select">Select applications to view the location.</string>
+        <string name="show_location_error">There are no pre-installed map applications on your device (Yandex or Google Maps).</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->
