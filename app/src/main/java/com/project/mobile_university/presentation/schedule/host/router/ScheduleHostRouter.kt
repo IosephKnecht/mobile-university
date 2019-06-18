@@ -106,9 +106,9 @@ class ScheduleHostRouter(
         })
     }
 
-    override fun showUserInfo(androidComponent: AndroidComponent, userId: Long) {
+    override fun showUserInfo(androidComponent: AndroidComponent, userId: Long, isMe: Boolean) {
         androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(UserInfoFragment.TAG, {
-            userInfoInputModule.createFragment(userId)
+            userInfoInputModule.createFragment(userId, isMe)
         }, {
             routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.USER_INFO)
         })

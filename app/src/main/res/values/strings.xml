@@ -64,7 +64,7 @@
     <!--Lesson info screen-->
 
     <!--Navigation view-->
-        <string name="navigation_profile">Profile (not implemented)</string>
+        <string name="navigation_profile">Profile</string>
         <string name="navigation_teacher_schedule">Teacher\'s schedule</string>
         <string name="navigation_home_works">Home works (not implemented)</string>
         <string name="navigation_logout">Logout (not implemented)</string>
@@ -108,7 +108,17 @@
         <string name="user_info_blank_last_name">last name missing</string>
         <string name="user_info_contacts_description">User contacts</string>
         <string name="user_info_additional_description">Additional info</string>
+        <string name="user_info_fail_send_email_string">Your device does not have the necessary pre-installed applications for sending messages by email.</string>
     <!--User information screen-->
+
+    <!--Contact types-->
+        <string name="email_description">Email</string>
+    <!--Contact types-->
+
+    <!--Additional types-->
+        <string name="subgroup_description">Subgroup</string>
+        <string name="cathedra_description">Cathedra</string>
+    <!--Additional types-->
 
     <!--Lesson type descriptions-->
         <string name="lesson_type_lecture_description">Lecture</string>

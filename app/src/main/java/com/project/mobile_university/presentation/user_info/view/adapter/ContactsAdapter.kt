@@ -7,6 +7,20 @@ import com.project.mobile_university.presentation.common.ui.ViewModelAdapter
 
 class ContactsAdapter : ViewModelAdapter() {
     init {
-        cell<UserContactModel>(R.layout.item_user_contact, BR.userContactModel)
+        cell<UserContactViewState>(
+            layoutId = R.layout.item_user_contact,
+            bindingId = BR.viewState,
+            areItemsTheSame = { oldItem, newItem ->
+                oldItem.model.contactType == newItem.model.contactType
+            },
+            areContentsTheSame = { oldItem, newItem ->
+                oldItem.model == newItem.model
+            }
+        )
     }
 }
+
+class UserContactViewState(
+    val model: UserContactModel,
+    val clickListener: (() -> Unit)?
+)

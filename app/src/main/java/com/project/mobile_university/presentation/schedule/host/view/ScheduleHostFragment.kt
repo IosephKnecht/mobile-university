@@ -118,8 +118,8 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         presenter.onShowCheckList(checkListExtId)
     }
 
-    override fun showUserInfo(userId: Long) {
-        presenter.onShowUserInfo(userId)
+    override fun showUserInfo(userId: Long, isMe: Boolean) {
+        presenter.onShowUserInfo(userId, isMe)
     }
 
     override fun showScheduleRange(teacherId: Long, startDate: Date, endDate: Date) {
@@ -130,6 +130,9 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         when (menuItem.itemId) {
             R.id.teacher_schedule -> {
                 presenter.onShowTeachersScreen()
+            }
+            R.id.profile -> {
+                presenter.showProfile()
             }
             else -> {
 

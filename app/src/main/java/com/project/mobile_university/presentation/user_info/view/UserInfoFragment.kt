@@ -23,10 +23,12 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
     companion object {
         const val TAG = "user_info_fragment"
         private const val USER_ID_KEY = "user_id"
+        private const val IS_ME_KEY = "is_me"
 
-        fun createInstance(userId: Long) = UserInfoFragment().apply {
+        fun createInstance(userId: Long, isMe: Boolean) = UserInfoFragment().apply {
             arguments = Bundle().apply {
                 putLong(USER_ID_KEY, userId)
+                putBoolean(IS_ME_KEY, isMe)
             }
         }
     }
@@ -39,11 +41,13 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
     override fun inject() {
 
         val userId = arguments?.getLong(USER_ID_KEY) ?: throw RuntimeException("user id could not be null")
+        val isMe = arguments?.getBoolean(IS_ME_KEY) ?: throw RuntimeException("isMe flag could not be null")
 
         diComponent = AppDelegate.presentationComponent
             .userInfoSubComponent()
             .with(this)
             .userId(userId)
+            .isMe(isMe)
             .build()
     }
 
@@ -100,6 +104,12 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
             loading.observe(viewLifecycleOwner, Observer { isLoading ->
                 if (isLoading != null) {
                     binding.refreshLayout.isRefreshing = isLoading
+                }
+            })
+
+            userContacts.observe(viewLifecycleOwner, Observer { contacts ->
+                contacts?.let {
+                    contactsAdapter.reload(it)
                 }
             })
         }

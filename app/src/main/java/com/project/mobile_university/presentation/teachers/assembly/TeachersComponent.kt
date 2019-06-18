@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.shared.ScheduleRepository
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.teachers.contract.TeachersContract
 import com.project.mobile_university.presentation.teachers.interactor.TeachersInteractor
@@ -41,8 +42,14 @@ class TeachersModule {
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(scheduleRepository: ScheduleRepository): TeachersContract.Interactor {
-        return TeachersInteractor(scheduleRepository)
+    fun provideInteractor(
+        scheduleRepository: ScheduleRepository,
+        sharedPreferenceService: SharedPreferenceService
+    ): TeachersContract.Interactor {
+        return TeachersInteractor(
+            scheduleRepository,
+            sharedPreferenceService
+        )
     }
 }
 

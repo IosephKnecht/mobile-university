@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.shared.LoginRepository
+import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
+import com.project.mobile_university.presentation.schedule.host.interactor.ScheduleHostInteractor
 import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
 import com.project.mobile_university.presentation.schedule.host.router.ScheduleHostRouter
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
@@ -82,12 +84,19 @@ class ScheduleHostModule {
             scheduleRangeInputModule
         )
     }
+
+    @Provides
+    @PerFeatureLayerScope
+    fun provideInteractor(sharedPreferenceService: SharedPreferenceService): ScheduleHostContract.Interactor {
+        return ScheduleHostInteractor(sharedPreferenceService)
+    }
 }
 
 @PerFeatureLayerScope
 class ScheduleHostViewModelFactory @Inject constructor(
     private val identifier: Long,
     private val initialScreenType: ScheduleHostContract.InitialScreenType,
+    private val interactor: ScheduleHostContract.Interactor,
     private val router: ScheduleHostContract.Router,
     private val loginRepository: LoginRepository
 ) : ViewModelProvider.Factory {
@@ -95,10 +104,11 @@ class ScheduleHostViewModelFactory @Inject constructor(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ScheduleHostPresenter(
-            identifier,
-            initialScreenType,
-            router,
-            loginRepository
+            identifier = identifier,
+            initialScreenType = initialScreenType,
+            interactor = interactor,
+            router = router,
+            loginRepository = loginRepository
         ) as T
     }
 }

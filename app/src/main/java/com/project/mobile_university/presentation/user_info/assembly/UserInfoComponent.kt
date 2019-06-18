@@ -9,6 +9,7 @@ import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
 import com.project.mobile_university.presentation.user_info.interactor.UserInfoInteractor
 import com.project.mobile_university.presentation.user_info.presenter.UserInfoPresenter
+import com.project.mobile_university.presentation.user_info.router.UserInfoRouter
 import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
@@ -28,6 +29,9 @@ interface UserInfoComponent {
 
         @BindsInstance
         fun userId(userId: Long): Builder
+
+        @BindsInstance
+        fun isMe(isMe: Boolean): Builder
 
         fun build(): UserInfoComponent
     }
@@ -49,16 +53,29 @@ class UserInfoModule {
     ): UserInfoContract.Presenter {
         return ViewModelProviders.of(fragment, factory).get(UserInfoPresenter::class.java)
     }
+
+    @Provides
+    @PerFeatureLayerScope
+    fun provideRouter(): UserInfoContract.Router {
+        return UserInfoRouter()
+    }
 }
 
 @PerFeatureLayerScope
 class UserInfoViewModelFactory @Inject constructor(
     private val interactor: UserInfoContract.Interactor,
-    private val userId: Long
+    private val router: UserInfoContract.Router,
+    private val userId: Long,
+    private val isMe: Boolean
 ) :
     ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return UserInfoPresenter(interactor, userId) as T
+        return UserInfoPresenter(
+            interactor,
+            router,
+            userId,
+            isMe
+        ) as T
     }
 }

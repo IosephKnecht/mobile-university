@@ -1,11 +1,15 @@
 package com.project.mobile_university.data.presentation
 
-enum class AdditionalEnum {
-    SUBGROUP, CATHEDRA
+import androidx.annotation.StringRes
+import com.project.mobile_university.R
+
+enum class AdditionalEnum(@StringRes val description: Int) {
+    SUBGROUP(R.string.subgroup_description),
+    CATHEDRA(R.string.cathedra_description)
 }
 
-enum class ContactsEnum {
-    EMAIL
+enum class ContactsEnum(@StringRes val description: Int) {
+    EMAIL(R.string.email_description)
 }
 
 data class UserInformation(

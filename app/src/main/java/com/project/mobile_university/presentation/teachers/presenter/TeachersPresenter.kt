@@ -26,7 +26,7 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
     override val showData = MutableLiveData<List<Teacher>>()
 
 
-    override val showProfile = SingleLiveData<Long>()
+    override val showProfile = SingleLiveData<Pair<Long, Boolean>>()
     override val showScheduleRange = SingleLiveData<Triple<Long, Date, Date>>()
 
     private val paginator = Paginator(
@@ -61,7 +61,7 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
         when (swipeAction) {
             SwipeAction.PROFILE -> {
                 showData.value?.get(position)?.let {
-                    showProfile.value = it.id
+                    interactor.checkUser(it.id)
                 }
             }
             SwipeAction.SCHEDULE_RANGE -> {
@@ -69,6 +69,17 @@ class TeachersPresenter(private val interactor: TeachersContract.Interactor) : A
                     val (startDate, endDate) = buildDateRange(7)
                     showScheduleRange.value = Triple(teacher.teacherId, startDate, endDate)
                 }
+            }
+        }
+    }
+
+    override fun onCheckUser(data: Pair<Long, Boolean>?, throwable: Throwable?) {
+        when {
+            data != null -> {
+                showProfile.value = data
+            }
+            throwable != null -> {
+                this.errorMessage.value = throwable
             }
         }
     }
