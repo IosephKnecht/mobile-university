@@ -60,17 +60,6 @@ fun ImageView.setUserPhoto(userInformation: UserInformation?) {
     }
 }
 
-@BindingAdapter("setUserContacts")
-fun RecyclerView.setUserContacts(userInformation: UserInformation?) {
-    userInformation?.let { userInformation ->
-        userInformation.userContacts
-            .takeIf { it.isNotEmpty() }
-            ?.let {
-                (adapter as? ViewModelAdapter)?.reload(it)
-            }
-    }
-}
-
 @BindingAdapter("setAdditionalInfo")
 fun RecyclerView.setAdditionalInfo(userInformation: UserInformation?) {
     userInformation?.let { userInformation ->

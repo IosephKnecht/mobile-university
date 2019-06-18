@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="userContactModel"
-            type="com.project.mobile_university.data.presentation.UserContactModel"/>
+            name="viewState"
+            type="com.project.mobile_university.presentation.user_info.view.adapter.UserContactViewState"/>
     </data>
 
     <RelativeLayout
@@ -19,7 +19,8 @@
         android:paddingStart="@dimen/extra_small_margin"
         android:paddingTop="@dimen/small_margin"
         android:paddingEnd="@dimen/extra_small_margin"
-        android:paddingBottom="@dimen/small_margin">
+        android:paddingBottom="@dimen/small_margin"
+        android:onClick="@{() -> viewState.clickListener.invoke()}">
 
         <TextView
             android:id="@+id/email_header"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="@{userContactModel.contactType.name}"
+            android:text="@{viewState.model.contactType.description}"
             tools:text="Email:"/>
 
         <TextView
@@ -41,7 +42,7 @@
             android:layout_marginStart="@dimen/small_margin"
             android:layout_toEndOf="@id/email_header"
             android:singleLine="true"
-            android:text="@{userContactModel.value}"
+            android:text="@{viewState.model.value}"
             tools:text="student@gmail.com"/>
 
     </RelativeLayout>

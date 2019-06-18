@@ -41,11 +41,13 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
     override fun inject() {
 
         val userId = arguments?.getLong(USER_ID_KEY) ?: throw RuntimeException("user id could not be null")
+        val isMe = arguments?.getBoolean(IS_ME_KEY) ?: throw RuntimeException("isMe flag could not be null")
 
         diComponent = AppDelegate.presentationComponent
             .userInfoSubComponent()
             .with(this)
             .userId(userId)
+            .isMe(isMe)
             .build()
     }
 
@@ -102,6 +104,12 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
             loading.observe(viewLifecycleOwner, Observer { isLoading ->
                 if (isLoading != null) {
                     binding.refreshLayout.isRefreshing = isLoading
+                }
+            })
+
+            userContacts.observe(viewLifecycleOwner, Observer { contacts ->
+                contacts?.let {
+                    contactsAdapter.reload(it)
                 }
             })
         }
