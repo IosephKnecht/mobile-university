@@ -23,10 +23,12 @@ class UserInfoFragment : AbstractFragment<UserInfoContract.Presenter>() {
     companion object {
         const val TAG = "user_info_fragment"
         private const val USER_ID_KEY = "user_id"
+        private const val IS_ME_KEY = "is_me"
 
-        fun createInstance(userId: Long) = UserInfoFragment().apply {
+        fun createInstance(userId: Long, isMe: Boolean) = UserInfoFragment().apply {
             arguments = Bundle().apply {
                 putLong(USER_ID_KEY, userId)
+                putBoolean(IS_ME_KEY, isMe)
             }
         }
     }

@@ -3,6 +3,7 @@ package com.project.mobile_university.presentation.schedule.host.presenter
 import androidx.lifecycle.MutableLiveData
 import com.project.iosephknecht.viper.presenter.AbstractPresenter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.gson.User
 import com.project.mobile_university.domain.services.ScheduleSyncService
 import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.domain.utils.CalendarUtil
@@ -16,7 +17,8 @@ import java.util.*
 
 class ScheduleHostPresenter(
     override val identifier: Long,
-    override val initialScreenType: ScheduleHostContract.InitialScreenType,
+    override val initialScreenType: InitialScreenType,
+    private val interactor: ScheduleHostContract.Interactor,
     private val router: ScheduleHostContract.Router,
     private val loginRepository: LoginRepository
 ) : AbstractPresenter(), ScheduleHostContract.Presenter, ScheduleHostContract.Listener,
@@ -33,6 +35,7 @@ class ScheduleHostPresenter(
 
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
+        interactor.setListener(this)
         router.setListener(this)
 
         if (currentScreen.value == null) {
@@ -64,9 +67,31 @@ class ScheduleHostPresenter(
     }
 
     override fun detachAndroidComponent() {
-        super.detachAndroidComponent()
-
+        interactor.setListener(null)
         router.setListener(null)
+
+        super.detachAndroidComponent()
+    }
+
+    override fun showProfile() {
+        interactor.obtainUserProfile()
+    }
+
+    override fun onObtainUserProfile(userProfile: User?, throwable: Throwable?) {
+        when {
+            userProfile != null -> {
+                androidComponent?.let {
+                    router.showUserInfo(
+                        androidComponent = it,
+                        userId = userProfile.userId,
+                        isMe = true
+                    )
+                }
+            }
+            throwable != null -> {
+                throwable.printStackTrace()
+            }
+        }
     }
 
     override fun onDateChange(date: Date) {
@@ -105,8 +130,8 @@ class ScheduleHostPresenter(
         router.showTeachersScreen(androidComponent!!)
     }
 
-    override fun onShowUserInfo(userId: Long) {
-        router.showUserInfo(androidComponent!!, userId)
+    override fun onShowUserInfo(userId: Long, isMe: Boolean) {
+        router.showUserInfo(androidComponent!!, userId, isMe)
     }
 
     override fun onShowScheduleRange(teacherId: Long, startDate: Date, endDate: Date) {
@@ -126,6 +151,7 @@ class ScheduleHostPresenter(
     }
 
     override fun onDestroy() {
+        interactor.onDestroy()
         loginDisposable.dispose()
     }
 }

@@ -6,6 +6,7 @@ import com.project.iosephknecht.viper.interacor.MvpInteractor
 import com.project.iosephknecht.viper.presenter.MvpPresenter
 import com.project.iosephknecht.viper.router.MvpRouter
 import com.project.iosephknecht.viper.view.AndroidComponent
+import com.project.mobile_university.data.gson.User
 import java.util.*
 
 interface ScheduleHostContract {
@@ -36,6 +37,8 @@ interface ScheduleHostContract {
         val identifier: Long
         val initialScreenType: InitialScreenType
 
+        fun showProfile()
+
         fun onShowSubgroupSchedule(identifier: Long)
         fun onShowTeacherSchedule(identifier: Long)
         fun onShowSettings()
@@ -44,15 +47,19 @@ interface ScheduleHostContract {
         fun onEditLessonInfo(lessonExtId: Long)
         fun onShowCheckList(checkListExtId: Long)
         fun onShowTeachersScreen()
-        fun onShowUserInfo(userId: Long)
+        fun onShowUserInfo(userId: Long, isMe: Boolean)
         fun onShowScheduleRange(teacherId: Long, startDate: Date, endDate: Date)
         fun backPressed()
         fun restoreDefaultDate(): Calendar
     }
 
-    interface Listener : MvpInteractor.Listener
+    interface Listener : MvpInteractor.Listener {
+        fun onObtainUserProfile(userProfile: User?, throwable: Throwable?)
+    }
 
-    interface Interactor : MvpInteractor<Listener>
+    interface Interactor : MvpInteractor<Listener> {
+        fun obtainUserProfile()
+    }
 
     interface RouterListener : MvpRouter.Listener {
         fun onChangeScreen(currentScreenType: CurrentScreenType)
@@ -66,7 +73,7 @@ interface ScheduleHostContract {
         fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long)
         fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long)
         fun showTeachersScreen(androidComponent: AndroidComponent)
-        fun showUserInfo(androidComponent: AndroidComponent, userId: Long)
+        fun showUserInfo(androidComponent: AndroidComponent, userId: Long, isMe: Boolean)
         fun showScheduleRange(androidComponent: AndroidComponent, teacherId: Long, startDate: Date, endDate: Date)
         fun onBackPressed(androidComponent: AndroidComponent)
     }

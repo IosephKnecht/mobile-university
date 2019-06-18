@@ -64,7 +64,7 @@
     <!--Lesson info screen-->
 
     <!--Navigation view-->
-        <string name="navigation_profile">Profile (not implemented)</string>
+        <string name="navigation_profile">Profile</string>
         <string name="navigation_teacher_schedule">Teacher\'s schedule</string>
         <string name="navigation_home_works">Home works (not implemented)</string>
         <string name="navigation_logout">Logout (not implemented)</string>

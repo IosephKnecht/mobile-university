@@ -22,7 +22,7 @@ interface TeachersContract {
         val errorMessage: LiveData<Throwable>
         val showData: LiveData<List<Teacher>>
 
-        val showProfile: LiveData<Long>
+        val showProfile: LiveData<Pair<Long, Boolean>>
         val showScheduleRange: LiveData<Triple<Long, Date, Date>>
     }
 
@@ -32,10 +32,13 @@ interface TeachersContract {
         fun handleSwipeAction(position: Int, swipeAction: SwipeAction)
     }
 
-    interface Listener : MvpInteractor.Listener
+    interface Listener : MvpInteractor.Listener {
+        fun onCheckUser(data: Pair<Long, Boolean>?, throwable: Throwable?)
+    }
 
     interface Interactor : MvpInteractor<Listener> {
         fun getRequestFactory(page: Int): Single<List<Teacher>>
+        fun checkUser(userId: Long)
     }
 
     interface InputModule {

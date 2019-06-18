@@ -26,6 +26,6 @@ interface UserInfoContract {
     }
 
     interface InputModule {
-        fun createFragment(userId: Long): Fragment
+        fun createFragment(userId: Long, isMe: Boolean): Fragment
     }
 }

@@ -5,7 +5,7 @@ import com.project.mobile_university.presentation.user_info.contract.UserInfoCon
 import com.project.mobile_university.presentation.user_info.view.UserInfoFragment
 
 class UserInfoInputModule : UserInfoContract.InputModule {
-    override fun createFragment(userId: Long): Fragment {
-        return UserInfoFragment.createInstance(userId)
+    override fun createFragment(userId: Long, isMe: Boolean): Fragment {
+        return UserInfoFragment.createInstance(userId, isMe)
     }
 }

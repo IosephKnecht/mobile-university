@@ -149,8 +149,8 @@ class TeachersFragment : AbstractFragment<TeachersContract.Presenter>() {
                 }
             })
 
-            showProfile.observe(viewLifecycleOwner, Observer { userId ->
-                userId?.let { (parentFragment as? Host)?.showUserInfo(it) }
+            showProfile.observe(viewLifecycleOwner, Observer { bundle ->
+                bundle?.let { (userId, isMe) -> (parentFragment as? Host)?.showUserInfo(userId, isMe) }
             })
         }
     }
