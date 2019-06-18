@@ -62,7 +62,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 2L,
@@ -77,7 +78,8 @@ object Beans {
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 3L,
@@ -92,7 +94,8 @@ object Beans {
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
 
     )
@@ -111,7 +114,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 5L,
@@ -126,7 +130,8 @@ object Beans {
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
     )
 
@@ -144,7 +149,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 8L,
@@ -159,7 +165,8 @@ object Beans {
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 9L,
@@ -174,7 +181,8 @@ object Beans {
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
     )
 
@@ -192,7 +200,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
     )
 
@@ -210,7 +219,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 15L,
@@ -225,7 +235,8 @@ object Beans {
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
     )
 
@@ -243,7 +254,8 @@ object Beans {
             lessonEnd = lessonTime[0].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 17L,
@@ -258,7 +270,8 @@ object Beans {
             lessonEnd = lessonTime[1].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         ),
         Lesson(
             extId = 18L,
@@ -273,7 +286,8 @@ object Beans {
             lessonEnd = lessonTime[2].second,
             subgroupList = subgroups,
             lessonStatus = LessonStatus.READY,
-            checkListExtId = null
+            checkListExtId = null,
+            coordinates = null
         )
     )
 

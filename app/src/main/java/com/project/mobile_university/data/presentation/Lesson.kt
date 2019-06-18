@@ -14,7 +14,8 @@ data class Lesson(
     val teacherName: String,
     val teacherExtId: Long,
     val lessonStatus: LessonStatus?,
-    val checkListExtId: Long?
+    val checkListExtId: Long?,
+    val coordinates: List<String>?
 ) {
 
     fun deepCopy() = Lesson(
@@ -30,7 +31,8 @@ data class Lesson(
         teacherName = teacherName,
         teacherExtId = teacherExtId,
         lessonStatus = lessonStatus,
-        checkListExtId = checkListExtId
+        checkListExtId = checkListExtId,
+        coordinates = coordinates
     )
 
     override fun equals(other: Any?): Boolean {
@@ -51,6 +53,7 @@ data class Lesson(
         if (teacherExtId != other.teacherExtId) return false
         if (lessonStatus != other.lessonStatus) return false
         if (checkListExtId != other.checkListExtId) return false
+        if (coordinates != other.coordinates) return false
 
         return true
     }
@@ -68,6 +71,9 @@ data class Lesson(
         result = 31 * result + teacherExtId.hashCode()
         result = 31 * result + (lessonStatus?.hashCode() ?: 0)
         result = 31 * result + (checkListExtId?.hashCode() ?: 0)
+        result = 31 * result + (coordinates?.hashCode() ?: 0)
         return result
     }
+
+
 }

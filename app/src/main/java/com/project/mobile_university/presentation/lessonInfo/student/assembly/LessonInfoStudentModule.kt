@@ -9,6 +9,7 @@ import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.student.interactor.LessonInfoStudentInteractor
 import com.project.mobile_university.presentation.lessonInfo.student.presenter.LessonInfoStudentPresenter
+import com.project.mobile_university.presentation.lessonInfo.student.router.LessonInfoStudentRouter
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -25,14 +26,27 @@ class LessonInfoModule {
     fun provideInteractor(scheduleRepository: ScheduleRepository): LessonInfoStudentContract.Interactor {
         return LessonInfoStudentInteractor(scheduleRepository)
     }
+
+    @Provides
+    @PerFeatureLayerScope
+    fun provideRouter(): LessonInfoStudentContract.Router {
+        return LessonInfoStudentRouter()
+    }
 }
 
 @PerFeatureLayerScope
-class LessonInfoStudentFactory @Inject constructor(private val interactor: LessonInfoStudentContract.Interactor,
-                                            private val lessonId: Long) : ViewModelProvider.Factory {
+class LessonInfoStudentFactory @Inject constructor(
+    private val interactor: LessonInfoStudentContract.Interactor,
+    private val lessonId: Long,
+    private val router: LessonInfoStudentContract.Router
+) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LessonInfoStudentPresenter(lessonId, interactor) as T
+        return LessonInfoStudentPresenter(
+            lessonId,
+            interactor,
+            router
+        ) as T
     }
 
 }

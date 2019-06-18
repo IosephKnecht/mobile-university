@@ -62,21 +62,26 @@ class LessonInfoTeacherFragment : AbstractFragment<LessonInfoTeacherContract.Pre
 
         adapter = TeacherSubgroupAdapter()
 
-        binding.lessonInfo = presenter
-        binding.setLifecycleOwner(viewLifecycleOwner)
+        with(binding) {
+            lessonInfo = presenter
+            setLifecycleOwner(viewLifecycleOwner)
 
-        binding.subgroupList.apply {
-            adapter = this@LessonInfoTeacherFragment.adapter
-            setHasFixedSize(false)
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
-            })
-        }
+            subgroupList.apply {
+                adapter = this@LessonInfoTeacherFragment.adapter
+                setHasFixedSize(false)
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                    this.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_divider)!!)
+                })
+            }
 
+            lessonInfoRefresh.setOnRefreshListener {
+                presenter.obtainLessonFromOnline()
+            }
 
-        binding.lessonInfoRefresh.setOnRefreshListener {
-            presenter.obtainLessonFromOnline()
+            geoTag.setOnClickListener {
+                presenter.showLocation()
+            }
         }
     }
 

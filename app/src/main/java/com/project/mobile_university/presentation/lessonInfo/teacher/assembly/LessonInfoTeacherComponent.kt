@@ -9,6 +9,7 @@ import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.interactor.LessonInfoTeacherInteractor
 import com.project.mobile_university.presentation.lessonInfo.teacher.presenter.LessonInfoTeacherPresenter
+import com.project.mobile_university.presentation.lessonInfo.teacher.router.LessonInfoTeacherRouter
 import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
@@ -48,15 +49,26 @@ class LessonInfoTeacherModule {
     ): LessonInfoTeacherContract.Presenter {
         return ViewModelProviders.of(fragment, factory).get(LessonInfoTeacherPresenter::class.java)
     }
+
+    @Provides
+    @PerFeatureLayerScope
+    fun provideRouter(): LessonInfoTeacherContract.Router {
+        return LessonInfoTeacherRouter()
+    }
 }
 
 @PerFeatureLayerScope
 class LessonInfoTeacherViewModelFactory @Inject constructor(
     private val lessonExtId: Long,
-    private val interactor: LessonInfoTeacherContract.Interactor
+    private val interactor: LessonInfoTeacherContract.Interactor,
+    private val router: LessonInfoTeacherContract.Router
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LessonInfoTeacherPresenter(lessonExtId, interactor) as T
+        return LessonInfoTeacherPresenter(
+            lessonExtId,
+            interactor,
+            router
+        ) as T
     }
 }
