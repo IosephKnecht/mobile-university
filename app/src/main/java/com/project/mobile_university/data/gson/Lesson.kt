@@ -28,5 +28,7 @@ data class Lesson(
     @SerializedName("lesson_status")
     val lessonStatus: Int,
     @SerializedName("check_list_id")
-    val checkListExtId: Long?
+    val checkListExtId: Long?,
+    @SerializedName("coordinates")
+    val coordinates: List<String>?
 )

@@ -2,6 +2,7 @@ package com.project.mobile_university.data.room.entity
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import com.project.mobile_university.data.room.converter.GeoTagConverter
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -39,5 +40,8 @@ data class Lesson(
     @ColumnInfo(name = "lesson_status")
     var lessonStatus: Int = -1,
     @ColumnInfo(name = "check_list_ext_id")
-    var checkListExtId: Long? = null
+    var checkListExtId: Long? = null,
+    @ColumnInfo(name = "coordinates")
+    @field:TypeConverters(GeoTagConverter::class)
+    var coordinates: List<String>? = null
 )

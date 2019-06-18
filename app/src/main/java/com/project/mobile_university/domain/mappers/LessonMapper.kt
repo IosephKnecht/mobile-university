@@ -21,7 +21,8 @@ object LessonMapper {
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.gsonToSql(subgroupList),
                 lessonStatus = lessonStatus,
-                checkListExtId = checkListExtId
+                checkListExtId = checkListExtId,
+                coordinates = coordinates
             )
         }
     }
@@ -41,7 +42,8 @@ object LessonMapper {
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.presentationToSql(subgroupList),
                 lessonStatus = LessonStatusMapper.toInt(lessonStatus),
-                checkListExtId = checkListExtId
+                checkListExtId = checkListExtId,
+                coordinates = coordinates
             )
         }
     }
@@ -61,7 +63,8 @@ object LessonMapper {
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.sqlToPresetation(subgroupList),
                 lessonStatus = LessonStatusMapper.toPresentation(lessonStatus),
-                checkListExtId = checkListExtId
+                checkListExtId = checkListExtId,
+                coordinates = coordinates
             )
         }
     }
@@ -81,7 +84,8 @@ object LessonMapper {
                 lessonStatus = LessonStatusMapper.toPresentation(lessonStatus),
                 teacherExtId = teacherExtId,
                 subgroupList = SubgroupMapper.gsonToPresentation(subgroupList),
-                checkListExtId = checkListExtId
+                checkListExtId = checkListExtId,
+                coordinates = coordinates
             )
         }
     }
