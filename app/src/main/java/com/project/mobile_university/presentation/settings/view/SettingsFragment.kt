@@ -49,6 +49,7 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.viewModel = presenter
+        binding.setLifecycleOwner(viewLifecycleOwner)
 
         adapter = SettingsAdapter()
 
