@@ -17,6 +17,7 @@
     <string name="lesson_lecture_hall_desc">Lecture hall:</string>
 
     <string name="logout_warning_string">Do you really want to log out?</string>
+    <string name="failure_internet_connection_string">There is no internet connection, schedule may not be relevant.</string>
 
     <!--Subgroup schedule screen-->
     <string name="schedule_subgroup_empty_string">There are no lessons in the schedule. Perhaps this day should rest or do homework?</string>

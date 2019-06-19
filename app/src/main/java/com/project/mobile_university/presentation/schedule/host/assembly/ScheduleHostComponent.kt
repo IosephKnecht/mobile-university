@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.project.mobile_university.domain.shared.LoginRepository
+import com.project.mobile_university.domain.shared.NetworkService
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
@@ -92,11 +93,13 @@ class ScheduleHostModule {
     @PerFeatureLayerScope
     fun provideInteractor(
         sharedPreferenceService: SharedPreferenceService,
-        loginRepository: LoginRepository
+        loginRepository: LoginRepository,
+        networkService: NetworkService
     ): ScheduleHostContract.Interactor {
         return ScheduleHostInteractor(
             sharedPreferenceService,
-            loginRepository
+            loginRepository,
+            networkService
         )
     }
 }

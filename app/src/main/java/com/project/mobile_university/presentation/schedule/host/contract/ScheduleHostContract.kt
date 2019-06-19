@@ -31,6 +31,7 @@ interface ScheduleHostContract {
 
     interface InternalNavigationStorage {
         val currentScreen: LiveData<CurrentScreenType>
+        val networkState: LiveData<Boolean>
     }
 
     interface Presenter : MvpPresenter, ExternalObservableStorage, InternalNavigationStorage {
@@ -57,6 +58,7 @@ interface ScheduleHostContract {
     interface Listener : MvpInteractor.Listener {
         fun onObtainUserProfile(userProfile: User?, throwable: Throwable?)
         fun onLogout(throwable: Throwable?)
+        fun onNetworkStateChanged(isConnected: Boolean)
     }
 
     interface Interactor : MvpInteractor<Listener> {
