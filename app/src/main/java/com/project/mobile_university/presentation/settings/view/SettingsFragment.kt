@@ -73,9 +73,9 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
             if (message != null) context?.let { Toasty.error(it, message, Toast.LENGTH_LONG).show() }
         })
 
-        presenter.successLogout.observe(viewLifecycleOwner, Observer { success ->
+        presenter.successClear.observe(viewLifecycleOwner, Observer { success ->
             if (success == true) {
-                val message = context!!.getString(R.string.success_logout)
+                val message = context!!.getString(R.string.success_clear_cache)
                 context?.let { Toasty.success(it, message, Toast.LENGTH_SHORT).show() }
             }
         })

@@ -46,6 +46,7 @@
     <string name="clear_cache_primary_text">Clear cache</string>
     <string name="clear_cache_description">Allows to reduce the amount of application memory, but reduces the speed of the application</string>
     <string name="success_logout">Managed to successfully close session</string>
+    <string name="success_clear_cache">Cache was successfully cleared.</string>
     <!--Settings screen scope-->
 
     <!--Lesson info screen-->

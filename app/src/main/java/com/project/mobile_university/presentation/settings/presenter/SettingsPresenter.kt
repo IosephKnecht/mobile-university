@@ -9,14 +9,15 @@ import com.project.mobile_university.presentation.settings.contract.SettingsCont
 import com.project.mobile_university.presentation.settings.contract.SettingsContract.State
 
 class SettingsPresenter(
-    private val interactor: SettingsContract.Interactor,
-    private val router: SettingsContract.Router
-) : AbstractPresenter(), SettingsContract.Presenter, SettingsContract.Listener,
-    SettingsContract.ObservableStorage, SettingsContract.RouterListener {
+    private val interactor: SettingsContract.Interactor
+) : AbstractPresenter(),
+    SettingsContract.Presenter,
+    SettingsContract.Listener,
+    SettingsContract.ObservableStorage {
 
     override val userInfo = MutableLiveData<UserInfo>()
     override val throwableObserver = SingleLiveData<String>()
-    override val successLogout = SingleLiveData<Boolean>()
+    override val successClear = SingleLiveData<Boolean>()
 
     private var state = State.IDLE
 
@@ -42,17 +43,13 @@ class SettingsPresenter(
     }
 
     override fun clearCache() {
-        throwableObserver.value = "The functionality is in development."
-    }
-
-    override fun exit() {
-        interactor.logout()
+        interactor.clearAllTable()
     }
 
     override fun onObtainUserInfo(userInfo: UserInfo?, throwable: Throwable?) {
         when {
             throwable != null -> {
-                throwableObserver.postValue(throwable.localizedMessage)
+                throwableObserver.value = throwable.localizedMessage
             }
             userInfo != null -> {
                 this.userInfo.value = userInfo
@@ -60,16 +57,15 @@ class SettingsPresenter(
         }
     }
 
-    override fun onExit(throwable: Throwable?) {
-        if (throwable != null) {
-            throwableObserver.postValue(throwable.localizedMessage)
-        } else {
-            successLogout.value = true
-            router.goToAuthScreen(androidComponent!!)
+    override fun onClearCache(throwable: Throwable?) {
+        when {
+            throwable != null -> {
+                this.throwableObserver.value = throwable.localizedMessage
+            }
+            else -> {
+                successClear.value = true
+            }
         }
-    }
-
-    override fun onClearCache() {
     }
 
     override fun onDestroy() {

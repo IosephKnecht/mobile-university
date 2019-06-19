@@ -30,14 +30,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        // FIXME: bad solve
-        if (intent?.getBooleanExtra("LOGOUT", false) == true) {
-            supportFragmentManager.addFragment(LoginFragment.createInstance())
-            intent?.removeExtra("LOGOUT")
-            return
-        }
-
         if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
             val previousUser = isPreviousUser()
 

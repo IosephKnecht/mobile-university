@@ -2,6 +2,7 @@ package com.project.mobile_university.presentation.settings.interactor
 
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
 import com.project.mobile_university.domain.mappers.UserMapper
+import com.project.mobile_university.domain.shared.DatabaseService
 import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
 import com.project.mobile_university.presentation.common.InteractorWithErrorHandler
@@ -11,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class SettingsInteractor(
     private val loginRepository: LoginRepository,
+    private val databaseService: DatabaseService,
     exceptionConverter: ExceptionConverter
 ) : InteractorWithErrorHandler<SettingsContract.Listener>(exceptionConverter), SettingsContract.Interactor {
 
@@ -22,10 +24,13 @@ class SettingsInteractor(
         })
     }
 
-    override fun logout() {
-        compositeDisposable.add(simpleDiscardResult(loginRepository.logout()) { listener, throwable ->
-            listener?.onExit(throwable)
-        })
+    override fun clearAllTable() {
+        compositeDisposable.add(
+            discardResult(databaseService.clearAll()) { listener: SettingsContract.Listener?,
+                                                        throwable: Throwable? ->
+                listener?.onClearCache(throwable)
+            }
+        )
     }
 
     override fun onDestroy() {
