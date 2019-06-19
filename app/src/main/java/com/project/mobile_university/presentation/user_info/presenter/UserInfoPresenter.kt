@@ -22,12 +22,12 @@ class UserInfoPresenter(
     override val loading = MutableLiveData<Boolean>()
     override val userContacts = MutableLiveData<List<UserContactViewState>>()
 
-    init {
-        obtainUserInfo()
-    }
-
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
+
+        if (userInfo.value == null) {
+            obtainUserInfo()
+        }
 
         interactor.setListener(this)
         router.setListener(this)

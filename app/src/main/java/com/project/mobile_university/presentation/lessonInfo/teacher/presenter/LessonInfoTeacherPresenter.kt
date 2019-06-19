@@ -22,13 +22,13 @@ class LessonInfoTeacherPresenter(
     override val loadingStateLesson = MutableLiveData<Boolean>()
     override val loadingStateCheckList = MutableLiveData<Boolean>()
 
-    init {
-        obtainLessonFromCache()
-    }
-
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
         interactor.setListener(this)
+
+        if (lesson.value == null) {
+            obtainLessonFromCache()
+        }
     }
 
     override fun detachAndroidComponent() {

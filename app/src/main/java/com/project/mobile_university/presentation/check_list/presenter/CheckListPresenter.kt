@@ -30,13 +30,13 @@ class CheckListPresenter(
 
     private val compositeDisposable = CompositeDisposable()
 
-    init {
-        getCheckList()
-    }
-
     override fun attachAndroidComponent(androidComponent: AndroidComponent) {
         super.attachAndroidComponent(androidComponent)
         interactor.setListener(this)
+
+        if (checkList.value == null) {
+            getCheckList()
+        }
     }
 
     override fun detachAndroidComponent() {
