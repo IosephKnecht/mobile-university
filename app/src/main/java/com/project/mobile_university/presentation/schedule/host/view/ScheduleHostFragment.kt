@@ -1,5 +1,6 @@
 package com.project.mobile_university.presentation.schedule.host.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
 import com.project.iosephknecht.viper.view.AbstractFragment
 import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.presentation.common.FragmentBackPressed
 import com.project.mobile_university.presentation.lessonInfo.teacher.view.LessonInfoTeacherFragment
+import com.project.mobile_university.presentation.reset
 import com.project.mobile_university.presentation.schedule.host.assembly.ScheduleHostComponent
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
 import com.project.mobile_university.presentation.schedule.teacher.view.TeacherScheduleFragment
 import com.project.mobile_university.presentation.schedule_range.view.ScheduleRangeFragment
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 import com.project.mobile_university.presentation.teachers.view.TeachersFragment
 import com.project.mobile_university.presentation.visible
 import devs.mulham.horizontalcalendar.HorizontalCalendar
@@ -33,10 +37,13 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
     TeacherScheduleFragment.Host,
     LessonInfoTeacherFragment.Host,
     TeachersFragment.Host,
-    ScheduleRangeFragment.Host {
+    ScheduleRangeFragment.Host,
+    SettingsFragment.Host {
 
     private lateinit var diComponent: ScheduleHostComponent
     private lateinit var calendar: HorizontalCalendar
+
+    private var logoutWarningDialog: MaterialDialog? = null
 
     companion object {
         private const val SCREEN_TYPE = "screen_type"
@@ -91,6 +98,7 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                     ScheduleHostContract.CurrentScreenType.SUBGROUP -> {
                         calendar.calendarView.visible(true)
                         bottom_navigation?.visible(true)
+                        navigation_view?.reset()
                     }
                     ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN,
                     ScheduleHostContract.CurrentScreenType.USER_INFO,
@@ -126,7 +134,18 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
         presenter.onShowScheduleRange(teacherId, startDate, endDate)
     }
 
+    override fun logout() {
+        context?.let {
+            if (logoutWarningDialog == null) {
+                logoutWarningDialog = buildWarningLogoutDialog(it)
+            }
+            logoutWarningDialog?.show()
+        }
+    }
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        val isLogout = menuItem.itemId == R.id.logout
+
         when (menuItem.itemId) {
             R.id.teacher_schedule -> {
                 presenter.onShowTeachersScreen()
@@ -134,14 +153,16 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
             R.id.profile -> {
                 presenter.showProfile()
             }
+            R.id.logout -> {
+                logout()
+            }
             else -> {
 
             }
         }
-
         drawer?.closeDrawers()
 
-        return false
+        return !isLogout
     }
 
     override fun onBackPressed(): Boolean {
@@ -192,5 +213,20 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
             }
             return@listener true
         }
+    }
+
+    private fun buildWarningLogoutDialog(context: Context): MaterialDialog {
+        return MaterialDialog.Builder(context)
+            .content(R.string.logout_warning_string)
+            .negativeText(android.R.string.ok)
+            .positiveText(android.R.string.cancel)
+            .onNegative { _, _ ->
+                presenter.logout()
+            }
+            .onPositive { dialog, _ ->
+                dialog.dismiss()
+            }
+            .cancelable(false)
+            .build()
     }
 }

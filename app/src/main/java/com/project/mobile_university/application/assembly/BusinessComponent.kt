@@ -2,6 +2,7 @@ package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerBusinessLayerScope
 import com.project.mobile_university.domain.adapters.exception.ExceptionConverter
+import com.project.mobile_university.domain.shared.DatabaseService
 import com.project.mobile_university.domain.shared.LoginRepository
 import com.project.mobile_university.domain.shared.ScheduleRepository
 import com.project.mobile_university.domain.shared.SharedPreferenceService
@@ -14,4 +15,5 @@ interface BusinessComponent {
     fun sharedPrefService(): SharedPreferenceService
     fun errorHandler(): ExceptionConverter
     fun scheduleRepository(): ScheduleRepository
+    fun databaseService(): DatabaseService
 }

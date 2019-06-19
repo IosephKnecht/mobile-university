@@ -2,9 +2,11 @@ package com.project.mobile_university.presentation.settings.view.adapter
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import com.project.mobile_university.R
 import com.project.mobile_university.data.presentation.SettingsItem
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
+import com.project.mobile_university.presentation.settings.view.SettingsFragment
 
 enum class SettingsEnum(
     val id: Int,
@@ -23,11 +25,14 @@ enum class SettingsEnum(
 }
 
 object SettingsItemBuilder {
-    fun buildList(context: Context, presenter: SettingsContract.Presenter): List<SettingsItem> {
+    fun buildList(fragment: SettingsFragment): List<SettingsItem> {
         val settingsList = mutableListOf<SettingsItem>()
+        val context = fragment.context
 
         SettingsEnum.values().forEach { settingsEnum ->
-            settingsList.add(enumToItem(context, settingsEnum, buildAction(settingsEnum, presenter)))
+            context?.let {
+                settingsList.add(enumToItem(it, settingsEnum, buildAction(settingsEnum, fragment)))
+            }
         }
 
         return settingsList
@@ -35,14 +40,16 @@ object SettingsItemBuilder {
 
     private fun buildAction(
         enum: SettingsEnum,
-        presenter: SettingsContract.Presenter
+        fragment: SettingsFragment
     ): (() -> Unit)? {
+        val presenter = fragment.presenter
+
         return when (enum) {
             SettingsEnum.CLEAR_CACHE -> {
                 { presenter.clearCache() }
             }
             SettingsEnum.EXIT -> {
-                { presenter.exit() }
+                { (fragment.parentFragment as? SettingsFragment.Host)?.logout() }
             }
         }
     }

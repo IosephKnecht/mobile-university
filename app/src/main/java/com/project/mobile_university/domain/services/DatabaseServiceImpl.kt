@@ -95,4 +95,10 @@ class DatabaseServiceImpl(private val database: UniversityDatabase) : DatabaseSe
             )
         }
     }
+
+    override fun clearAll(): Completable {
+        return Completable.fromCallable {
+            database.clearAllTables()
+        }
+    }
 }

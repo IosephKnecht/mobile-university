@@ -15,6 +15,7 @@ import com.project.mobile_university.R
 import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.databinding.FragmentSettingsBinding
 import com.project.mobile_university.presentation.common.FragmentBackPressed
+import com.project.mobile_university.presentation.schedule.host.view.ScheduleHostListener
 import com.project.mobile_university.presentation.settings.assembly.SettingsComponent
 import com.project.mobile_university.presentation.settings.contract.SettingsContract
 import com.project.mobile_university.presentation.settings.view.adapter.SettingsAdapter
@@ -33,6 +34,8 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var diComponent: SettingsComponent
     private lateinit var adapter: SettingsAdapter
+
+    interface Host : ScheduleHostListener
 
     override fun inject() {
         diComponent = AppDelegate.presentationComponent
@@ -64,16 +67,16 @@ class SettingsFragment : AbstractFragment<SettingsContract.Presenter>(), Fragmen
             })
         }
 
-        adapter.reload(SettingsItemBuilder.buildList(context!!, presenter))
+        adapter.reload(SettingsItemBuilder.buildList(this))
 
-        presenter.throwableObserver.observe(viewLifecycleOwner, Observer {
-            if (it != null) Toasty.error(context!!, it, Toast.LENGTH_LONG).show()
+        presenter.throwableObserver.observe(viewLifecycleOwner, Observer { message ->
+            if (message != null) context?.let { Toasty.error(it, message, Toast.LENGTH_LONG).show() }
         })
 
-        presenter.successLogout.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                val message = context!!.getString(R.string.success_logout)
-                Toasty.success(context!!, message, Toast.LENGTH_SHORT).show()
+        presenter.successClear.observe(viewLifecycleOwner, Observer { success ->
+            if (success == true) {
+                val message = context!!.getString(R.string.success_clear_cache)
+                context?.let { Toasty.success(it, message, Toast.LENGTH_SHORT).show() }
             }
         })
     }

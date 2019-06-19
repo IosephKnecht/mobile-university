@@ -16,14 +16,16 @@
     <string name="lesson_teacher_desc">Teacher:</string>
     <string name="lesson_lecture_hall_desc">Lecture hall:</string>
 
+    <string name="logout_warning_string">Do you really want to log out?</string>
+
     <!--Subgroup schedule screen-->
-        <string name="schedule_subgroup_empty_string">There are no lessons in the schedule. Perhaps this day should rest or do homework?</string>
+    <string name="schedule_subgroup_empty_string">There are no lessons in the schedule. Perhaps this day should rest or do homework?</string>
     <!--Subgroup schedule screen-->
 
     <!--Error message scope-->
-        <string name="no_authorize_message">Sorry, your login or password was be wrong</string>
-        <string name="connection_message">Having trouble connecting, please check the connection.</string>
-        <string name="unknown_http_message">Something went wrong when connected.</string>
+    <string name="no_authorize_message">Sorry, your login or password was be wrong</string>
+    <string name="connection_message">Having trouble connecting, please check the connection.</string>
+    <string name="unknown_http_message">Something went wrong when connected.</string>
     <!--Error message scope-->
 
     <string-array name="server_url_array">
@@ -33,108 +35,109 @@
     </string-array>
 
     <!--Bottom navigation scope-->
-        <string name="student_schedule_string">Timetable of classes</string>
-        <string name="teacher_schedule_string">Schedule</string>
-        <string name="settings_string">Settings</string>
+    <string name="student_schedule_string">Timetable of classes</string>
+    <string name="teacher_schedule_string">Schedule</string>
+    <string name="settings_string">Settings</string>
     <!--Bottom navigation scope-->
 
     <!--Settings screen scope-->
-        <string name="exit_primary_text">Exit to app</string>
-        <string name="exit_description">Close session account</string>
-        <string name="clear_cache_primary_text">Clear cache</string>
-        <string name="clear_cache_description">Allows to reduce the amount of application memory, but reduces the speed of the application</string>
-        <string name="success_logout">Managed to successfully close session</string>
+    <string name="exit_primary_text">Exit to app</string>
+    <string name="exit_description">Close session account</string>
+    <string name="clear_cache_primary_text">Clear cache</string>
+    <string name="clear_cache_description">Allows to reduce the amount of application memory, but reduces the speed of the application</string>
+    <string name="success_logout">Managed to successfully close session</string>
+    <string name="success_clear_cache">Cache was successfully cleared.</string>
     <!--Settings screen scope-->
 
     <!--Lesson info screen-->
-        <string name="lesson_type_string">Lesson type: %s</string>
-        <string name="subject_string">Subject: %s</string>
-        <string name="hall_string">Hall: %s</string>
-        <string name="teacher_string">Teacher: %s</string>
-        <string name="subgroups_title">Subgroups</string>
-        <string name="subgroup_string">Subgroup: %s</string>
-        <string name="human_value_string">Human value: %s</string>
-        <string name="lesson_status_string">Lesson\'s status: %s</string>
-        <string name="lesson_info_error_string">Failed to get information for lesson.\nTry to refresh page.</string>
-        <string name="lesson_info_check_list_header_string">Check list</string>
-        <string name="lesson_info_check_list_create">Create</string>
-        <string name="lesson_info_check_list_show">Show</string>
-        <string name="show_location_select">Select applications to view the location.</string>
-        <string name="show_location_error">There are no pre-installed map applications on your device (Yandex or Google Maps).</string>
+    <string name="lesson_type_string">Lesson type: %s</string>
+    <string name="subject_string">Subject: %s</string>
+    <string name="hall_string">Hall: %s</string>
+    <string name="teacher_string">Teacher: %s</string>
+    <string name="subgroups_title">Subgroups</string>
+    <string name="subgroup_string">Subgroup: %s</string>
+    <string name="human_value_string">Human value: %s</string>
+    <string name="lesson_status_string">Lesson\'s status: %s</string>
+    <string name="lesson_info_error_string">Failed to get information for lesson.\nTry to refresh page.</string>
+    <string name="lesson_info_check_list_header_string">Check list</string>
+    <string name="lesson_info_check_list_create">Create</string>
+    <string name="lesson_info_check_list_show">Show</string>
+    <string name="show_location_select">Select applications to view the location.</string>
+    <string name="show_location_error">There are no pre-installed map applications on your device (Yandex or Google Maps).</string>
     <!--Lesson info screen-->
 
     <!--Navigation view-->
-        <string name="navigation_profile">Profile</string>
-        <string name="navigation_teacher_schedule">Teacher\'s schedule</string>
-        <string name="navigation_home_works">Home works (not implemented)</string>
-        <string name="navigation_logout">Logout (not implemented)</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="navigation_teacher_schedule">Teacher\'s schedule</string>
+    <string name="navigation_home_works">Home works (not implemented)</string>
+    <string name="navigation_logout">Logout</string>
     <!--Navigation view-->
 
     <!--Lesson status strings-->
-        <string name="lesson_status_ready_string">Ready</string>
-        <string name="lesson_status_pending_string">Pending</string>
-        <string name="lesson_status_canceled_string">Canceled</string>
+    <string name="lesson_status_ready_string">Ready</string>
+    <string name="lesson_status_pending_string">Pending</string>
+    <string name="lesson_status_canceled_string">Canceled</string>
     <!--Lesson status strings-->
 
     <!--Schedule teacher screen-->
-        <string name="positive_change_lesson_status_string">Change</string>
-        <string name="negative_text_lesson_status_string">Cancel</string>
-        <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
-        <string name="teacher_schedule_screen_empty_string">There is nothing in schedule for this day, so you can relax.</string>
+    <string name="positive_change_lesson_status_string">Change</string>
+    <string name="negative_text_lesson_status_string">Cancel</string>
+    <string name="warning_change_lesson_status_string">Do you really want to change lesson status from %s to %s?</string>
+    <string name="teacher_schedule_screen_empty_string">There is nothing in schedule for this day, so you can relax.</string>
     <!--Schedule teacher screen-->
 
     <!--Check list screen-->
-        <string name="sync_check_list_string">Sync</string>
-        <string name="sync_warning_content_string">Do you really want to sync the checklist?\nTotal students in check list %s\nJust came students %s.</string>
-        <string name="sync_negative_text">Recheck</string>
-        <string name="sync_positive_text">Confirm sync</string>
-        <string name="check_list_empty_string">Checklist does not contain any records.So be it, should not, try to update data.</string>
+    <string name="sync_check_list_string">Sync</string>
+    <string name="sync_warning_content_string">Do you really want to sync the checklist?\nTotal students in check list %s\nJust came students %s.</string>
+    <string name="sync_negative_text">Recheck</string>
+    <string name="sync_positive_text">Confirm sync</string>
+    <string name="check_list_empty_string">Checklist does not contain any records.So be it, should not, try to update data.</string>
     <!--Check list screen-->
 
     <!--Check list status-->
-        <string name="not_come_status_string">Not come</string>
-        <string name="came_late_status_string">Came late</string>
-        <string name="not_come_with_approved_string">Not come with approved</string>
-        <string name="has_come_string">Has come</string>
+    <string name="not_come_status_string">Not come</string>
+    <string name="came_late_status_string">Came late</string>
+    <string name="not_come_with_approved_string">Not come with approved</string>
+    <string name="has_come_string">Has come</string>
     <!--Check list status-->
 
     <!--Teachers screen-->
-        <string name="teachers_empty_string">It seems there is no teacher in the list.</string>
-        <string name="teachers_empty_error_string">An error occurred while loading the list of teachers.</string>
+    <string name="teachers_empty_string">It seems there is no teacher in the list.</string>
+    <string name="teachers_empty_error_string">An error occurred while loading the list of teachers.</string>
     <!--Teachers screen-->
 
     <!--User information screen-->
-        <string name="user_info_blank_first_name">first name missing</string>
-        <string name="user_info_blank_last_name">last name missing</string>
-        <string name="user_info_contacts_description">User contacts</string>
-        <string name="user_info_additional_description">Additional info</string>
-        <string name="user_info_fail_send_email_string">Your device does not have the necessary pre-installed applications for sending messages by email.</string>
+    <string name="user_info_blank_first_name">first name missing</string>
+    <string name="user_info_blank_last_name">last name missing</string>
+    <string name="user_info_contacts_description">User contacts</string>
+    <string name="user_info_additional_description">Additional info</string>
+    <string name="user_info_fail_send_email_string">Your device does not have the necessary pre-installed applications for sending messages by email.</string>
     <!--User information screen-->
 
     <!--Contact types-->
-        <string name="email_description">Email</string>
+    <string name="email_description">Email</string>
     <!--Contact types-->
 
     <!--Additional types-->
-        <string name="subgroup_description">Subgroup</string>
-        <string name="cathedra_description">Cathedra</string>
+    <string name="subgroup_description">Subgroup</string>
+    <string name="cathedra_description">Cathedra</string>
     <!--Additional types-->
 
     <!--Lesson type descriptions-->
-        <string name="lesson_type_lecture_description">Lecture</string>
-        <string name="lesson_type_practice_description">Practice</string>
-        <string name="lesson_seminar_description">Seminar</string>
-        <string name="lesson_type_colloquium">Colloquium</string>
+    <string name="lesson_type_lecture_description">Lecture</string>
+    <string name="lesson_type_practice_description">Practice</string>
+    <string name="lesson_seminar_description">Seminar</string>
+    <string name="lesson_type_colloquium">Colloquium</string>
     <!--Lesson type descriptions-->
 
     <!--Schedule range screen-->
-        <string name="schedule_range_empty_error_string">An error occurred while loading the list of schedule days.</string>
-        <string name="schedule_range_empty_string">It seems there is no schedule days in the list.</string>
+    <string name="schedule_range_empty_error_string">An error occurred while loading the list of schedule days.</string>
+    <string name="schedule_range_empty_string">It seems there is no schedule days in the list.</string>
     <!--Schedule range screen-->
-    
+
     <!--ScheduleSyncService-->
-        <string name="schedule_sync_foreground_title">Schedule synchronization</string>
-        <string name="schedule_sync_service_title_difference">Schedule changes detected</string>
-        <string name="schedule_sync_service_content_difference">For the next days there are changes in the schedule: %s</string>
+    <string name="schedule_sync_foreground_title">Schedule synchronization</string>
+    <string name="schedule_sync_service_title_difference">Schedule changes detected</string>
+    <string name="schedule_sync_service_content_difference">For the next days there are changes in the schedule: %s</string>
     <!--ScheduleSyncService-->
 </resources>

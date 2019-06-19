@@ -9,10 +9,7 @@
             android:id="@+id/teacher_schedule"
             android:icon="@drawable/ic_schedule"
             android:title="@string/navigation_teacher_schedule"/>
-        <item
-            android:id="@+id/homeworks"
-            android:icon="@drawable/ic_homework"
-            android:title="@string/navigation_home_works"/>
+
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"

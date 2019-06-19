@@ -3,6 +3,7 @@ package com.project.mobile_university.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.project.mobile_university.domain.UniversityApi
 import com.project.mobile_university.domain.adapters.exception.ExceptionAdapter
@@ -47,4 +48,11 @@ fun createUniversityApi(
 
 fun <T> MutableLiveData<T>.renotify() {
     this.value = value
+}
+
+fun NavigationView.reset() {
+    val size = menu.size()
+    for (i in 0 until size) {
+        menu.getItem(i)?.isChecked = false
+    }
 }

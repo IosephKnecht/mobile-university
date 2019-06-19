@@ -10,6 +10,7 @@ import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
+import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.host.interactor.ScheduleHostInteractor
 import com.project.mobile_university.presentation.schedule.host.presenter.ScheduleHostPresenter
@@ -70,7 +71,8 @@ class ScheduleHostModule {
         checkListInputModule: CheckListContract.InputModule,
         teachersInputModule: TeachersContract.InputModule,
         userInfoInputModule: UserInfoContract.InputModule,
-        scheduleRangeInputModule: ScheduleRangeContract.InputModule
+        scheduleRangeInputModule: ScheduleRangeContract.InputModule,
+        loginInputModule: LoginContract.InputModule
     ): ScheduleHostContract.Router {
         return ScheduleHostRouter(
             subgroupInputModule,
@@ -81,14 +83,21 @@ class ScheduleHostModule {
             checkListInputModule,
             teachersInputModule,
             userInfoInputModule,
-            scheduleRangeInputModule
+            scheduleRangeInputModule,
+            loginInputModule
         )
     }
 
     @Provides
     @PerFeatureLayerScope
-    fun provideInteractor(sharedPreferenceService: SharedPreferenceService): ScheduleHostContract.Interactor {
-        return ScheduleHostInteractor(sharedPreferenceService)
+    fun provideInteractor(
+        sharedPreferenceService: SharedPreferenceService,
+        loginRepository: LoginRepository
+    ): ScheduleHostContract.Interactor {
+        return ScheduleHostInteractor(
+            sharedPreferenceService,
+            loginRepository
+        )
     }
 }
 

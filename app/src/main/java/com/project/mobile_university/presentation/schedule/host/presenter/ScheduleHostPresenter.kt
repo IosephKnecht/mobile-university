@@ -77,6 +77,21 @@ class ScheduleHostPresenter(
         interactor.obtainUserProfile()
     }
 
+    override fun logout() {
+        interactor.logout()
+    }
+
+    override fun onLogout(throwable: Throwable?) {
+        when (throwable) {
+            null -> {
+                androidComponent?.let { router.logout(it) }
+            }
+            else -> {
+                throwable.printStackTrace()
+            }
+        }
+    }
+
     override fun onObtainUserProfile(userProfile: User?, throwable: Throwable?) {
         when {
             userProfile != null -> {
@@ -84,7 +99,8 @@ class ScheduleHostPresenter(
                     router.showUserInfo(
                         androidComponent = it,
                         userId = userProfile.userId,
-                        isMe = true
+                        isMe = true,
+                        needPopBackStack = initialScreenType
                     )
                 }
             }
@@ -127,7 +143,7 @@ class ScheduleHostPresenter(
     }
 
     override fun onShowTeachersScreen() {
-        router.showTeachersScreen(androidComponent!!)
+        androidComponent?.let { router.showTeachersScreen(it, initialScreenType) }
     }
 
     override fun onShowUserInfo(userId: Long, isMe: Boolean) {

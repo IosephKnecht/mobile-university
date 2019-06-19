@@ -16,30 +16,22 @@ interface SettingsContract {
     interface ObservableStorage {
         val userInfo: LiveData<UserInfo>
         val throwableObserver: LiveData<String>
-        val successLogout: LiveData<Boolean>
+        val successClear: LiveData<Boolean>
     }
 
     interface Presenter : MvpPresenter, ObservableStorage {
         fun obtainUserInfo()
         fun clearCache()
-        fun exit()
     }
 
     interface Listener : MvpInteractor.Listener {
         fun onObtainUserInfo(userInfo: UserInfo?, throwable: Throwable?)
-        fun onClearCache()
-        fun onExit(throwable: Throwable?)
+        fun onClearCache(throwable: Throwable?)
     }
 
     interface Interactor : MvpInteractor<Listener> {
         fun getUserInfo()
-        fun logout()
-    }
-
-    interface RouterListener : MvpRouter.Listener
-
-    interface Router : MvpRouter<RouterListener> {
-        fun goToAuthScreen(androidComponent: AndroidComponent)
+        fun clearAllTable()
     }
 
     interface InputModule {

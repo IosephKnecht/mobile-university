@@ -1,13 +1,14 @@
 package com.project.mobile_university.application.assembly
 
 import com.project.mobile_university.application.annotations.PerPresentationLayerScope
-import com.project.mobile_university.presentation.PerFeatureLayerScope
 import com.project.mobile_university.presentation.check_list.CheckListInputModule
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.lessonInfo.student.LessonInfoStudentInputModule
 import com.project.mobile_university.presentation.lessonInfo.student.contract.LessonInfoStudentContract
 import com.project.mobile_university.presentation.lessonInfo.teacher.LessonInfoTeacherInputModule
 import com.project.mobile_university.presentation.lessonInfo.teacher.contract.LessonInfoTeacherContract
+import com.project.mobile_university.presentation.login.LoginInputModule
+import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.schedule.host.ScheduleHostInputModule
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.ScheduleInputModule
@@ -27,6 +28,12 @@ import dagger.Provides
 
 @Module
 class PresentationModule {
+
+    @Provides
+    @PerPresentationLayerScope
+    fun provideLoginInputModule(): LoginContract.InputModule {
+        return LoginInputModule()
+    }
 
     @Provides
     @PerPresentationLayerScope

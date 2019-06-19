@@ -23,4 +23,6 @@ interface DatabaseService {
     fun getLessonWithSubgroup(lessonExtId: Long): Single<Lesson>
 
     fun saveLessons(lessons: List<Lesson>): Single<List<Long>>
+
+    fun clearAll(): Completable
 }
