@@ -42,6 +42,11 @@ class ScheduleRepositoryImpl(
                         val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
                         databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
                     }.map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
+            }.onErrorResumeNext {
+                val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+
+                databaseService.getScheduleDayListForSubgroup(datesRange, subgroupId)
+                    .map { sqlDays -> sqlDays.map { ScheduleDayMapper.toPresentation(it) } }
             }
     }
 
@@ -54,12 +59,16 @@ class ScheduleRepositoryImpl(
         return apiService.getScheduleOfWeekForTeacher(startDate, endDate, teacherId)
             .flatMap {
                 databaseService.saveScheduleDay(it.objectList!!.map { sqlDay -> ScheduleDayMapper.toDatabase(sqlDay) })
-            }
-            .flatMap {
+                    .flatMap {
+                        val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+                        databaseService.getScheduleDayListForTeacher(datesRange, teacherId)
+                    }.map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
+            }.onErrorResumeNext {
                 val datesRange = CalendarUtil.buildRangeBetweenDates(startDate, endDate)
+
                 databaseService.getScheduleDayListForTeacher(datesRange, teacherId)
+                    .map { sqlDays -> sqlDays.map { ScheduleDayMapper.toPresentation(it) } }
             }
-            .map { sqlDays -> sqlDays.map { sqlDay -> ScheduleDayMapper.toPresentation(sqlDay) } }
     }
 
     override fun syncSchedule(): Single<List<ScheduleDay>> {
