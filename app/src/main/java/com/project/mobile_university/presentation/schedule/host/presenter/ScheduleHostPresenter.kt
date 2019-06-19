@@ -26,6 +26,7 @@ class ScheduleHostPresenter(
 
     override val dateChange = MutableLiveData<String>()
     override val currentScreen = MutableLiveData<CurrentScreenType>()
+    override val networkState = MutableLiveData<Boolean>()
 
     private val loginDisposable = SerialDisposable()
 
@@ -108,6 +109,10 @@ class ScheduleHostPresenter(
                 throwable.printStackTrace()
             }
         }
+    }
+
+    override fun onNetworkStateChanged(isConnected: Boolean) {
+        this.networkState.value = isConnected
     }
 
     override fun onDateChange(date: Date) {

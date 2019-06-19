@@ -111,6 +111,12 @@ class ScheduleHostFragment : AbstractFragment<ScheduleHostContract.Presenter>(),
                     }
                 }
             })
+
+            networkState.observe(viewLifecycleOwner, Observer { isConnected ->
+                isConnected?.let {
+                    network_status?.visible(!isConnected)
+                }
+            })
         }
     }
 

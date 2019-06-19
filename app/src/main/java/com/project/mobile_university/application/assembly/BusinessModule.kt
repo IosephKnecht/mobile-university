@@ -24,6 +24,7 @@ import com.project.mobile_university.domain.repository.ScheduleRepositoryImpl
 import com.project.mobile_university.domain.repository.ScheduleRepositoryMock
 import com.project.mobile_university.domain.services.ApiServiceImpl
 import com.project.mobile_university.domain.services.DatabaseServiceImpl
+import com.project.mobile_university.domain.services.NetworkServiceImpl
 import com.project.mobile_university.domain.services.SharedPreferenceServiceImpl
 import com.project.mobile_university.domain.shared.*
 import com.project.mobile_university.presentation.createUniversityApi
@@ -144,5 +145,11 @@ class BusinessModule {
         } else {
             LoginRepositoryImpl(apiService, sharedPreferenceService)
         }
+    }
+
+    @Provides
+    @PerBusinessLayerScope
+    fun provideNetworkService(context: Context): NetworkService {
+        return NetworkServiceImpl(context)
     }
 }
