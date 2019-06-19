@@ -11,6 +11,7 @@ import com.project.mobile_university.presentation.lessonInfo.teacher.contract.Le
 import com.project.mobile_university.presentation.lessonInfo.teacher.view.LessonInfoTeacherFragment
 import com.project.mobile_university.presentation.check_list.contract.CheckListContract
 import com.project.mobile_university.presentation.check_list.view.CheckListFragment
+import com.project.mobile_university.presentation.login.contract.LoginContract
 import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract
 import com.project.mobile_university.presentation.schedule.subgroup.contract.ScheduleSubgroupContract
 import com.project.mobile_university.presentation.schedule.subgroup.view.ScheduleSubgroupFragment
@@ -24,6 +25,7 @@ import com.project.mobile_university.presentation.teachers.contract.TeachersCont
 import com.project.mobile_university.presentation.teachers.view.TeachersFragment
 import com.project.mobile_university.presentation.user_info.contract.UserInfoContract
 import com.project.mobile_university.presentation.user_info.view.UserInfoFragment
+import com.project.mobile_university.presentation.schedule.host.contract.ScheduleHostContract.InitialScreenType
 import java.util.*
 
 class ScheduleHostRouter(
@@ -35,7 +37,8 @@ class ScheduleHostRouter(
     private val checkListInputModule: CheckListContract.InputModule,
     private val teachersInputModule: TeachersContract.InputModule,
     private val userInfoInputModule: UserInfoContract.InputModule,
-    private val scheduleRangeInputModule: ScheduleRangeContract.InputModule
+    private val scheduleRangeInputModule: ScheduleRangeContract.InputModule,
+    private val loginInputModule: LoginContract.InputModule
 ) : AbstractRouter<ScheduleHostContract.RouterListener>(), ScheduleHostContract.Router {
 
     override fun showSubgroupScreen(androidComponent: AndroidComponent, identifier: Long) {
@@ -98,20 +101,42 @@ class ScheduleHostRouter(
         })
     }
 
-    override fun showTeachersScreen(androidComponent: AndroidComponent) {
-        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(TeachersFragment.TAG, {
-            teachersInputModule.createFragment()
-        }, {
-            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN)
-        })
+    override fun showTeachersScreen(
+        androidComponent: AndroidComponent,
+        needPopBackStack: InitialScreenType?
+    ) {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(
+            TeachersFragment.TAG,
+            { fragmentManager ->
+                needPopBackStack?.let { initialScreenType ->
+                    popBackStackUntilInitialScreenType(fragmentManager, initialScreenType)
+                }
+
+                teachersInputModule.createFragment()
+            },
+            {
+                routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.TEACHERS_SCREEN)
+            })
     }
 
-    override fun showUserInfo(androidComponent: AndroidComponent, userId: Long, isMe: Boolean) {
-        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(UserInfoFragment.TAG, {
-            userInfoInputModule.createFragment(userId, isMe)
-        }, {
-            routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.USER_INFO)
-        })
+    override fun showUserInfo(
+        androidComponent: AndroidComponent,
+        userId: Long,
+        isMe: Boolean,
+        needPopBackStack: InitialScreenType?
+    ) {
+        androidComponent.fragmentManagerComponent?.showIfNeedAndAddToBackStack(
+            "${UserInfoFragment.TAG}/isMe = $isMe",
+            { fragmentManager ->
+                needPopBackStack?.let { initialScreenType ->
+                    popBackStackUntilInitialScreenType(fragmentManager, initialScreenType)
+                }
+
+                userInfoInputModule.createFragment(userId, isMe)
+            },
+            {
+                routerListener?.onChangeScreen(ScheduleHostContract.CurrentScreenType.USER_INFO)
+            })
     }
 
     override fun showScheduleRange(
@@ -131,6 +156,13 @@ class ScheduleHostRouter(
         })
     }
 
+    override fun logout(androidComponent: AndroidComponent) {
+        androidComponent.activityComponent?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, loginInputModule.createFragment())
+            ?.commit()
+    }
+
     override fun onBackPressed(androidComponent: AndroidComponent) {
         val currentScreenType = androidComponent.fragmentManagerComponent?.run {
             popBackStackImmediate()
@@ -144,12 +176,12 @@ class ScheduleHostRouter(
 
     private fun FragmentManager.showIfNeedAndAddToBackStack(
         tag: String,
-        block: () -> Fragment,
+        block: (FragmentManager) -> Fragment,
         callback: ((Fragment) -> Unit)? = null
     ) {
         val fragment = findFragmentByTag(tag)
         if (fragment == null) {
-            val newInstanceFragment = block.invoke()
+            val newInstanceFragment = block.invoke(this)
 
             beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
@@ -176,6 +208,24 @@ class ScheduleHostRouter(
 
             callback?.invoke(newInstanceFragment)
         }
+    }
+
+    private fun FragmentManager.popBackStackUntil(tag: String) {
+        fragments.forEach { fragment ->
+            if (fragment.tag != tag) popBackStackImmediate()
+        }
+    }
+
+    private fun popBackStackUntilInitialScreenType(
+        fragmentManager: FragmentManager,
+        initialScreenType: InitialScreenType
+    ) {
+        val name = when (initialScreenType) {
+            InitialScreenType.SUBGROUP -> ScheduleSubgroupFragment.TAG
+            InitialScreenType.TEACHER -> TeacherScheduleFragment.TAG
+        }
+
+        fragmentManager.popBackStackUntil(name)
     }
 
     private fun mapFragmentToScreenType(fragment: Fragment?): ScheduleHostContract.CurrentScreenType? {

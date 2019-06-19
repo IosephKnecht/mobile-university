@@ -49,16 +49,19 @@ interface ScheduleHostContract {
         fun onShowTeachersScreen()
         fun onShowUserInfo(userId: Long, isMe: Boolean)
         fun onShowScheduleRange(teacherId: Long, startDate: Date, endDate: Date)
+        fun logout()
         fun backPressed()
         fun restoreDefaultDate(): Calendar
     }
 
     interface Listener : MvpInteractor.Listener {
         fun onObtainUserProfile(userProfile: User?, throwable: Throwable?)
+        fun onLogout(throwable: Throwable?)
     }
 
     interface Interactor : MvpInteractor<Listener> {
         fun obtainUserProfile()
+        fun logout()
     }
 
     interface RouterListener : MvpRouter.Listener {
@@ -72,9 +75,17 @@ interface ScheduleHostContract {
         fun showLessonInfoStudent(androidComponent: AndroidComponent, lessonExtId: Long)
         fun showLessonInfoTeacher(androidComponent: AndroidComponent, lessonExtId: Long)
         fun showCheckList(androidComponent: AndroidComponent, checkListExtId: Long)
-        fun showTeachersScreen(androidComponent: AndroidComponent)
-        fun showUserInfo(androidComponent: AndroidComponent, userId: Long, isMe: Boolean)
+        fun showTeachersScreen(androidComponent: AndroidComponent, needPopBackStack: InitialScreenType?)
+
+        fun showUserInfo(
+            androidComponent: AndroidComponent,
+            userId: Long,
+            isMe: Boolean,
+            needPopBackStack: InitialScreenType? = null
+        )
+
         fun showScheduleRange(androidComponent: AndroidComponent, teacherId: Long, startDate: Date, endDate: Date)
+        fun logout(androidComponent: AndroidComponent)
         fun onBackPressed(androidComponent: AndroidComponent)
     }
 

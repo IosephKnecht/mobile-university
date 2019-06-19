@@ -8,4 +8,5 @@ interface ScheduleHostListener {
     fun showCheckList(checkListExtId: Long)
     fun showUserInfo(userId: Long, isMe: Boolean)
     fun showScheduleRange(teacherId: Long, startDate: Date, endDate: Date)
+    fun logout()
 }
