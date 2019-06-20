@@ -2,7 +2,7 @@ package com.project.mobile_university.data.room.entity
 
 import androidx.room.*
 
-@Entity(indices = [Index(value = ["current_date"], unique = true)])
+@Entity(indices = [Index(value = ["ext_id", "current_date"], unique = true)])
 data class ScheduleDay(
     @PrimaryKey
     @ColumnInfo(name = "ext_id")

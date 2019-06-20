@@ -15,6 +15,7 @@ import com.project.mobile_university.application.AppDelegate
 import com.project.mobile_university.data.presentation.ScheduleDay
 import android.app.NotificationManager
 import com.project.mobile_university.presentation.MainActivity
+import java.util.concurrent.TimeUnit
 
 
 class ScheduleSyncService : IntentService(TAG) {
@@ -138,7 +139,6 @@ class ScheduleSyncService : IntentService(TAG) {
             .setColor(ContextCompat.getColor(this, R.color.accent))
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setContentTitle(getString(R.string.schedule_sync_service_title_difference))
-            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setAutoCancel(true)
             .setContentIntent(
                 PendingIntent.getActivity(

@@ -8,7 +8,7 @@ import com.project.mobile_university.data.room.entity.LessonSubgroup
 import com.project.mobile_university.data.room.entity.ScheduleDay
 import com.project.mobile_university.data.room.entity.Subgroup
 
-@Database(entities = [Subgroup::class, Lesson::class, LessonSubgroup::class, ScheduleDay::class], version = 5)
+@Database(entities = [Subgroup::class, Lesson::class, LessonSubgroup::class, ScheduleDay::class], version = 6)
 abstract class UniversityDatabase : RoomDatabase() {
     abstract fun scheduleDayDao(): ScheduleDayDao
 }

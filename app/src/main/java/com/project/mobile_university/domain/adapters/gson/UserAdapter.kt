@@ -70,7 +70,7 @@ class UserAdapter : JsonDeserializer<User>, JsonSerializer<User> {
     private fun createDefaultParams(userGson: JsonObject, src: User) {
         userGson.addProperty("id", src.userId)
         userGson.addProperty("email", src.email)
-        userGson.addProperty("first_name", src.lastName)
+        userGson.addProperty("first_name", src.firstName)
         userGson.addProperty("last_name", src.lastName)
     }
 
