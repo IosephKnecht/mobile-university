@@ -51,7 +51,7 @@ class ScheduleRangeInteractor(
                     val isOwner = userGson.teacherId == teacherId
                     Pair(lessonId, isOwner)
                 }
-                else -> throw RuntimeException("select user is not teacher")
+                else -> Pair(lessonId, false)
             }
         }
 
