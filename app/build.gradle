@@ -29,9 +29,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "MOCK_SETTINGS", "false"
+            buildConfigField "String", "DEFAULT_URL", "\"ksuserver.herokuapp.com\""
         }
         debug {
             buildConfigField "boolean", "MOCK_SETTINGS", "false"
+            buildConfigField "String", "DEFAULT_URL", "\"ksuserver.herokuapp.com\""
         }
     }
 
